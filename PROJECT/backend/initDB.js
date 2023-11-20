@@ -49,6 +49,21 @@ async function dropSection(db) {
     return db.run(`DROP TABLE IF EXISTS Section`);
 }
 
+async function initSection_Seat(db) {
+    return db.run(`
+        CREATE TABLE Section_Seat
+            (sectionNumber INTEGER,
+            seatNumber INTEGER,
+            PRIMARY KEY (sectionNumber, seatNumber),
+            FOREIGN KEY (sectionNumber) REFERENCES Section(sectionNumber) ON DELETE CASCADE
+            )
+    `)
+}
+
+async function dropSection_Seat(db) {
+    return db.run(`DROP TABLE IF EXISTS Section_Seat`);
+}
+
 async function initCityProvinceMap(db) {
 
     return db.run(`
@@ -60,6 +75,10 @@ async function initCityProvinceMap(db) {
 
 }
 
+async function dropCityProvinceMapt(db) {
+    return db.run(`DROP TABLE IF EXISTS CityProvinceMap`);
+}
+
 async function initCustomer(db) {
 
     return db.run(`
@@ -67,10 +86,37 @@ async function initCustomer(db) {
                 (userID INTEGER PRIMARY KEY,
                 name VARCHAR(30),
                 city VARCHAR(30),
+                password VARCHAR(64),
                 FOREIGN KEY (city) REFERENCES CityProvinceMap(city)
                 )
         `);
 
+}
+
+async function dropCustomer(db) {
+    return db.run(`DROP TABLE IF EXISTS Customer`);
+}
+
+async function initCustomerSession(db) {
+
+    return db.run(`
+            CREATE TABLE CustomerSession
+                (userID INTEGER,
+                sessionToken VARCHAR(32) PRIMARY KEY,
+                singleUse NUMBER(1),
+                expire TIMESTAMP,
+                FOREIGN KEY (userID) REFERENCES Customer(userID)
+                )
+        `);
+
+}
+
+async function dropCustomerSession(db) {
+    return db.run(`DROP TABLE IF EXISTS CustomerSession`)
+}
+
+async function dropCustomer(db) {
+    return db.run(`DROP TABLE IF EXISTS Customer`);
 }
 
 async function initVendor(db) {
@@ -82,6 +128,10 @@ async function initVendor(db) {
                 )
         `);
 
+}
+
+async function dropVendor(db) {
+    return db.run(`DROP TABLE IF EXISTS Vendor`);
 }
 
 async function initConcessions(db) {
@@ -96,6 +146,10 @@ async function initConcessions(db) {
    
 }
 
+async function dropConcession(db) {
+    return db.run(`DROP TABLE IF EXISTS Concession`);
+}
+
 async function initConcessionsVenue(db) {
 
     return db.run(`
@@ -107,6 +161,10 @@ async function initConcessionsVenue(db) {
             FOREIGN KEY (venueID) REFERENCES Venue(venueID)
             )
     `);
+}
+
+async function dropConcessionVenue(db) {
+    return db.run(`DROP TABLE IF EXISTS ConcessionVenue`);
 }
 
 async function initEvent(db) {
@@ -123,6 +181,10 @@ async function initEvent(db) {
    
 }
 
+async function dropEvents(db) {
+    return db.run(`DROP TABLE IF EXISTS Events`);
+}
+
 async function initEventVenue(db) {
 
     return db.run(`
@@ -136,10 +198,44 @@ async function initEventVenue(db) {
     `);
 }
 
+async function dropEventVenue(db) {
+    return db.run(`DROP TABLE IF EXISTS EventVenue`);
+}
+
+async function initTicket(db) {
+    return db.run(`
+        CREATE TABLE Ticket
+            (ticketID INTEGER PRIMARY KEY,
+            cost DECIMAL(10, 2)
+            )
+    `)
+}
+
+async function dropTicket(db) {
+    return db.run(`DROP TABLE IF EXISTS Ticket`);
+}
+
+async function initUserTicket(db) {
+    return db.run(`
+        CREATE TABLE UserTicket
+            (ticketID INTEGER,
+            userID INTEGER,
+            PRIMARY KEY (ticketID, userID),
+            FOREIGN KEY (ticketID) REFERENCES Ticket(ticketID),
+            FOREIGN KEY (userID) REFERENCES Customer(userID)
+            )
+    `)
+}
+
+async function dropUserTicket(db) {
+    return db.run(`DROP TABLE IF EXISTS UserTicket`)
+}
+
 async function initAll(db) {
     const promises = [
         initDEMOTABLE(db),
         initSection(db),
+        initSection_Seat(db),
         initVenue(db),
         initCityProvinceMap(db),
         initVendor(db),
@@ -148,6 +244,9 @@ async function initAll(db) {
         initCustomer(db),
         initEvent(db),
         initEventVenue(db),
+        initTicket(db),
+        initUserTicket(db),
+        initCustomerSession(db),
     ]
     return Promise.all(promises);
 }
@@ -157,6 +256,18 @@ async function dropAll(db) {
         dropDEMOTABLE(db),
         dropSection(db),
         dropVenue(db),
+        dropCityProvinceMapt(db),
+        dropConcession(db),
+        dropConcessionVenue(db),
+        dropCustomer(db),
+        dropEventVenue(db),
+        dropEvents(db),
+        dropSection_Seat(db),
+        dropVendor(db),
+        dropTicket(db),
+        dropUserTicket(db),
+        dropCustomerSession(db),
+        
     ]
     return Promise.all(promises);
 

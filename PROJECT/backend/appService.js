@@ -46,7 +46,10 @@ async function testDBConnection() {
 
 async function countDemotable() {
     return await db.getFromDB('SELECT Count(*) FROM DEMOTABLE').then((res)=>{
-        return res;
+        if (typeof(res) === "number") {
+            return res;
+        }
+        return res[0]['Count(*)'];
     }).catch(()=>0);
 }
 

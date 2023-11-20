@@ -11,12 +11,13 @@ let isOracle = true;
 
 /*
     This exists because I could not get the oracleDB to work locally
-    my solution was to start at sqlite3 db locally so that noone has this problem
+    my solution was to start a sqlite3 db locally so that noone has this problem
     This will work for 90% of all cases as there is very little difference between them
     at the scales that we are working at
-    sqlite3 does not need any special software to work, just a npm library
+    sqlite3 does not need any special software to work, just an npm library
     This unfotunately does not work on department servers becaause they don't have npm
     This code therefore exists to make this project database agnostic
+    This project will use oracleDB on department servers and sqlite3 db locally
 */
 
 async function withSQLiteDB(action) {
