@@ -48,57 +48,57 @@ async function initSection(db) {
 async function dropSection(db) {
     return db.run(`DROP TABLE IF EXISTS Section`);
 }
-/*
+
 async function initCityProvinceMap(db) {
 
-    return await db.run(`
+    return db.run(`
             CREATE TABLE CityProvinceMap
                 (city VARCHAR(30) PRIMARY KEY,
                 province VARCHAR(30)
                 )
-        `).then(()=>true).catch(()=>false);
+        `);
 
 }
 
 async function initCustomer(db) {
 
-    return await db.run(`
+    return db.run(`
             CREATE TABLE Customer
                 (userID INTEGER PRIMARY KEY,
                 name VARCHAR(30),
                 city VARCHAR(30),
                 FOREIGN KEY (city) REFERENCES CityProvinceMap(city)
                 )
-        `).then(()=>true).catch(()=>false);
+        `);
 
 }
 
 async function initVendor(db) {
 
-    return await db.run(`
+    return db.run(`
             CREATE TABLE Vendor 
                 (vendorID INTEGER PRIMARY KEY,
                 name VARCHAR(30)
                 )
-        `).then(()=>true).catch(()=>false);
+        `);
 
 }
 
 async function initConcessions(db) {
 
-    return await db.run(`
+    return db.run(`
         CREATE TABLE Concession 
             (itemName VARCHAR(30) PRIMARY KEY,
             price DECIMAL(10, 2),
             specifier CHAR(1)
             )
-    `).then(()=>true).catch(()=>false);
+    `);
    
 }
 
 async function initConcessionsVenue(db) {
 
-    return await db.run(`
+    return db.run(`
         CREATE TABLE ConcessionVenue
             (itemName VARCHAR(30),
             venueID INTEGER,
@@ -106,12 +106,12 @@ async function initConcessionsVenue(db) {
             FOREIGN KEY (itemName) REFERENCES Concession(itemName),
             FOREIGN KEY (venueID) REFERENCES Venue(venueID)
             )
-    `).then(()=>true).catch(()=>false);
+    `);
 }
 
 async function initEvent(db) {
 
-    return await db.run(`
+    return db.run(`
         CREATE TABLE Events 
             (eventID INTEGER PRIMARY KEY,
             type VARCHAR(30),
@@ -119,13 +119,13 @@ async function initEvent(db) {
             venueID INTEGER,
             FOREIGN KEY (venueID) REFERENCES Venue(venueID)
             )
-    `).then(()=>true).catch(()=>false);
+    `);
    
 }
 
 async function initEventVenue(db) {
 
-    return await db.run(`
+    return db.run(`
         CREATE TABLE EventVenue
             (eventID INTEGER,
             venueID INTEGER,
@@ -133,14 +133,21 @@ async function initEventVenue(db) {
             FOREIGN KEY (eventID) REFERENCES Events(eventID),
             FOREIGN KEY (venueID) REFERENCES Venue(venueID)
             )
-    `).then(()=>true).catch(()=>false);
+    `);
 }
-*/
+
 async function initAll(db) {
     const promises = [
         initDEMOTABLE(db),
         initSection(db),
         initVenue(db),
+        initCityProvinceMap(db),
+        initVendor(db),
+        initConcessions(db),
+        initConcessionsVenue(db),
+        initCustomer(db),
+        initEvent(db),
+        initEventVenue(db),
     ]
     return Promise.all(promises);
 }

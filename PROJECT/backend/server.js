@@ -11,7 +11,7 @@ const PORT = envVariables.PORT || 65534;  // Adjust the PORT if needed (e.g., if
 
 // Middleware setup
 //  app.use(express.static('../frontend/build')); // Use when testing REACT on department servers
-app.use(express.static('../public')); // Use for debugging
+app.use(express.static('./public')); // Use for debugging
 app.use(express.json());             // Parse incoming JSON payloads
 
 // If you prefer some other file as default page other than 'index.html',

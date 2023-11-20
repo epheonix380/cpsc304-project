@@ -9,6 +9,16 @@ const dbConfig = {
 
 let isOracle = true;
 
+/*
+    This exists because I could not get the oracleDB to work locally
+    my solution was to start at sqlite3 db locally so that noone has this problem
+    This will work for 90% of all cases as there is very little difference between them
+    at the scales that we are working at
+    sqlite3 does not need any special software to work, just a npm library
+    This unfotunately does not work on department servers becaause they don't have npm
+    This code therefore exists to make this project database agnostic
+*/
+
 async function withSQLiteDB(action) {
     const sqlite3 = require('sqlite3').verbose();
     try {
@@ -32,14 +42,15 @@ async function withOracleDB(action) {
         connection = await oracledb.getConnection(dbConfig);
         return await action(connection);
     } catch (err) {
-        console.error(err);
+        
+        console.log("Failed to find oracleDB")
         throw err;
     } finally {
         if (connection) {
             try {
                 await connection.close();
             } catch (err) {
-                console.error(err);
+                console.log("");
             }
         }
     }
@@ -66,7 +77,6 @@ async function getFromDB(sql) {
         return await withSQLiteDB(async (connection) => {
             connection.all(sql, (err, rows) => {
                 if (err) {
-                    console.log(err)
                     reject(err)
                 } else {
                     resolve(rows)

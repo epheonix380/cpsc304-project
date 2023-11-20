@@ -7,11 +7,9 @@ const initDB = require("./initDB.js");
 async function fetchDemotableFromDb() {
     return await db.getFromDB('SELECT * FROM DEMOTABLE').then(
         (res)=>{
-            console.log(res);
             return res
         }
     ).catch((err)=>{
-        console.log(err);
         return []
     })
 }
@@ -41,7 +39,6 @@ async function updateNameDemotable(oldName, newName) {
 async function testDBConnection() {
     return await db.testConnection().then((suc)=>true).catch(
         (err)=>{
-            console.log(err);
             return false;
         }
     )
@@ -49,7 +46,6 @@ async function testDBConnection() {
 
 async function countDemotable() {
     return await db.getFromDB('SELECT Count(*) FROM DEMOTABLE').then((res)=>{
-        console.log(res);
         return res;
     }).catch(()=>0);
 }
