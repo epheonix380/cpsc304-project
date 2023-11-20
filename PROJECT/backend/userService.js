@@ -37,12 +37,11 @@ async function getAuthUserInfo(sessionToken) {
 }
 
 async function getUserTickets(userID) {
-    console.log(parseInt(userID))
     return await db.getFromDB(`
         SELECT Ticket.ticketID, Ticket.rowNumber, Ticket.seatNumber, 
         Ticket.sectionNumber, Ticket.eventID, EVTable.eName, EVTable.author,
         EVTable.vName, EVTable.city, EVTable.startTime
-        FROM Customer, UserTicket, Ticket, (
+        FROM UserTicket, Ticket, (
             SELECT Event.eventID, Event.name as eName, Event.author, 
             Venue.name as vName, Venue.city, EventVenue.startTime
             FROM Event, EventVenue, Venue
@@ -51,14 +50,10 @@ async function getUserTickets(userID) {
                 EventVenue.venueID = Venue.venueID
         ) as EVTable
         WHERE
-            Customer.userID = ${parseInt(userID)} AND
-            UserTicket.userID = Customer.userID AND
+            UserTicket.userID = ${parseInt(userID)} AND
             UserTicket.ticketID = Ticket.ticketID AND
             Ticket.eventID = EVTable.eventID
-    `).then((res)=>{
-        console.log(res)
-        return res;
-    }).catch((err)=>{
+    `).then((res)=>res).catch((err)=>{
         console.log(err);
         return false;
     })
