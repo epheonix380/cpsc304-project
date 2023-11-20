@@ -42,13 +42,15 @@ CREATE TABLE Events
 (eventID INTEGER PRIMARY KEY,
  type VARCHAR(30),
  name VARCHAR(30),
- venueID INTEGER,
- FOREIGN KEY (venueID) REFERENCES Venue(venueID)
+ author VARCHAR(32),
+ description VARCHAR(2048)
+
 )
 CREATE TABLE EventVenue
 (eventID INTEGER,
  venueID INTEGER,
- PRIMARY KEY (eventID, venueID),
+ startTime TIMESTAMP,
+ PRIMARY KEY (eventID, venueID, startTime),
  FOREIGN KEY (eventID) REFERENCES Events(eventID),
  FOREIGN KEY (venueID) REFERENCES Venue(venueID)
 )

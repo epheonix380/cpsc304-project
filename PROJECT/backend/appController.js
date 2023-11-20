@@ -1,6 +1,6 @@
 const express = require('express');
 const appService = require('./appService');
-
+const eventService = require('./eventService')
 const router = express.Router();
 
 // ----------------------------------------------------------
@@ -63,6 +63,12 @@ router.get('/count-demotable', async (req, res) => {
         });
     }
 });
+
+router.get("/events", async (req, res) => {
+    const orderBy = req.query.orderBy;
+    const data = await eventService.getEvents(orderBy);
+    res.json({data});
+})
 
 
 module.exports = router;

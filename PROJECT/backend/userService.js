@@ -5,12 +5,12 @@ async function createUser(db, name, city, password) {
     return await db.run(`
         insert into Customer 
         (userID, name, city, password) values 
-        (${pk}, ${name}, ${city}, ${password})
+        (${pk}, '${name}', '${city}', '${password}')
     `).then((res)=>true).catch((err)=>false);
 }
 
 async function generateUserSession(db, userID, password, singleUse) {
-    const userID = await db.run(`SELECT userID FROM Customer WHERE userID=${userID} AND password=${password}`).then((res)=>res).catch(()=>false)
+    const userID = await db.run(`SELECT userID FROM Customer WHERE userID=${userID} AND password='${password}'`).then((res)=>res).catch(()=>false)
     if (userID !== false) {
         console.log(userID);
         const token = crypto.randomBytes(32);
@@ -20,7 +20,7 @@ async function generateUserSession(db, userID, password, singleUse) {
         return await db.run(`
             insert into CustomerSession 
             (userID, sessionToken, singleUse, expire) values 
-            (${userID}, ${token}, ${su}, ${expire})
+            (${userID}, '${token}', ${su}, ${expire})
         `)
     }
 }
@@ -30,7 +30,7 @@ async function getAuthUserInfo(db, sessionToken) {
     SELECT Customer.userID, Customer.name, Customer.city 
     FROM Customer, CustomerSession 
     WHERE Customer.userID = CustomerSession.userID 
-    AND CustomerSession.sessionID = ${sessionToken}
+    AND CustomerSession.sessionID = '${sessionToken}'
     AND CustomerSession.singleUse <> -1`).then((res)=>res).catch(()=>false);
 
     return res
