@@ -41,6 +41,7 @@ async function initSection(db) {
                 numberOfSeats INTEGER,
                 type CHAR(5),
                 PRIMARY KEY (sectionNumber, eventID)
+                FOREIGN KEY (eventID) REFERENCES Event(eventID)
                 )
         `);
 
@@ -50,20 +51,21 @@ async function dropSection(db) {
     return db.run(`DROP TABLE IF EXISTS Section`);
 }
 
-async function initSection_Seat(db) {
+async function initSeat(db) {
     return db.run(`
-        CREATE TABLE Section_Seat
+        CREATE TABLE Seat
             (sectionNumber INTEGER,
             eventID INTEGER,
+            rowNumber INTEGER,
             seatNumber INTEGER,
-            PRIMARY KEY (sectionNumber, eventID, seatNumber),
+            PRIMARY KEY (sectionNumber, eventID, seatNumber, rowNumber),
             FOREIGN KEY (sectionNumber, eventID) REFERENCES Section(sectionNumber, eventID) ON DELETE CASCADE
             )
     `)
 }
 
-async function dropSection_Seat(db) {
-    return db.run(`DROP TABLE IF EXISTS Section_Seat`);
+async function dropSeat(db) {
+    return db.run(`DROP TABLE IF EXISTS Seat`);
 }
 
 async function initCityProvinceMap(db) {
@@ -210,10 +212,11 @@ async function initTicket(db) {
         CREATE TABLE Ticket
             (ticketID INTEGER PRIMARY KEY,
             cost DECIMAL(10, 2),
+            rowNumber INTEGER,
             seatNumber INTEGER,
             eventID INTEGER, 
             sectionNumber INTEGER,
-            FOREIGN KEY (seatNumber,eventID,sectionNumber) REFERENCES Section_Seat(seatNumber,eventID,sectionNumber)
+            FOREIGN KEY (seatNumber,eventID,sectionNumber,rowNumber) REFERENCES Seat(seatNumber,eventID,sectionNumber,rowNumber)
             )
     `)
 }
@@ -238,11 +241,19 @@ async function dropUserTicket(db) {
     return db.run(`DROP TABLE IF EXISTS UserTicket`)
 }
 
+async function dropEvents(db) {
+    return db.run(`DROP TABLE IF EXISTS Events`)
+}
+
+async function dropSection_Seat(db) {
+    return db.run(`DROP TABLE IF EXISTS Section_Seat`)
+}
+
 async function initAll(db) {
     const promises = [
         initDEMOTABLE(db),
         initSection(db),
-        initSection_Seat(db),
+        initSeat(db),
         initVenue(db),
         initCityProvinceMap(db),
         initVendor(db),
@@ -269,10 +280,12 @@ async function dropAll(db) {
         dropCustomer(db),
         dropEventVenue(db),
         dropEvent(db),
+        dropSeat(db),
         dropSection_Seat(db),
         dropVendor(db),
         dropTicket(db),
         dropUserTicket(db),
+        dropEvents(db),
         dropCustomerSession(db),
         
     ]

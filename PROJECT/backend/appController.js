@@ -1,6 +1,7 @@
 const express = require('express');
 const appService = require('./appService');
 const eventService = require('./eventService')
+const userService = require("./userService");
 const router = express.Router();
 
 // ----------------------------------------------------------
@@ -69,6 +70,12 @@ router.get("/events", async (req, res) => {
     const data = await eventService.getEvents(orderBy);
     res.json({data});
 })
+
+router.get("/tickets/:userID", async (req, res) => {
+    const userID = req.params.userID;
+    const data = await userService.getUserTickets(userID);
+    res.json({data});
+}) 
 
 
 module.exports = router;
