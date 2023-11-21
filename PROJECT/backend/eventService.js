@@ -8,7 +8,7 @@ async function getEvents(orderBy="startTime") {
         case "type":
             order = "Event.type"
             break;
-        case "name":
+        case "eName":
             order = "Event.name"
             break;
         case "author":
@@ -17,7 +17,7 @@ async function getEvents(orderBy="startTime") {
         case "startTime":
             order = "Holds.startTime"
             break;
-        case "venueName":
+        case "vName":
             order = "Venue.name"
             break;
         case "city":
