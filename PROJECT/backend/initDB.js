@@ -200,13 +200,15 @@ async function dropHolds(db) {
 async function initTicket(db) {
     return db.run(`
         CREATE TABLE Ticket
-            (ticketID INTEGER PRIMARY KEY,
+            (ticketID INTEGER,
             cost DECIMAL(10, 2),
             rowNumber INTEGER,
             seatNumber INTEGER,
             eventID INTEGER, 
             venueID INTEGER,
             sectionNumber INTEGER,
+            PRIMARY KEY (ticketID),
+            UNIQUE (venueID, sectionNumber, seatNumber, rowNumber, eventID)
             FOREIGN KEY (eventID, sectionNumber, venueID) REFERENCES Section(eventID, sectionNumber, venueID)
             )
     `)

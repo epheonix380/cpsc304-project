@@ -46,7 +46,7 @@ function insertHolds(eventID, venueID, startTime) {
     `)
 }
 
-function insertSection(sectionNumber, eventID, venueID, numberOfSeats, type) {
+function insertSection( eventID, venueID, sectionNumber, numberOfSeats, type) {
     return db.run(`
         INSERT INTO Section 
             (eventID, venueID, sectionNumber, numberOfSeats, type) values
@@ -54,15 +54,24 @@ function insertSection(sectionNumber, eventID, venueID, numberOfSeats, type) {
     `)
 }
 
-function insertTicket(ticketID, cost, rowNumber, setNumber, eventID, sectionNumber) {
+function insertTicket( eventID, venueID, sectionNumber, cost, rowNumber, seatNumber, id) {
     return db.run(`
         INSERT INTO Ticket
-            (ticketID, cost, rowNumber, setNumber, eventID, sectionNumber) values
-            (${ticketID}, ${cost}, ${rowNumber}, ${setNumber}, ${eventID}, ${sectionNumber})
+            (ticketID, cost, rowNumber, seatNumber, eventID, venueID, sectionNumber) values
+            (${id}, ${cost}, ${rowNumber}, ${seatNumber}, ${eventID}, ${venueID},${sectionNumber})
+    `)
+}
+
+function insertIssued(ticketID, userID) {
+    return db.run(`
+        INSERT INTO Issued
+            (ticketID, userID) values
+            (${ticketID}, ${userID})
     `)
 }
 
 async function insertData() {
+    let id = 1;
     const promises = [
         // Insert CityProvinceMap
         insertCityProvinceMap("Vancouver", "British Columbia"),
@@ -125,25 +134,91 @@ async function insertData() {
         
 
         // INSERT Section
-        insertSection(1, 1, 1, 100, "STAND"),
-        insertSection(1, 3, 1, 100, "STAND"),
-        insertSection(1, 5, 1, 100, "STAND"),
-        insertSection(1, 7, 1, 100, "STAND"),
-        insertSection(1, 9, 1, 100, "STAND"),
-        insertSection(2, 2, 1, 100, "STAND"),
-        insertSection(2, 4, 1, 100, "STAND"),
-        insertSection(2, 6, 1, 100, "STAND"),
-        insertSection(2, 8, 1, 100, "STAND"),
-        insertSection(2, 10, 1, 100, "STAND"),
-        insertSection(5, 1, 1, 100, "STAND"),
-        insertSection(6, 3, 1, 100, "STAND"),
-        insertSection(7, 5, 1, 100, "STAND"),
-        insertSection(3, 7, 1, 100, "STAND"),
-        insertSection(4, 9, 1, 100, "STAND"),
+        insertSection(1, 1, 1, 10, "STAND"),
+        insertSection(1, 3, 1, 10, "STAND"),
+        insertSection(1, 5, 1, 10, "STAND"),
+        insertSection(1, 7, 1, 10, "STAND"),
+        insertSection(1, 9, 1, 10, "STAND"),
+        insertSection(2, 2, 1, 10, "STAND"),
+        insertSection(2, 4, 1, 10, "STAND"),
+        insertSection(2, 6, 1, 10, "STAND"),
+        insertSection(2, 8, 1, 10, "STAND"),
+        insertSection(2, 10, 1, 10, "STAND"),
+        insertSection(5, 1, 1, 10, "STAND"),
+        insertSection(6, 3, 1, 10, "STAND"),
+        insertSection(7, 5, 1, 10, "STAND"),
+        insertSection(3, 7, 1, 10, "STAND"),
+        insertSection(4, 9, 1, 10, "STAND"),
+
         
 
-
     ]
+    // INSERT TICKET
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(1, 1, 1, 100, 1,i, id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(1, 3, 1, 100, 1,i, id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(1, 5, 1, 100, 1,i ,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(1, 7, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(1, 9, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(2, 2, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(2, 4, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(2, 6, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(2, 8, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(2, 10, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(5, 1, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(6, 3, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(7, 5, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(3, 7, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        promises.push(insertTicket(4, 9, 1, 100, 1,i,id));
+        id++
+    }
+    for (let i = 0; i<10; i++) {
+        const delta = Math.floor(Math.random()*5);
+        promises.push(insertIssued(10*i+delta, (i%5)+1));
+    }
+
     return await Promise.all(promises).then((res)=>res).catch(
         (err)=>{
             console.log(err);

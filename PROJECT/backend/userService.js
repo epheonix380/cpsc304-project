@@ -36,13 +36,23 @@ async function getAuthUserInfo(sessionToken) {
     return res
 }
 
+async function getAllUsers() {
+    return await db.getFromDB(`
+        SELECT * FROM Customer
+    `).then((res)=>res).catch((err)=>{
+        console.log(err);
+        return false;
+    })
+
+}
+
 async function getUserTickets(userID) {
     return await db.getFromDB(`
         SELECT Ticket.ticketID, Ticket.rowNumber, Ticket.seatNumber, 
         Ticket.sectionNumber, Ticket.eventID, EVTable.eName, EVTable.author,
         EVTable.vName, EVTable.city, EVTable.startTime
         FROM Issued, Ticket, (
-            SELECT Event.eventID, Event.name as eName, Event.author, 
+            SELECT Event.eventID, Holds.venueID, Event.name as eName, Event.author, 
             Venue.name as vName, Venue.city, Holds.startTime
             FROM Event, Holds, Venue
             WHERE 
@@ -52,7 +62,8 @@ async function getUserTickets(userID) {
         WHERE
             Issued.userID = ${parseInt(userID)} AND
             Issued.ticketID = Ticket.ticketID AND
-            Ticket.eventID = EVTable.eventID
+            Ticket.eventID = EVTable.eventID AND
+            Ticket.venueID = EVTable.venueID
     `).then((res)=>res).catch((err)=>{
         console.log(err);
         return false;
@@ -61,4 +72,5 @@ async function getUserTickets(userID) {
 
 module.exports = {
     getUserTickets,
+    getAllUsers
 }

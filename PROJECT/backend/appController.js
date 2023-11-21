@@ -86,5 +86,16 @@ router.get("/tickets/:userID", async (req, res) => {
     
 }) 
 
+router.get("/users", async (req, res) => {
+    const userID = req.params.userID;
+    const data = await userService.getAllUsers();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
+}) 
+
 
 module.exports = router;
