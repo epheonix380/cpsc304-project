@@ -17,7 +17,7 @@ Options:
 `url/events?orderBy=type`
 
 
-This not only orders by, but it also groups by this option
+This option ordersBy the specified category
 
 Available options:
 

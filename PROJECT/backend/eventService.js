@@ -35,7 +35,6 @@ async function getEvents(orderBy="startTime") {
         WHERE Event.eventID = Holds.eventID AND
         Holds.venueID = Venue.venueID AND
         Holds.startTime > '${dateTimeString}'
-        GROUP BY ${order}
         ORDER BY ${order}
     `).then((res)=>res).catch((err)=>{
         console.log(err);
