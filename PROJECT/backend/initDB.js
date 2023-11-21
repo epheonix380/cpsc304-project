@@ -1,3 +1,5 @@
+const insertData = require("./testData")
+
 async function initDEMOTABLE(db) {
 
     return db.run(`
@@ -38,10 +40,11 @@ async function initSection(db) {
             CREATE TABLE Section
                 (sectionNumber INTEGER,
                 eventID INTEGER,
+                venueID INTEGER,
                 numberOfSeats INTEGER,
                 type CHAR(5),
-                PRIMARY KEY (sectionNumber, eventID)
-                FOREIGN KEY (eventID) REFERENCES Event(eventID)
+                PRIMARY KEY (sectionNumber, eventID, venueID)
+                FOREIGN KEY (eventID, venueID) REFERENCES Holds(eventID, venueID)
                 )
         `);
 
@@ -49,19 +52,6 @@ async function initSection(db) {
 
 async function dropSection(db) {
     return db.run(`DROP TABLE IF EXISTS Section`);
-}
-
-async function initSeat(db) {
-    return db.run(`
-        CREATE TABLE Seat
-            (sectionNumber INTEGER,
-            eventID INTEGER,
-            rowNumber INTEGER,
-            seatNumber INTEGER,
-            PRIMARY KEY (sectionNumber, eventID, seatNumber, rowNumber),
-            FOREIGN KEY (sectionNumber, eventID) REFERENCES Section(sectionNumber, eventID) ON DELETE CASCADE
-            )
-    `)
 }
 
 async function dropSeat(db) {
@@ -189,10 +179,10 @@ async function dropEvent(db) {
     return db.run(`DROP TABLE IF EXISTS Event`);
 }
 
-async function initEventVenue(db) {
+async function initHolds(db) {
 
     return db.run(`
-        CREATE TABLE EventVenue
+        CREATE TABLE Holds
             (eventID INTEGER,
             venueID INTEGER,
             startTime TIMESTAMP,
@@ -203,8 +193,8 @@ async function initEventVenue(db) {
     `);
 }
 
-async function dropEventVenue(db) {
-    return db.run(`DROP TABLE IF EXISTS EventVenue`);
+async function dropHolds(db) {
+    return db.run(`DROP TABLE IF EXISTS Holds`)
 }
 
 async function initTicket(db) {
@@ -215,8 +205,9 @@ async function initTicket(db) {
             rowNumber INTEGER,
             seatNumber INTEGER,
             eventID INTEGER, 
+            venueID INTEGER,
             sectionNumber INTEGER,
-            FOREIGN KEY (seatNumber,eventID,sectionNumber,rowNumber) REFERENCES Seat(seatNumber,eventID,sectionNumber,rowNumber)
+            FOREIGN KEY (eventID, sectionNumber, venueID) REFERENCES Section(eventID, sectionNumber, venueID)
             )
     `)
 }
@@ -225,9 +216,9 @@ async function dropTicket(db) {
     return db.run(`DROP TABLE IF EXISTS Ticket`);
 }
 
-async function initUserTicket(db) {
+async function initIssued(db) {
     return db.run(`
-        CREATE TABLE UserTicket
+        CREATE TABLE Issued
             (ticketID INTEGER,
             userID INTEGER,
             PRIMARY KEY (ticketID, userID),
@@ -237,8 +228,41 @@ async function initUserTicket(db) {
     `)
 }
 
-async function dropUserTicket(db) {
-    return db.run(`DROP TABLE IF EXISTS UserTicket`)
+async function dropIssued(db) {
+    return db.run(`DROP TABLE IF EXISTS Issued`)
+}
+
+async function initFoodDrink(db) {
+    return db.run(`
+        CREATE TABLE FoodDrink(
+            itemName VARCHAR(100),
+            price DECIMAL,
+            specifier CHAR(1),
+            isFriesIncluded NUMBER(1),
+            size CHAR(1),
+            PRIMARY KEY (itemName)
+            );
+    `)
+}
+
+async function dropFoodDrink(db) {
+    return db.run(`DROP TABLE IF EXISTS FoodDrink`)
+}
+
+async function initHas(db) {
+    return db.run(`
+        CREATE TABLE Has(
+            itemName VARCHAR(100),
+            venueID INTEGER,
+            PRIMARY KEY (itemName, venueID),
+            FOREIGN KEY (itemName) REFERENCES FoodDrink(itemName),
+            FOREIGN KEY (venueID) REFERENCES Venue(venueID)
+            );
+    `)
+}
+
+async function dropHas(db) {
+    return db.run(`DROP TABLE IF EXISTS Has`)
 }
 
 async function dropEvents(db) {
@@ -249,11 +273,18 @@ async function dropSection_Seat(db) {
     return db.run(`DROP TABLE IF EXISTS Section_Seat`)
 }
 
+async function dropUserTicket(db) {
+    return db.run(`DROP TABLE IF EXISTS UserTicket`)
+}
+
+async function dropEventVenue(db) {
+    return db.run(`DROP TABLE IF EXISTS EventVenue`);
+}
+
 async function initAll(db) {
     const promises = [
         initDEMOTABLE(db),
         initSection(db),
-        initSeat(db),
         initVenue(db),
         initCityProvinceMap(db),
         initVendor(db),
@@ -261,10 +292,12 @@ async function initAll(db) {
         initConcessionsVenue(db),
         initCustomer(db),
         initEvent(db),
-        initEventVenue(db),
         initTicket(db),
-        initUserTicket(db),
+        initIssued(db),
         initCustomerSession(db),
+        initHolds(db),
+        initFoodDrink(db),
+        initHas(db),
     ]
     return Promise.all(promises);
 }
@@ -287,7 +320,10 @@ async function dropAll(db) {
         dropUserTicket(db),
         dropEvents(db),
         dropCustomerSession(db),
-        
+        dropIssued(db),
+        dropHolds(db),
+        dropFoodDrink(db),
+        dropHas(db),
     ]
     return Promise.all(promises);
 
@@ -296,7 +332,14 @@ async function dropAll(db) {
 async function resetAll(db) {
 
     return await dropAll(db).then(async()=>{
-        const res = await initAll(db).then(()=>true).catch((err)=>{
+        const res = await initAll(db).then(async ()=>{
+            return await insertData.insertData().then((res)=>res).catch(
+                (err)=>{
+                    console.log(err);
+                    return err;
+                }
+            )
+        }).catch((err)=>{
             console.log(err);
             return false;
         });

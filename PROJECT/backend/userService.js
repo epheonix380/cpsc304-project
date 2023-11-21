@@ -41,17 +41,17 @@ async function getUserTickets(userID) {
         SELECT Ticket.ticketID, Ticket.rowNumber, Ticket.seatNumber, 
         Ticket.sectionNumber, Ticket.eventID, EVTable.eName, EVTable.author,
         EVTable.vName, EVTable.city, EVTable.startTime
-        FROM UserTicket, Ticket, (
+        FROM Issued, Ticket, (
             SELECT Event.eventID, Event.name as eName, Event.author, 
-            Venue.name as vName, Venue.city, EventVenue.startTime
-            FROM Event, EventVenue, Venue
+            Venue.name as vName, Venue.city, Holds.startTime
+            FROM Event, Holds, Venue
             WHERE 
-                Event.eventID = EventVenue.eventID AND
-                EventVenue.venueID = Venue.venueID
+                Event.eventID = Holds.eventID AND
+                Holds.venueID = Venue.venueID
         ) as EVTable
         WHERE
-            UserTicket.userID = ${parseInt(userID)} AND
-            UserTicket.ticketID = Ticket.ticketID AND
+            Issued.userID = ${parseInt(userID)} AND
+            Issued.ticketID = Ticket.ticketID AND
             Ticket.eventID = EVTable.eventID
     `).then((res)=>res).catch((err)=>{
         console.log(err);

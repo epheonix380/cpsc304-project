@@ -68,13 +68,22 @@ router.get('/count-demotable', async (req, res) => {
 router.get("/events", async (req, res) => {
     const orderBy = req.query.orderBy;
     const data = await eventService.getEvents(orderBy);
-    res.json({data});
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
 })
 
 router.get("/tickets/:userID", async (req, res) => {
     const userID = req.params.userID;
     const data = await userService.getUserTickets(userID);
-    res.json({data});
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
 }) 
 
 
