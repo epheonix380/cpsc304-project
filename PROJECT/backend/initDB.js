@@ -265,134 +265,90 @@ async function dropHas(db) {
     return db.run(`DROP TABLE IF EXISTS Has`)
 }
 
-async function dropEvents(db) {
-    return db.run(`DROP TABLE IF EXISTS Events`)
-}
-
-async function dropSection_Seat(db) {
-    return db.run(`DROP TABLE IF EXISTS Section_Seat`)
-}
-
-async function dropUserTicket(db) {
-    return db.run(`DROP TABLE IF EXISTS UserTicket`)
-}
-
-async function dropEventVenue(db) {
-    return db.run(`DROP TABLE IF EXISTS EventVenue`);
-}
-
 async function initAll(db) {
     if (db.getIsOracle()) {
-        console.log("Starting init")
         return new Promise(async(resolve, reject)=>{
-        const res = await initDEMOTABLE(db)
+        await initDEMOTABLE(db)
         .catch((err)=>{
             console.log(`Error from DemoTable: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initCityProvinceMap(db)
         .catch((err)=>{
             console.log(`Error from CityProvinceMap: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initVendor(db)
         .catch((err)=>{
             console.log(`Error from Vendor: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initVenue(db)
         .catch((err)=>{
             console.log(`Error from Venue: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initEvent(db)
         .catch((err)=>{
             console.log(`Error from Event: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initHolds(db)
         .catch((err)=>{
             console.log(`Error from Holds: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initConcessions(db)
         .catch((err)=>{
             console.log(`Error from Concessions: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initConcessionsVenue(db)
         .catch((err)=>{
             console.log(`Error from ConcessionsVenue: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initCustomer(db)
         .catch((err)=>{
             console.log(`Error from Customer: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initSection(db)
         .catch((err)=>{
             console.log(`Error from Section: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initTicket(db)
         .catch((err)=>{
             console.log(`Error from Ticket: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initIssued(db)
         .catch((err)=>{
             console.log(`Error from Issued: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initCustomerSession(db)
         .catch((err)=>{
             console.log(`Error from CustomerSession: ${err}`);
             reject(err);
         })
-        .finally(async()=>{
         await initFoodDrink(db)
         .catch((err)=>{
             console.log(`Error from FoodDrink: ${err}`);
             reject(err);
         
         })
-        .finally(async()=>{
         await initHas(db)
         .catch((err)=>{
             console.log(`Error from Has: ${err}`);
             reject(err);
         })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
         resolve(true);
         })
         
     } else {
+        // This cannot be performed on Oracle DB due to rate limits
         const promises = [
             initDEMOTABLE(db),
             initSection(db),
@@ -418,88 +374,40 @@ async function initAll(db) {
 async function dropAll(db) {
     if (db.getIsOracle()) {
         return new Promise(async(resolve,reject)=>{
-            console.log("Doing 0")
-            const res = await db.run(`DROP TABLE DEMOTABLE CASCADE CONSTRAINTS`)
-        .catch((err)=>{console.log(`Error at DEMOTABLE: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Section CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE DEMOTABLE CASCADE CONSTRAINTS`)
+            .catch((err)=>{console.log(`Error at DEMOTABLE: ${err}`)})
+            await db.run(`DROP TABLE Section CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Section: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Venue CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Venue CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Venue: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE CityProvinceMap CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE CityProvinceMap CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at CityProvinceMap: ${err}`)})
-        .finally(async()=>{
-        return await db.run(`DROP TABLE Concession CASCADE CONSTRAINTS`)
-        .catch((err)=>{console.log(`Error at Concession: ${err}`)})
-        .finally(async()=>{
-        return await db.run(`DROP TABLE ConcessionVenue CASCADE CONSTRAINTS`)
-        .catch((err)=>{console.log(`Error at ConcessionVenue: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Customer CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Concession CASCADE CONSTRAINTS`)
+            .catch((err)=>{console.log(`Error at Concession: ${err}`)})
+            await db.run(`DROP TABLE ConcessionVenue CASCADE CONSTRAINTS`)
+            .catch((err)=>{console.log(`Error at ConcessionVenue: ${err}`)})
+            await db.run(`DROP TABLE Customer CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Customer: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE EventVenue CASCADE CONSTRAINTS`)
-            .catch((err)=>{console.log(`Error at EventVenue: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Event CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Event CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Event: ${err}`)})
-        .finally(async()=>{
-        await db.run(`DROP TABLE Seat CASCADE CONSTRAINTS`)
-        .catch((err)=>{console.log(`Error at Seat: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Seat_Section CASCADE CONSTRAINTS`)
-            .catch((err)=>{console.log(`Error at Seat_Section: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Vendor CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Vendor CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Vendor: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Ticket CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Ticket CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Ticket: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE UserTicket CASCADE CONSTRAINTS`)
-            .catch((err)=>{console.log(`Error at UserTicket: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Event CASCADE CONSTRAINTS`)
-            .catch((err)=>{console.log(`Error at Event: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE CustomerSession CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE CustomerSession CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at CustomerSession: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Issued CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Issued CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Issued: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Holds CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Holds CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Holds: ${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE FoodDrink CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE FoodDrink CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at FoodDrink:${err}`)})
-        .finally(async()=>{
-            return await db.run(`DROP TABLE Has CASCADE CONSTRAINTS`)
+            await db.run(`DROP TABLE Has CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Has: ${err}`)})
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        })
-        resolve(true);
+            resolve(true);
         })
     } else {
+        // This cannot be performed on Oracle DB due to rate limits
         const promises = [
             dropDEMOTABLE(db),
             dropSection(db),
@@ -511,11 +419,8 @@ async function dropAll(db) {
             dropEventVenue(db),
             dropEvent(db),
             dropSeat(db),
-            dropSection_Seat(db),
             dropVendor(db),
             dropTicket(db),
-            dropUserTicket(db),
-            dropEvents(db),
             dropCustomerSession(db),
             dropIssued(db),
             dropHolds(db),
@@ -528,25 +433,27 @@ async function dropAll(db) {
 }
 
 async function resetAll(db) {
-
+    console.log("Starting database reset")
+    console.log("Starting drop tables...")
     return await dropAll(db).then(async()=>{
+        console.log("Starting create tables...")
         const res = await initAll(db).then(async ()=>{
-            
+            console.log("Starting inserting data into tables...")
             return await insertData.insertData().then((res)=>res).catch(
                 (err)=>{
-                    console.log(err);
+                    console.log({err, source:"insertData"});
                     return err;
                 }
             )
             
         }).catch((err)=>{
-            console.log({err,source:"outer 1"});
+            console.log({err,source:"initAll"});
             return false;
         });
-        console.log({res,source:"outer 2"})
+        console.log("Database succesfully reset");
         return res
     }).catch((err)=>{
-        console.log({err,source:"outer 3"});
+        console.log({err,source:"dropAll"});
         return false;
     })
 

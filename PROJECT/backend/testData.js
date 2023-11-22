@@ -77,18 +77,23 @@ function insertIssued(ticketID, userID) {
 async function insertData() {
     return await new Promise(async(resolve, reject)=>{
         let id = 1;
+
+
         // Insert CityProvinceMap
-        await insertCityProvinceMap("Vancouver", "British Columbia").catch((err)=>console.log(`CityProvinceMap: ${err}`)).then((res)=>console.log(res))
-        await insertCityProvinceMap("Calgary", "Alberta").catch((err)=>console.log(`CityProvinceMap: ${err}`)).then((res)=>console.log(res))
-        await insertCityProvinceMap("Toronto", "Ontario").catch((err)=>console.log(`CityProvinceMap: ${err}`)).then((res)=>console.log(res))
-        await insertCityProvinceMap("Montreal", "Quebec").catch((err)=>console.log(`CityProvinceMap: ${err}`)).then((res)=>console.log(res))
-        await insertCityProvinceMap("Victoria", "British Columbia").catch((err)=>console.log(`CityProvinceMap: ${err}`)).then((res)=>console.log(res))
+        await insertCityProvinceMap("Vancouver", "British Columbia").catch((err)=>console.log(`CityProvinceMap: ${err}`))
+        await insertCityProvinceMap("Calgary", "Alberta").catch((err)=>console.log(`CityProvinceMap: ${err}`))
+        await insertCityProvinceMap("Toronto", "Ontario").catch((err)=>console.log(`CityProvinceMap: ${err}`))
+        await insertCityProvinceMap("Montreal", "Quebec").catch((err)=>console.log(`CityProvinceMap: ${err}`))
+        await insertCityProvinceMap("Victoria", "British Columbia").catch((err)=>console.log(`CityProvinceMap: ${err}`))
+        
+        
         // Insert Customer
-        await insertCustomer(1, "John", "Vancouver", "12345").catch((err)=>console.log(`Customer1: ${err}`));
-        await insertCustomer(2, "Sarah", "Calgary", "12345").catch((err)=>console.log(`Customer2: ${err}`));
-        await insertCustomer(3, "Peter", "Toronto", "12345").catch((err)=>console.log(`Customer3: ${err}`));
-        await insertCustomer(4, "Bella", "Montreal", "12345").catch((err)=>console.log(`Customer4: ${err}`));
-        await insertCustomer(5, "Bob", "Victoria", "12345").catch((err)=>console.log(`Customer5: ${err}`));
+        await insertCustomer(1, "John", "Vancouver", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(2, "Sarah", "Calgary", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(3, "Peter", "Toronto", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(4, "Bella", "Montreal", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(5, "Bob", "Victoria", "12345").catch((err)=>console.log(`Customer: ${err}`));
+
 
         // Insert Vendor
         await insertVendor(1, "Vendor 1").catch((err)=>console.log(`Vendor: ${err}`));
@@ -96,6 +101,7 @@ async function insertData() {
         await insertVendor(3, "Vendor 3").catch((err)=>console.log(`Vendor: ${err}`));
         await insertVendor(4, "Vendor 4").catch((err)=>console.log(`Vendor: ${err}`));
         await insertVendor(5, "Vendor 5").catch((err)=>console.log(`Vendor: ${err}`));
+
 
         // Insert Venue
         await insertVenue(1, 1, "Rogers Arena", "Vancouver").catch((err)=>console.log(`Venue: ${err}`));
@@ -109,6 +115,7 @@ async function insertData() {
         await insertVenue(9, 5, "The Q Centre Arena", "Victoria").catch((err)=>console.log(`Venue: ${err}`));
         await insertVenue(10, 5, "Save-On-Foods Memorial Centre", "Victoria").catch((err)=>console.log(`Venue: ${err}`));
 
+
         // Insert Event
         await insertEvent(1, "CNCRT", "Eras Tour", "Taylor Swift", "I heard its good").catch((err)=>console.log(`Event: ${err}`));
         await insertEvent(2, "CNCRT", "Coldplay Tour", "Coldplay", "I heard its good").catch((err)=>console.log(`Event: ${err}`));
@@ -117,6 +124,7 @@ async function insertData() {
         await insertEvent(5, "HOCKY", "Canucks Game", "NHL", "Lots of hockey").catch((err)=>console.log(`Event: ${err}`));
         await insertEvent(6, "HOCKY", "Not canucks game", "NHL", "Lots of hockey").catch((err)=>console.log(`Event: ${err}`));
         await insertEvent(7, "BSBLL", "Some baseball game", "Baseball", "Lots of baseballs").catch((err)=>console.log(`Event: ${err}`));
+
 
         // Insert Holds
         await insertHolds(1, 1, "2023-11-04").catch((err)=>console.log(`Holds: ${err}`));
@@ -152,11 +160,8 @@ async function insertData() {
         await insertSection(7, 5, 1, 10, "STAND").catch((err)=>console.log(`Section: ${err}`));
         await insertSection(3, 7, 1, 10, "STAND").catch((err)=>console.log(`Section: ${err}`));
         await insertSection(4, 9, 1, 10, "STAND").catch((err)=>console.log(`Section: ${err}`));
-        await sleep(5);
-
-            
-
         
+
         // INSERT TICKET
         for (let i = 0; i<10; i++) {
             await insertTicket(1, 1, 1, 100, 1,i, id).catch((err)=>console.log(`Ticket: ${err}`));
@@ -218,6 +223,10 @@ async function insertData() {
             await insertTicket(4, 9, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
+
+
+        // INSERT Issued
+        // Tickets are randomly Issued, do not expect the same tickets to be issued to the same user
         for (let i = 0; i<10; i++) {
             const delta = Math.floor(Math.random()*5);
             await insertIssued(10*i+delta, (i%5)+1).catch((err)=>console.log(`Ticket: ${err}`));
