@@ -6,7 +6,7 @@ const dbConfig = {
     password: envVariables.ORACLE_PASS,
     connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`
 };
-
+console.log({dbConfig})
 let isOracle = true;
 
 /*
@@ -19,7 +19,7 @@ let isOracle = true;
     This code therefore exists to make this project database agnostic
     This project will use oracleDB on department servers and sqlite3 db locally
 */
-
+let connection;
 async function withSQLiteDB(action) {
     const sqlite3 = require('sqlite3').verbose();
     try {
@@ -43,7 +43,7 @@ async function withOracleDB(action) {
         connection = await oracledb.getConnection(dbConfig);
         return await action(connection);
     } catch (err) {
-        
+        console.log({err});
         console.log("Failed to find oracleDB")
         throw err;
     } finally {
@@ -51,7 +51,7 @@ async function withOracleDB(action) {
             try {
                 await connection.close();
             } catch (err) {
-                console.log("");
+                console.log("Failed to close connection");
             }
         }
     }
@@ -70,9 +70,19 @@ async function getFromDB(sql) {
         if (isOracle) {
             return await withOracleDB(async (connection) => {
                 const result = await connection.execute(sql);
-                resolve(result.rows);
-            }).catch(() => {
-                return [];
+                const names = result.metaData;
+                const rows = result.rows;
+                const final = [];
+                for (let i = 0; i<rows.length; i++) {
+                    const tempObj = {}
+                    for (let j = 0; j<names.length; j++) {
+                        tempObj[names[j]['name'].toLowerCase()] = rows[i][j];
+                    }
+                    final.push(tempObj)
+                }
+                resolve(final);
+            }).catch((err) => {
+                reject(err);
             });
         }
         return await withSQLiteDB(async (connection) => {
@@ -83,8 +93,8 @@ async function getFromDB(sql) {
                     resolve(rows)
                 }
             })
-        }).catch(() => {
-            reject()
+        }).catch((err) => {
+            reject(err)
         });
     })
 }
@@ -94,15 +104,15 @@ async function testConnection() {
         if (isOracle) {
             return await withOracleDB(async (connection) => {
                 resolve()
-            }).catch(() => {
-                reject()
+            }).catch((err) => {
+                reject(err)
             });
         }
         
         return await withSQLiteDB(async (connection) => {
             resolve()
-        }).catch(() => {
-            reject()
+        }).catch((err) => {
+            reject(err)
         });
     })
 }
@@ -113,12 +123,13 @@ async function run(sql, ...args) {
             return await withOracleDB(async (connection) => {
                 try {
                     result = await connection.execute(sql, ...args);
+                    await connection.commit()
                     resolve(result)
                 } catch(err) {
-                    reject()
+                    reject(err)
                 }
-            }).catch(() => {
-                reject()
+            }).catch((err) => {
+                reject(err)
             });
         } else {
             return await withSQLiteDB(async (connection) => {
@@ -132,15 +143,20 @@ async function run(sql, ...args) {
                 } catch(err) {
                     reject(err)
                 }
-            }).catch(() => {
-                reject()
+            }).catch((err) => {
+                reject(err)
             });
         }
     })
+}
+
+function getIsOracle() {
+    return isOracle;
 }
 
 module.exports =  {
     getFromDB,
     run,
     testConnection,
+    getIsOracle
 }

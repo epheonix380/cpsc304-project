@@ -9,8 +9,9 @@ Gets all the events in the future. It uses current datetime as the date to searc
 Results:
 ```
 [
-    {"eventID":1,"type":"CNCRT","name":"Rogers Arena","author":"Taylor Swift","description":"I heard its good","startTime":20231204,"venueID":1,"city":"Vancouver"},
-    {"eventID":2,"type":"CNCRT","name":"BC Place","author":"Coldplay","description":"I heard its good","startTime":20231206,"venueID":2,"city":"Vancouver"}
+    {"eventid":1,"type":"CNCRT","eventname":"Eras Tour","author":"Taylor Swift","description":"I heard its good","starttime":"2023-11-04","venueid":1,"venuename":"Rogers Arena","city":"Vancouver"},
+    
+    {"eventid":2,"type":"CNCRT","eventname":"Coldplay Tour","author":"Coldplay","description":"I heard its good","starttime":"2023-11-06","venueid":2,"venuename":"BC Place","city":"Vancouver"}
     ]
 ```
 
@@ -24,7 +25,7 @@ This option ordersBy the specified category
 Available options:
 
 
-        type, eName, author, startTime, vName, city, startTime(default option)
+        type, ename, author, startTime, vname, city, startTime(default option)
 
 ## Users API ##
 
@@ -36,11 +37,11 @@ Results:
 ```
 {"data":
     [
-        {"userID":1,"name":"John","city":"Vancouver","password":"12345"},
-        {"userID":2,"name":"Sarah","city":"Calgery","password":"12345"},
-        {"userID":3,"name":"Peter","city":"Toronto","password":"12345"},
-        {"userID":4,"name":"Bella","city":"Montreal","password":"12345"},
-        {"userID":5,"name":"Bob","city":"Victoria","password":"12345"}
+        {"userid":1,"name":"John","city":"Vancouver","password":"12345"},
+        {"userid":2,"name":"Sarah","city":"Calgery","password":"12345"},
+        {"userid":3,"name":"Peter","city":"Toronto","password":"12345"},
+        {"userid":4,"name":"Bella","city":"Montreal","password":"12345"},
+        {"userid":5,"name":"Bob","city":"Victoria","password":"12345"}
         ]
     }
 ```
@@ -49,17 +50,18 @@ This API has no options
 
 ## Tickets API ##
 
-`url/tickets/:userID`
+`url/tickets/:userid`
 
-Gets all the tickets associated with specific userID
+Gets all the tickets associated with specific userid
 
 Results:
 ```
 {"data":
     [
-        {"ticketID":3,"rowNumber":1,"seatNumber":2,"sectionNumber":1,"eventID":1,"eName":"Eras Tour","author":"Taylor Swift","vName":"Rogers Arena","city":"Vancouver","startTime":20231204},
+        {"ticketid":14,"rownumber":1,"seatnumber":3,"sectionnumber":1,"eventid":1,"eventname":"Eras Tour","author":"Taylor Swift","venuename":"Scotiabank Saddledome","city":"Calgary","starttime":"2024-01-04"},
         
-        {"ticketID":54,"rowNumber":1,"seatNumber":3,"sectionNumber":1,"eventID":2,"eName":"Coldplay Tour","author":"Coldplay","vName":"BC Place","city":"Vancouver","startTime":20231206}]
+        {"ticketid":62,"rownumber":1,"seatnumber":1,"sectionnumber":1,"eventid":2,"eventname":"Coldplay Tour","author":"Coldplay","venuename":"Calgary Event Centre","city":"Calgary","starttime":"2024-01-06"}
+        ]
     }
 ```
 
