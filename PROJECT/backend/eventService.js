@@ -43,18 +43,58 @@ async function getEvents(orderBy="starttime") {
 }
 
 async function getSection(eventid, venueid, amount) {
-    return await db.getFromDB()
+    return await db.getFromDB(`
+        SELECT Ticket.* 
+        FROM Ticket, (
+            SELECT sectionnumber, eventid, venueid
+            FROM
+                (SELECT Ticket.sectionnumber, Ticket.eventid, Ticket.venueid,
+                    COUNT(*) as amount, Section.numberofseats
+                    FROM Ticket, Issued, Section
+                    WHERE 
+                        Ticket.ticketid = Issued.ticketid AND
+                        Ticket.eventid = ${eventid} AND
+                        Ticket.venueid = ${venueid} AND
+                        Section.eventid = Ticket.eventid AND
+                        Section.venueid = Ticket.venueid AND
+                        Section.sectionnumber = Ticket.sectionnumber
+                    GROUP BY Ticket.sectionnumber
+                    ) SectionAgr
+            WHERE (numberofseats - amount) >= ${amount}
+        ) Sections
+        WHERE 
+            Ticket.sectionnumber = Sections.sectionnumber AND
+            Ticket.eventid = Sections.eventid AND
+            Ticket.venueid = Sections.venueid AND
+            Ticket.ticketid NOT IN (
+                SELECT Ticket.ticketid
+                FROM Ticket, Issued
+                WHERE 
+                    Ticket.ticketid = Issued.ticketid AND
+                    Ticket.eventid = ${eventid} AND
+                    Ticket.venueid = ${venueid}
+            )
+    `)
 }
 
-async function purchaseTicket(eventid, venueid, map) {
+async function purchaseTicket(userid, list) {
+    const successList = [];
+    for (let i = 0; i<list.length; i++) {
+        await db.run(`
+            INSERT INTO Issued 
+                (ticketid, userid) values
+                (${list[i]}, ${userid})
 
-    db.getFromDB(`
-        SELECT * FROM Section WHERE 
-    `)
+        `).then(()=>{
+            successList.push(list[i])
+        }).catch(()=>{})
+    }
+    return successList;
 
 }
 
 module.exports = {
     getEvents,
     purchaseTicket,
+    getSection
 }

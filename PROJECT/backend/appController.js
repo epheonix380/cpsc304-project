@@ -97,5 +97,43 @@ router.get("/users", async (req, res) => {
     
 }) 
 
+function isIterable(obj) {
+    // checks for null and undefined
+    if (obj == null) {
+      return false;
+    }
+    return typeof obj[Symbol.iterator] === 'function';
+  }
+
+router.post("/purchase", async (req, res) => {
+    const { userid, tickets } = req.body;
+    if (userid === null || userid === undefined || !isIterable(tickets)) {
+        res.sendStatus(400);
+    } else {
+        const data = await eventService.purchaseTicket(userid, tickets);
+        res.json({data})
+    }
+    
+})
+
+router.get("/sections", async (req, res) => {
+    const eventid = req.query.eventid;
+    const venueid = req.query.venueid;
+    const amount = req.query.amount;
+    let data;
+    if ((eventid && venueid && amount)) {
+        data = await eventService.getSection(eventid, venueid,amount);
+    } else {
+        res.sendStatus(400)
+    }
+    
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
+}) 
+
 
 module.exports = router;
