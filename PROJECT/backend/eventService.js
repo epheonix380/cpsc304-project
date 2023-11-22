@@ -58,7 +58,8 @@ async function getSection(eventid, venueid, amount) {
                         Section.eventid = Ticket.eventid AND
                         Section.venueid = Ticket.venueid AND
                         Section.sectionnumber = Ticket.sectionnumber
-                    GROUP BY Ticket.sectionnumber
+                    GROUP BY Ticket.sectionnumber, Ticket.eventid, 
+                        Ticket.venueid, Section.numberofseats
                     ) SectionAgr
             WHERE (numberofseats - amount) >= ${amount}
         ) Sections
