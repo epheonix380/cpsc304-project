@@ -531,14 +531,14 @@ async function resetAll(db) {
 
     return await dropAll(db).then(async()=>{
         const res = await initAll(db).then(async ()=>{
-            /*
+            
             return await insertData.insertData().then((res)=>res).catch(
                 (err)=>{
                     console.log(err);
                     return err;
                 }
             )
-            */
+            
         }).catch((err)=>{
             console.log({err,source:"outer 1"});
             return false;

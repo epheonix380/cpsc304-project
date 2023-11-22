@@ -34,7 +34,7 @@ async function getEvents(orderBy="startTime") {
         FROM Event, Holds, Venue
         WHERE Event.eventID = Holds.eventID AND
         Holds.venueID = Venue.venueID AND
-        Holds.startTime > '${dateTimeString}'
+        Holds.startTime > TO_DATE('${dateTimeString}', 'YYYYMMDD')
         ORDER BY ${order}
     `).then((res)=>res).catch((err)=>{
         console.log(err);

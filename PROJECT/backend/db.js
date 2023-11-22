@@ -19,7 +19,7 @@ let isOracle = true;
     This code therefore exists to make this project database agnostic
     This project will use oracleDB on department servers and sqlite3 db locally
 */
-
+let connection;
 async function withSQLiteDB(action) {
     const sqlite3 = require('sqlite3').verbose();
     try {
@@ -51,7 +51,7 @@ async function withOracleDB(action) {
             try {
                 await connection.close();
             } catch (err) {
-                console.log("");
+                console.log("Failed to close connection");
             }
         }
     }
@@ -113,6 +113,7 @@ async function run(sql, ...args) {
             return await withOracleDB(async (connection) => {
                 try {
                     result = await connection.execute(sql, ...args);
+                    await connection.commit()
                     resolve(result)
                 } catch(err) {
                     reject(err)

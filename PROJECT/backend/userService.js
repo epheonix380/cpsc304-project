@@ -58,7 +58,7 @@ async function getUserTickets(userID) {
             WHERE 
                 Event.eventID = Holds.eventID AND
                 Holds.venueID = Venue.venueID
-        ) as EVTable
+        ) EVTable
         WHERE
             Issued.userID = ${parseInt(userID)} AND
             Issued.ticketID = Ticket.ticketID AND
