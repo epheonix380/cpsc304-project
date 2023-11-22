@@ -34,7 +34,7 @@ async function getEvents(orderBy="startTime") {
         FROM Event, Holds, Venue
         WHERE Event.eventID = Holds.eventID AND
         Holds.venueID = Venue.venueID AND
-        Holds.startTime > date '${dateTimeString}'
+        Holds.startTime > ${db.getIsOracle()?"date":""} '${dateTimeString}'
         ORDER BY ${order}
     `).then((res)=>res).catch((err)=>{
         console.log(err);
@@ -43,7 +43,7 @@ async function getEvents(orderBy="startTime") {
 }
 
 async function getSection(eventID, venueID, amount) {
-
+    return await db.getFromDB()
 }
 
 async function purchaseTicket(eventID, venueID, map) {
