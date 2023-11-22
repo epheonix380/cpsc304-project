@@ -1,7 +1,7 @@
 # DOCS FOR API ENDPOINTS #
 
 ## Events API ##
-
+GET
 `url/events`
 
 Gets all the events in the future. It uses current datetime as the date to search with
@@ -16,7 +16,7 @@ Results:
 ```
 
 Options:
-
+GET
 `url/events?orderBy=type`
 
 
@@ -28,7 +28,7 @@ Available options:
         type, ename, author, startTime, vname, city, startTime(default option)
 
 ## Users API ##
-
+GET
 `url/users`
 
 Gets all users in the system
@@ -49,7 +49,7 @@ Results:
 This API has no options
 
 ## Tickets API ##
-
+GET
 `url/tickets/:userid`
 
 Gets all the tickets associated with specific userid
@@ -67,3 +67,67 @@ Results:
 
 
 This API endpoint has no options
+
+## Sections ##
+GET
+`url/sections?eventid=X&venueid=Y&amount=Z`
+
+Replace X, Y and Z with your desired numbers
+
+This API displays all available tickets within the same section given 
+    the amount of tickets,
+    the eventid,
+    the venueid
+If the amount of tickets requested is more than available in a section it will not return 
+any tickets from that section, even if there are unsold tickets in that section
+
+Results:
+```
+{"data":
+    [
+        {"ticketid":48,"cost":100,"rownumber":1,"seatnumber":7,"eventid":1,"venueid":9,"sectionnumber":1},
+
+        {"ticketid":49,"cost":100,"rownumber":1,"seatnumber":8,"eventid":1,"venueid":9,"sectionnumber":1},
+
+        {"ticketid":46,"cost":100,"rownumber":1,"seatnumber":5,"eventid":1,"venueid":9,"sectionnumber":1},
+
+        {"ticketid":47,"cost":100,"rownumber":1,"seatnumber":6,"eventid":1,"venueid":9,"sectionnumber":1}
+        ]
+    }
+```
+
+
+## Purchase ##
+POST
+`url/purchase`
+
+
+This API purchases all the tickets given. The body should be formatted in this way.
+Body:
+```
+    {
+        "userid":1
+        "tickets":[
+            41,
+            42,
+            43
+        ]
+    }
+```
+
+userid is of the user purchasing the tickets
+tickets is a list of ticketid s to be purchased
+The API returns a list of the ticketid s of the successfully purchased tickets
+It will not return any failed tickets.
+
+Response:
+```
+{
+    "data": [
+        42,
+        43,
+        44,
+        45
+        ]
+    }
+```
