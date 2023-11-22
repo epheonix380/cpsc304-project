@@ -2,7 +2,7 @@ const db = require("./db");
 
 async function getEvents(orderBy="startTime") {
     const datetime = new Date(Date.now())
-    const dateTimeString = `${datetime.getFullYear()}${datetime.getMonth()}${datetime.getDate()}`
+    const dateTimeString = `${datetime.getFullYear()}-${datetime.getMonth()}-${datetime.getDate()}`
     let order;
     switch(orderBy) {
         case "type":
@@ -34,7 +34,7 @@ async function getEvents(orderBy="startTime") {
         FROM Event, Holds, Venue
         WHERE Event.eventID = Holds.eventID AND
         Holds.venueID = Venue.venueID AND
-        Holds.startTime > TO_DATE('${dateTimeString}', 'YYYYMMDD')
+        Holds.startTime > date '${dateTimeString}'
         ORDER BY ${order}
     `).then((res)=>res).catch((err)=>{
         console.log(err);

@@ -46,7 +46,7 @@ function insertHolds(eventID, venueID, startTime) {
     return db.run(`
         INSERT INTO Holds 
             (eventID, venueID, startTime) values
-            (${eventID}, ${venueID}, TO_DATE('${startTime}', 'YYYYMMDD'))
+            (${eventID}, ${venueID}, date '${startTime}')
     `)
 }
 
@@ -119,21 +119,21 @@ async function insertData() {
         await insertEvent(7, "BSBLL", "Some baseball game", "Baseball", "Lots of baseballs").catch((err)=>console.log(`Event: ${err}`));
 
         // Insert Holds
-        await insertHolds(1, 1, "20231104").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(1, 3, "20240104").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(1, 5, "20240204").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(1, 7, "20240304").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(1, 9, "20240404").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(2, 2, "20231106").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(2, 4, "20240106").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(2, 6, "20240206").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(2, 8, "20240306").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(2, 10, "20240406").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(5, 1, "20231110").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(6, 3, "20240110").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(7, 5, "20240210").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(3, 7, "20240310").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(4, 9, "20240410").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(1, 1, "2023-11-04").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(1, 3, "2024-01-04").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(1, 5, "2024-02-04").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(1, 7, "2024-03-04").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(1, 9, "2024-04-04").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(2, 2, "2023-11-06").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(2, 4, "2024-01-06").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(2, 6, "2024-02-06").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(2, 8, "2024-03-06").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(2, 10, "2024-04-06").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(5, 1, "2023-11-10").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(6, 3, "2024-01-10").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(7, 5, "2024-02-10").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(3, 7, "2024-03-10").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(4, 9, "2024-04-10").catch((err)=>console.log(`Holds: ${err}`));
         
 
         // INSERT Section
