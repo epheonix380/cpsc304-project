@@ -9,7 +9,7 @@ function insertCityProvinceMap(city, province) {
 function insertCustomer(userID, name, city, password) {
     return db.run(`
         INSERT INTO Customer 
-            (userID, name, city, password) values
+            (userID, customerName, city, password) values
             (${userID}, '${name}', '${city}', '${password}')
     `)
 }
@@ -17,7 +17,7 @@ function insertCustomer(userID, name, city, password) {
 function insertVendor(vendorID, name) {
     return db.run(`
         INSERT INTO Vendor 
-            (vendorID, name) values
+            (vendorID, vendorName) values
             (${vendorID}, '${name}')
     `)
 }
@@ -25,7 +25,7 @@ function insertVendor(vendorID, name) {
 function insertVenue(venueID, vendorID, name, city) {
     return db.run(`
         INSERT INTO Venue 
-            (venueID, vendorID, name, city) values
+            (venueID, vendorID, venueName, city) values
             (${venueID}, ${vendorID}, '${name}', '${city}')
     `)
 }
@@ -33,7 +33,7 @@ function insertVenue(venueID, vendorID, name, city) {
 function insertEvent(eventID, type, name, author, description) {
     return db.run(`
         INSERT INTO Event 
-            (eventID, type, name, author, description) values
+            (eventID, type, eventName, author, description) values
             (${eventID}, '${type}', '${name}', '${author}', '${description}')
     `)
 }

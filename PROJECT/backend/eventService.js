@@ -9,7 +9,7 @@ async function getEvents(orderBy="startTime") {
             order = "Event.type"
             break;
         case "eName":
-            order = "Event.name"
+            order = "Event.eventName"
             break;
         case "author":
             order = "Event.author"
@@ -18,7 +18,7 @@ async function getEvents(orderBy="startTime") {
             order = "Holds.startTime"
             break;
         case "vName":
-            order = "Venue.name"
+            order = "Venue.venueName"
             break;
         case "city":
             order = "Venue.city"
@@ -28,9 +28,9 @@ async function getEvents(orderBy="startTime") {
             break;
     }
     return await db.getFromDB(`
-        SELECT Event.eventID, Event.type, Event.name, 
+        SELECT Event.eventID, Event.type, Event.eventName, 
         Event.author, Event.description, Holds.startTime, 
-        Venue.venueID, Venue.name, Venue.city
+        Venue.venueID, Venue.venueName, Venue.city
         FROM Event, Holds, Venue
         WHERE Event.eventID = Holds.eventID AND
         Holds.venueID = Venue.venueID AND

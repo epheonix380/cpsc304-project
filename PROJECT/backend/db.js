@@ -6,7 +6,7 @@ const dbConfig = {
     password: envVariables.ORACLE_PASS,
     connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`
 };
-
+console.log({dbConfig})
 let isOracle = true;
 
 /*
@@ -43,7 +43,7 @@ async function withOracleDB(action) {
         connection = await oracledb.getConnection(dbConfig);
         return await action(connection);
     } catch (err) {
-        
+        console.log({err});
         console.log("Failed to find oracleDB")
         throw err;
     } finally {
@@ -71,8 +71,8 @@ async function getFromDB(sql) {
             return await withOracleDB(async (connection) => {
                 const result = await connection.execute(sql);
                 resolve(result.rows);
-            }).catch(() => {
-                return [];
+            }).catch((err) => {
+                reject(err);
             });
         }
         return await withSQLiteDB(async (connection) => {
@@ -83,8 +83,8 @@ async function getFromDB(sql) {
                     resolve(rows)
                 }
             })
-        }).catch(() => {
-            reject()
+        }).catch((err) => {
+            reject(err)
         });
     })
 }
@@ -94,15 +94,15 @@ async function testConnection() {
         if (isOracle) {
             return await withOracleDB(async (connection) => {
                 resolve()
-            }).catch(() => {
-                reject()
+            }).catch((err) => {
+                reject(err)
             });
         }
         
         return await withSQLiteDB(async (connection) => {
             resolve()
-        }).catch(() => {
-            reject()
+        }).catch((err) => {
+            reject(err)
         });
     })
 }
@@ -115,10 +115,10 @@ async function run(sql, ...args) {
                     result = await connection.execute(sql, ...args);
                     resolve(result)
                 } catch(err) {
-                    reject()
+                    reject(err)
                 }
-            }).catch(() => {
-                reject()
+            }).catch((err) => {
+                reject(err)
             });
         } else {
             return await withSQLiteDB(async (connection) => {
@@ -132,15 +132,20 @@ async function run(sql, ...args) {
                 } catch(err) {
                     reject(err)
                 }
-            }).catch(() => {
-                reject()
+            }).catch((err) => {
+                reject(err)
             });
         }
     })
+}
+
+function getIsOracle() {
+    return isOracle;
 }
 
 module.exports =  {
     getFromDB,
     run,
     testConnection,
+    getIsOracle
 }

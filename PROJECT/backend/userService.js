@@ -4,7 +4,7 @@ async function createUser(name, city, password) {
     const pk = Math.floor(new Date().getTime()/1000)
     return await db.run(`
         insert into Customer 
-        (userID, name, city, password) values 
+        (userID, customerName, city, password) values 
         (${pk}, '${name}', '${city}', '${password}')
     `).then((res)=>true).catch((err)=>false);
 }
@@ -27,7 +27,7 @@ async function generateUserSession(uid, password, singleUse) {
 
 async function getAuthUserInfo(sessionToken) {
     const res = await db.run(`
-    SELECT Customer.userID, Customer.name, Customer.city 
+    SELECT Customer.userID, Customer.customerName, Customer.city 
     FROM Customer, CustomerSession 
     WHERE Customer.userID = CustomerSession.userID 
     AND CustomerSession.sessionID = '${sessionToken}'
@@ -49,11 +49,11 @@ async function getAllUsers() {
 async function getUserTickets(userID) {
     return await db.getFromDB(`
         SELECT Ticket.ticketID, Ticket.rowNumber, Ticket.seatNumber, 
-        Ticket.sectionNumber, Ticket.eventID, EVTable.eName, EVTable.author,
-        EVTable.vName, EVTable.city, EVTable.startTime
+        Ticket.sectionNumber, Ticket.eventID, EVTable.eventName, EVTable.author,
+        EVTable.venueName, EVTable.city, EVTable.startTime
         FROM Issued, Ticket, (
-            SELECT Event.eventID, Holds.venueID, Event.name as eName, Event.author, 
-            Venue.name as vName, Venue.city, Holds.startTime
+            SELECT Event.eventID, Holds.venueID, Event.eventName, Event.author, 
+            Venue.venueName, Venue.city, Holds.startTime
             FROM Event, Holds, Venue
             WHERE 
                 Event.eventID = Holds.eventID AND
