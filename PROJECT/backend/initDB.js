@@ -416,7 +416,6 @@ async function dropAll(db) {
             dropConcession(db),
             dropConcessionVenue(db),
             dropCustomer(db),
-            dropEventVenue(db),
             dropEvent(db),
             dropSeat(db),
             dropVendor(db),

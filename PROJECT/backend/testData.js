@@ -46,7 +46,7 @@ function insertHolds(eventID, venueID, startTime) {
     return db.run(`
         INSERT INTO Holds 
             (eventID, venueID, startTime) values
-            (${eventID}, ${venueID}, date '${startTime}')
+            (${eventID}, ${venueID}, ${db.getIsOracle()?date:""} '${startTime}')
     `)
 }
 
