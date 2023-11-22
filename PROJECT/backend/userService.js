@@ -4,33 +4,33 @@ async function createUser(name, city, password) {
     const pk = Math.floor(new Date().getTime()/1000)
     return await db.run(`
         insert into Customer 
-        (userID, customerName, city, password) values 
+        (userid, customername, city, password) values 
         (${pk}, '${name}', '${city}', '${password}')
     `).then((res)=>true).catch((err)=>false);
 }
 
 async function generateUserSession(uid, password, singleUse) {
-    const userID = await db.run(`SELECT userID FROM Customer WHERE userID=${uid} AND password='${password}'`).then((res)=>res).catch(()=>false)
-    if (userID !== false) {
-        console.log(userID);
+    const userid = await db.run(`SELECT userid FROM Customer WHERE userid=${uid} AND password='${password}'`).then((res)=>res).catch(()=>false)
+    if (userid !== false) {
+        console.log(userid);
         const token = "wrgouhfebdw3frsvnaoenfgnaeonbigonrfesvdx"; // Implement random string generator
         const su = singleUse?1:0;
         const diff = 120;
         const expire = singleUse?new Date(Date.now() + diff*60000):null;
         return await db.run(`
             insert into CustomerSession 
-            (userID, sessionToken, singleUse, expire) values 
-            (${userID}, '${token}', ${su}, ${expire})
+            (userid, sessionToken, singleUse, expire) values 
+            (${userid}, '${token}', ${su}, ${expire})
         `)
     }
 }
 
 async function getAuthUserInfo(sessionToken) {
     const res = await db.run(`
-    SELECT Customer.userID, Customer.customerName, Customer.city 
+    SELECT Customer.userid, Customer.customername, Customer.city 
     FROM Customer, CustomerSession 
-    WHERE Customer.userID = CustomerSession.userID 
-    AND CustomerSession.sessionID = '${sessionToken}'
+    WHERE Customer.userid = CustomerSession.userid 
+    AND CustomerSession.sessionid = '${sessionToken}'
     AND CustomerSession.singleUse <> -1`).then((res)=>res).catch(()=>false);
 
     return res
@@ -46,24 +46,24 @@ async function getAllUsers() {
 
 }
 
-async function getUserTickets(userID) {
+async function getUserTickets(userid) {
     return await db.getFromDB(`
-        SELECT Ticket.ticketID, Ticket.rowNumber, Ticket.seatNumber, 
-        Ticket.sectionNumber, Ticket.eventID, EVTable.eventName, EVTable.author,
-        EVTable.venueName, EVTable.city, EVTable.startTime
+        SELECT Ticket.ticketid, Ticket.rownumber, Ticket.seatnumber, 
+        Ticket.sectionnumber, Ticket.eventid, EVTable.eventname, EVTable.author,
+        EVTable.venuename, EVTable.city, EVTable.starttime
         FROM Issued, Ticket, (
-            SELECT Event.eventID, Holds.venueID, Event.eventName, Event.author, 
-            Venue.venueName, Venue.city, Holds.startTime
+            SELECT Event.eventid, Holds.venueid, Event.eventname, Event.author, 
+            Venue.venuename, Venue.city, Holds.starttime
             FROM Event, Holds, Venue
             WHERE 
-                Event.eventID = Holds.eventID AND
-                Holds.venueID = Venue.venueID
+                Event.eventid = Holds.eventid AND
+                Holds.venueid = Venue.venueid
         ) EVTable
         WHERE
-            Issued.userID = ${parseInt(userID)} AND
-            Issued.ticketID = Ticket.ticketID AND
-            Ticket.eventID = EVTable.eventID AND
-            Ticket.venueID = EVTable.venueID
+            Issued.userid = ${parseInt(userid)} AND
+            Issued.ticketid = Ticket.ticketid AND
+            Ticket.eventid = EVTable.eventid AND
+            Ticket.venueid = EVTable.venueid
     `).then((res)=>res).catch((err)=>{
         console.log(err);
         return false;

@@ -19,12 +19,12 @@ async function initVenue(db) {
 
     return db.run(`
             CREATE TABLE Venue
-                (venueID INTEGER PRIMARY KEY,
-                vendorID INTEGER,
-                venueName VARCHAR(30),
+                (venueid INTEGER PRIMARY KEY,
+                vendorid INTEGER,
+                venuename VARCHAR(30),
                 city VARCHAR(30),
                 FOREIGN KEY (city) REFERENCES CityProvinceMap(city),
-                FOREIGN KEY (vendorID) REFERENCES Vendor(vendorID)
+                FOREIGN KEY (vendorid) REFERENCES Vendor(vendorid)
                 )
         `);
 
@@ -39,12 +39,12 @@ async function initSection(db) {
     return db.run(`
             CREATE TABLE Section
                 (sectionNumber INTEGER,
-                eventID INTEGER,
-                venueID INTEGER,
-                numberOfSeats INTEGER,
+                eventid INTEGER,
+                venueid INTEGER,
+                numberofseats INTEGER,
                 type CHAR(5),
-                PRIMARY KEY (sectionNumber, eventID, venueID),
-                FOREIGN KEY (eventID, venueID) REFERENCES Holds(eventID, venueID)
+                PRIMARY KEY (sectionnumber, eventid, venueid),
+                FOREIGN KEY (eventid, venueid) REFERENCES Holds(eventid, venueid)
                 )
         `);
 
@@ -77,8 +77,8 @@ async function initCustomer(db) {
 
     return db.run(`
             CREATE TABLE Customer
-                (userID INTEGER PRIMARY KEY,
-                customerName VARCHAR(30),
+                (userid INTEGER PRIMARY KEY,
+                customername VARCHAR(30),
                 city VARCHAR(30),
                 password VARCHAR(64),
                 FOREIGN KEY (city) REFERENCES CityProvinceMap(city)
@@ -95,11 +95,11 @@ async function initCustomerSession(db) {
 
     return db.run(`
             CREATE TABLE CustomerSession
-                (userID INTEGER,
-                sessionToken VARCHAR(32) PRIMARY KEY,
-                singleUse NUMBER(1),
+                (userid INTEGER,
+                sessiontoken VARCHAR(32) PRIMARY KEY,
+                singleuse NUMBER(1),
                 expire TIMESTAMP,
-                FOREIGN KEY (userID) REFERENCES Customer(userID)
+                FOREIGN KEY (userid) REFERENCES Customer(userid)
                 )
         `);
 
@@ -117,8 +117,8 @@ async function initVendor(db) {
 
     return db.run(`
             CREATE TABLE Vendor 
-                (vendorID INTEGER PRIMARY KEY,
-                vendorName VARCHAR(30)
+                (vendorid INTEGER PRIMARY KEY,
+                vendorname VARCHAR(30)
                 )
         `);
 
@@ -132,7 +132,7 @@ async function initConcessions(db) {
 
     return db.run(`
         CREATE TABLE Concession 
-            (itemName VARCHAR(30) PRIMARY KEY,
+            (itemname VARCHAR(30) PRIMARY KEY,
             price DECIMAL(10, 2),
             specifier CHAR(1)
             )
@@ -148,11 +148,11 @@ async function initConcessionsVenue(db) {
 
     return db.run(`
         CREATE TABLE ConcessionVenue
-            (itemName VARCHAR(30),
-            venueID INTEGER,
-            PRIMARY KEY (itemName, venueID),
-            FOREIGN KEY (itemName) REFERENCES Concession(itemName),
-            FOREIGN KEY (venueID) REFERENCES Venue(venueID)
+            (itemname VARCHAR(30),
+            venueid INTEGER,
+            PRIMARY KEY (itemname, venueid),
+            FOREIGN KEY (itemname) REFERENCES Concession(itemname),
+            FOREIGN KEY (venueid) REFERENCES Venue(venueid)
             )
     `);
 }
@@ -165,9 +165,9 @@ async function initEvent(db) {
 
     return db.run(`
         CREATE TABLE Event
-            (eventID INTEGER PRIMARY KEY,
+            (eventid INTEGER PRIMARY KEY,
             type VARCHAR(30),
-            eventName VARCHAR(30),
+            eventname VARCHAR(30),
             author VARCHAR(32),
             description VARCHAR(2048)
             )
@@ -183,12 +183,12 @@ async function initHolds(db) {
 
     return db.run(`
         CREATE TABLE Holds
-            (eventID INTEGER,
-            venueID INTEGER,
-            startTime TIMESTAMP,
-            PRIMARY KEY (eventID, venueID),
-            FOREIGN KEY (eventID) REFERENCES Event(eventID),
-            FOREIGN KEY (venueID) REFERENCES Venue(venueID)
+            (eventid INTEGER,
+            venueid INTEGER,
+            starttime TIMESTAMP,
+            PRIMARY KEY (eventid, venueid),
+            FOREIGN KEY (eventid) REFERENCES Event(eventid),
+            FOREIGN KEY (venueid) REFERENCES Venue(venueid)
             )
     `);
 }
@@ -200,15 +200,15 @@ async function dropHolds(db) {
 async function initTicket(db) {
     return db.run(`
         CREATE TABLE Ticket
-            (ticketID INTEGER PRIMARY KEY,
+            (ticketid INTEGER PRIMARY KEY,
             cost DECIMAL(10, 2),
-            rowNumber INTEGER,
-            seatNumber INTEGER,
-            eventID INTEGER, 
-            venueID INTEGER,
-            sectionNumber INTEGER,
-            UNIQUE (venueID, sectionNumber, seatNumber, rowNumber, eventID),
-            FOREIGN KEY (sectionNumber, eventID, venueID) REFERENCES Section(sectionNumber, eventID, venueID)
+            rownumber INTEGER,
+            seatnumber INTEGER,
+            eventid INTEGER, 
+            venueid INTEGER,
+            sectionnumber INTEGER,
+            UNIQUE (venueid, sectionnumber, seatnumber, rownumber, eventid),
+            FOREIGN KEY (sectionnumber, eventid, venueid) REFERENCES Section(sectionnumber, eventid, venueid)
             )
     `)
 }
@@ -220,11 +220,11 @@ async function dropTicket(db) {
 async function initIssued(db) {
     return db.run(`
         CREATE TABLE Issued
-            (ticketID INTEGER,
-            userID INTEGER,
-            PRIMARY KEY (ticketID, userID),
-            FOREIGN KEY (ticketID) REFERENCES Ticket(ticketID),
-            FOREIGN KEY (userID) REFERENCES Customer(userID)
+            (ticketid INTEGER,
+            userid INTEGER,
+            PRIMARY KEY (ticketid, userid),
+            FOREIGN KEY (ticketid) REFERENCES Ticket(ticketid),
+            FOREIGN KEY (userid) REFERENCES Customer(userid)
             )
     `)
 }
@@ -236,11 +236,11 @@ async function dropIssued(db) {
 async function initFoodDrink(db) {
     return db.run(`
         CREATE TABLE FoodDrink(
-            itemName VARCHAR(100) PRIMARY KEY,
+            itemname VARCHAR(100) PRIMARY KEY,
             price NUMBER(2,2),
             specifier VARCHAR(1),
-            isFriesIncluded NUMBER(1),
-            drinkSize VARCHAR(1)
+            isfriesincluded NUMBER(1),
+            drinksize VARCHAR(1)
             )
     `)
 }
@@ -252,11 +252,11 @@ async function dropFoodDrink(db) {
 async function initHas(db) {
     return db.run(`
         CREATE TABLE Has(
-            itemName VARCHAR(100),
-            venueID INTEGER,
-            PRIMARY KEY (itemName, venueID),
-            FOREIGN KEY (itemName) REFERENCES FoodDrink(itemName),
-            FOREIGN KEY (venueID) REFERENCES Venue(venueID)
+            itemname VARCHAR(100),
+            venueid INTEGER,
+            PRIMARY KEY (itemname, venueid),
+            FOREIGN KEY (itemname) REFERENCES FoodDrink(itemname),
+            FOREIGN KEY (venueid) REFERENCES Venue(venueid)
             )
     `)
 }

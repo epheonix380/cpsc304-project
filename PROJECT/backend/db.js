@@ -70,7 +70,17 @@ async function getFromDB(sql) {
         if (isOracle) {
             return await withOracleDB(async (connection) => {
                 const result = await connection.execute(sql);
-                resolve(result.rows);
+                const names = result.metaData;
+                const rows = result.rows;
+                const final = [];
+                for (let i = 0; i<rows.length; i++) {
+                    const tempObj = {}
+                    for (let j = 0; j<names.length; j++) {
+                        tempObj[names[j]['name'].toLowerCase()] = rows[i][j];
+                    }
+                    final.push(tempObj)
+                }
+                resolve(final);
             }).catch((err) => {
                 reject(err);
             });

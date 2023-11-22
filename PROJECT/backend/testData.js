@@ -10,67 +10,67 @@ function insertCityProvinceMap(city, province) {
     `)
 }
 
-function insertCustomer(userID, name, city, password) {
+function insertCustomer(userid, name, city, password) {
     return db.run(`
         INSERT INTO Customer 
-            (userID, customerName, city, password) values
-            (${userID}, '${name}', '${city}', '${password}')
+            (userid, customername, city, password) values
+            (${userid}, '${name}', '${city}', '${password}')
     `)
 }
 
-function insertVendor(vendorID, name) {
+function insertVendor(vendorid, name) {
     return db.run(`
         INSERT INTO Vendor 
-            (vendorID, vendorName) values
-            (${vendorID}, '${name}')
+            (vendorid, vendorname) values
+            (${vendorid}, '${name}')
     `)
 }
 
-function insertVenue(venueID, vendorID, name, city) {
+function insertVenue(venueid, vendorid, name, city) {
     return db.run(`
         INSERT INTO Venue 
-            (venueID, vendorID, venueName, city) values
-            (${venueID}, ${vendorID}, '${name}', '${city}')
+            (venueid, vendorid, venuename, city) values
+            (${venueid}, ${vendorid}, '${name}', '${city}')
     `)
 }
 
-function insertEvent(eventID, type, name, author, description) {
+function insertEvent(eventid, type, name, author, description) {
     return db.run(`
         INSERT INTO Event 
-            (eventID, type, eventName, author, description) values
-            (${eventID}, '${type}', '${name}', '${author}', '${description}')
+            (eventid, type, eventname, author, description) values
+            (${eventid}, '${type}', '${name}', '${author}', '${description}')
     `)
 }
 
-function insertHolds(eventID, venueID, startTime) {
+function insertHolds(eventid, venueid, startTime) {
     return db.run(`
         INSERT INTO Holds 
-            (eventID, venueID, startTime) values
-            (${eventID}, ${venueID}, ${db.getIsOracle()?"date":""} '${startTime}')
+            (eventid, venueid, starttime) values
+            (${eventid}, ${venueid}, ${db.getIsOracle()?"date":""} '${startTime}')
     `)
 }
 
-function insertSection( eventID, venueID, sectionNumber, numberOfSeats, type) {
+function insertSection( eventid, venueid, sectionnumber, numberOfSeats, type) {
     return db.run(`
         INSERT INTO Section 
-            (eventID, venueID, sectionNumber, numberOfSeats, type) values
-            (${eventID}, ${venueID},${sectionNumber}, ${numberOfSeats}, '${type}')
+            (eventid, venueid, sectionnumber, numberofseats, type) values
+            (${eventid}, ${venueid},${sectionnumber}, ${numberOfSeats}, '${type}')
     `)
 }
 
-function insertTicket( eventID, venueID, sectionNumber, cost, rowNumber, seatNumber, id) {
+function insertTicket( eventid, venueid, sectionnumber, cost, rownumber, seatnumber, id) {
     return db.run(`
         INSERT INTO Ticket
-            (ticketID, cost, rowNumber, seatNumber, eventID, venueID, sectionNumber) values
-            (${id}, ${cost}, ${rowNumber}, ${seatNumber}, ${eventID}, ${venueID},${sectionNumber})
+            (ticketid, cost, rownumber, seatnumber, eventid, venueid, sectionnumber) values
+            (${id}, ${cost}, ${rownumber}, ${seatnumber}, ${eventid}, ${venueid},${sectionnumber})
     `)
 }
 
-function insertIssued(ticketID, userID) {
+function insertIssued(ticketid, userid) {
     return db.run(`
         INSERT INTO Issued
-            (ticketID, userID) values
-            (${ticketID}, ${userID})
+            (ticketid, userid) values
+            (${ticketid}, ${userid})
     `)
 }
 
