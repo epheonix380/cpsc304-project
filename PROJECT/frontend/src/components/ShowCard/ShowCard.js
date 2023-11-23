@@ -1,6 +1,5 @@
 import './ShowCard.css'
 
-
 function ShowCard() {
   return (
     <div className="showcard">
