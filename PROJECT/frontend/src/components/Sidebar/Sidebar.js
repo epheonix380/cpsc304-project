@@ -1,12 +1,14 @@
 import './Sidebar.css'
 
 
-function Sidebar() {
+function Sidebar({links, onLinkClick}) {
   return (
     <div className="sidebar">
-      <a>SHOWS</a>
-      <a>BUY TICKETS</a>
-      <a>SUMMARY</a>
+      <ul>
+        {links.map((link) => {
+          return <li key={link.id} onClick={(e) => onLinkClick(e, link.id)}>{link.title}</li>
+        })}
+      </ul>
     </div>
   );
 }

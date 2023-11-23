@@ -1,10 +1,10 @@
 import './MainContent.css'
+import sidebarLinks from '../../links.js'
 
-
-function MainContent() {
+function MainContent({selectedId}) {
   return (
     <div className="maincontent">
-      MainContent
+      {selectedId}
     </div>
   );
 }
