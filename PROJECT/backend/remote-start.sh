@@ -22,6 +22,7 @@ export NODE_PATH=/cs/local/generic/lib/cs304/node_modules
 
 # File path
 ENV_SERVER_PATH="./.env"
+FE_ENV_SERVER_PATH="../frontend/.env"
 
 # Check the database host name and port
 sed -i "/^ORACLE_HOST=/c\ORACLE_HOST=dbhost.students.cs.ubc.ca" $ENV_SERVER_PATH
@@ -41,6 +42,9 @@ for PORT in $(seq $START $END); do
 
         # Update the port number in the .env file
         sed -i "/^PORT=/c\PORT=$PORT" $ENV_SERVER_PATH
+        sed -i "/^PORT=/c\PORT=$PORT" $FE_ENV_SERVER_PATH
+        sed -i "/^HTTPS_PROXY=/c\HTTPS_PROXY=$PORT" $FE_ENV_SERVER_PATH
+        sed -i "/^HTTP_PROXY=/c\HTTP_PROXY=$PORT" $FE_ENV_SERVER_PATH
         echo "Updated $ENV_SERVER_PATH with PORT=$PORT."
 
         # Kill the temporary process
