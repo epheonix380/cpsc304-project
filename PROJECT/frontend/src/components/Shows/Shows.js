@@ -1,8 +1,9 @@
 import './Shows.css'
+import ShowCard from '../ShowCard/ShowCard.js'
 import React, { useState, useEffect } from 'react';
 
 function Shows() {
-  const [shows, setShows] = useState(null);
+  const [shows, setShows] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,7 +15,9 @@ function Shows() {
           throw new Error('Network response was not ok');
         }
         console.log(response);
-        const data = await response.json();
+        const jsonResponse = await response.json();
+        const data = jsonResponse.data
+        console.log(data);
         setShows(data);
       } catch(error){
         setError(error.message);
@@ -36,9 +39,7 @@ function Shows() {
 
   return (
     <div className="shows maincontent">
-      <ul>
-        {shows.map(show => (<li key={show.eventid}>{show.eventname}</li>))}
-      </ul>
+      {shows.map(show => (<ShowCard show={show}/>))}
     </div>
   );
 }

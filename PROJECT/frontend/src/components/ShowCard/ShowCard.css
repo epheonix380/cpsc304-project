@@ -1,0 +1,17 @@
+.showcard {
+	display: flex;
+	flex-direction: column;
+	border: solid 1px red;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+}
+
+.showcard .location {
+	display: flex;
+	gap: 0.6rem;
+}
+
+.showcard .location svg {
+	width: 16px;
+	fill: var(--main-color);
+}
