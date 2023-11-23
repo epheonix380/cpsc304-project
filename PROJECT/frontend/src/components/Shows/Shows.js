@@ -9,7 +9,7 @@ function Shows() {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const response = await fetch('localhost:${envVariables.PORT}/events');
+        const response = await fetch('http://127.0.0.1:3001/events');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
