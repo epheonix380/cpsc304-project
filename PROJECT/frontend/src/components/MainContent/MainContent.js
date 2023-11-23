@@ -1,6 +1,8 @@
 import './MainContent.css'
 import sidebarLinks from '../../links.js'
 import Shows from '../Shows/Shows.js'
+import Summary from '../Summary/Summary.js'
+import BuyTickets from '../BuyTickets/BuyTickets.js'
 
 function MainContent({selectedId}) {
 
@@ -8,8 +10,12 @@ function MainContent({selectedId}) {
 
   if (title == "SHOWS"){
     return <Shows /> 
+  } else if (title == "BUY TICKETS") {
+    return <BuyTickets />
+  } else if (title == "SUMMARY") {
+    return <Summary />
   } else {
-    return <div className="maincontent">{selectedId}</div>
+    <div className="maincontent">Page not found</div>
   }
 
 }
