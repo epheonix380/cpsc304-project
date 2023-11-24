@@ -8,7 +8,7 @@ async function fetchTablesFromDB() {
     if (db.getIsOracle()) {
         return await db.getFromDB(`
             SELECT table_name as name
-            FROM all_tables
+            FROM user_tables
             `).then(
             (res)=>{
                 return res

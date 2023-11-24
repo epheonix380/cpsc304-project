@@ -15,6 +15,8 @@ Start server
 
 `npm start`
 
+After starting the backend go to the server address printed in the console and verify that the database is connected and all tables are on the active table list. Reseting the database can also be done here.
+
 This starts the local dev server, which uses the local db
 This db might not have all of the data from production db
 
