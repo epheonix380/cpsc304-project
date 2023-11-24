@@ -6,7 +6,6 @@ const dbConfig = {
     password: envVariables.ORACLE_PASS,
     connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`
 };
-console.log({dbConfig})
 let isOracle = true;
 
 /*
@@ -25,14 +24,13 @@ async function withSQLiteDB(action) {
     try {
         connection = new sqlite3.Database('local.db', sqlite3.OPEN_READWRITE, (err) => {
             if (err) {
-                console.log("Error creating SQLite3 DB")
+                console.log("Failed to find SQLite3 DB")
                 throw err;
             }
         })
         return await action(connection);
     } catch (err) {
-        console.log("Error creating SQLite3 DB")
-        console.log(err)
+        console.log("Failed to find SQLite3 DB")
         throw err;
     }
 }
@@ -43,7 +41,6 @@ async function withOracleDB(action) {
         connection = await oracledb.getConnection(dbConfig);
         return await action(connection);
     } catch (err) {
-        console.log({err});
         console.log("Failed to find oracleDB")
         throw err;
     } finally {
@@ -62,7 +59,12 @@ withOracleDB(() => {
     console.log("Using oracleDB")
 }).catch(() => {
     isOracle = false;
-    console.log("Using SQLite")
+    withSQLiteDB(()=>{
+        console.log("Using SQLite");
+    }).catch(()=>{
+        console.log("Unable to connect to either database!\nExiting application...");
+        process.exit();
+    })
 });
 
 async function getFromDB(sql) {
