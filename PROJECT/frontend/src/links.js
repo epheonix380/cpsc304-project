@@ -4,7 +4,7 @@ const sidebarLinks = [
      id: 0
     },
     {
-     title: "BUY TICKETS",
+     title: "MY TICKETS",
      id: 1
     },
     {

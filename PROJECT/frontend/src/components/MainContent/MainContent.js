@@ -2,7 +2,7 @@ import './MainContent.css'
 import sidebarLinks from '../../links.js'
 import Shows from '../Shows/Shows.js'
 import Summary from '../Summary/Summary.js'
-import BuyTickets from '../BuyTickets/BuyTickets.js'
+import MyTickets from '../MyTickets/MyTickets.js'
 
 function MainContent({selectedId}) {
 
@@ -10,8 +10,8 @@ function MainContent({selectedId}) {
 
   if (title === "SHOWS"){
     return <Shows /> 
-  } else if (title === "BUY TICKETS") {
-    return <BuyTickets />
+  } else if (title === "MY TICKETS") {
+    return <MyTickets />
   } else if (title === "SUMMARY") {
     return <Summary />
   } else {
