@@ -1,4 +1,8 @@
 import './ShowCard.css'
+import Modal from "../Modal/Modal";
+import {useState} from "react";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 function ShowCard({show}) {
 
@@ -10,8 +14,18 @@ function ShowCard({show}) {
   const description = show.description;
   const venue = `${show.venuename}, ${show.city}`
 
+  const [modal, setModal] = useState(false);
+  const toggleModal = () => setModal(!modal);
+
   return (
-    <div className="showcard">
+    <div className="showcard" onClick={toggleModal}>
+        <Modal show={modal} onClose={toggleModal}>
+            <>
+                <h1>{name}</h1>
+                <h3>{author}</h3>
+                <p>Need to fix this toggle!</p>
+            </>
+        </Modal>
       <h3>{name}</h3>
       <p className="author">{author}</p>
       <p className="location">

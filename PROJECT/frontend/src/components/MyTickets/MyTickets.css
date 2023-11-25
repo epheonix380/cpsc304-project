@@ -1,0 +1,11 @@
+table, th, td {
+    align-self: flex-start;
+    border: 1px solid;
+    border-collapse: collapse;
+    margin: 40px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
