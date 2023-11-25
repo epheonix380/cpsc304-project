@@ -13,6 +13,12 @@ const PORT = envVariables.PORT || 65534;  // Adjust the PORT if needed (e.g., if
 //  app.use(express.static('../frontend/build')); // Use when testing REACT on department servers
 app.use(express.static('./public')); // Use for debugging
 app.use(express.json());             // Parse incoming JSON payloads
+try {
+    var cors = require('cors');
+    app.use(cors());
+} catch (err) {
+    console.log("Unable to enable cors")
+}
 
 // If you prefer some other file as default page other than 'index.html',
 //      you can adjust and use the bellow line of code to
