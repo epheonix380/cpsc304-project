@@ -1,9 +1,9 @@
 .showcard {
 	display: flex;
 	flex-direction: column;
-	border: solid 1px red;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 	border-radius: 0.5rem;
-	padding: 0.5rem;
+	padding: 1rem;
 }
 
 .showcard .location {

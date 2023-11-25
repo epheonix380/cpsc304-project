@@ -8,11 +8,11 @@ function MainContent({selectedId}) {
 
   const title = sidebarLinks[selectedId].title;
 
-  if (title == "SHOWS"){
+  if (title === "SHOWS"){
     return <Shows /> 
-  } else if (title == "BUY TICKETS") {
+  } else if (title === "BUY TICKETS") {
     return <BuyTickets />
-  } else if (title == "SUMMARY") {
+  } else if (title === "SUMMARY") {
     return <Summary />
   } else {
     <div className="maincontent">Page not found</div>

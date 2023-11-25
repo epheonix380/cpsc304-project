@@ -2,18 +2,21 @@
 	height: 100vh;
 	width: max-content;
 	padding: 1.5rem;
-	background-color:#2d3f69;
+	background-color: #dcdcdc;
 	font-size: 1.3rem;
+	white-space: nowrap;
 }
 
-.sidebar ul{
+.sidebar ul {
 	list-style-type: none;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	gap: 2rem;
+	padding-inline-start: 0px;
 }
 
 .sidebar li {
 	cursor: pointer;
 }
+
