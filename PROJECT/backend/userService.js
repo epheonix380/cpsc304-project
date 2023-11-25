@@ -48,7 +48,7 @@ async function getAllUsers() {
 
 async function getUserTickets(userid) {
     return await db.getFromDB(`
-        SELECT Ticket.ticketid, Ticket.rownumber, Ticket.seatnumber, 
+        SELECT Ticket.ticketid, Ticket.cost, Ticket.rownumber, Ticket.seatnumber, 
         Ticket.sectionnumber, Ticket.eventid, EVTable.eventname, EVTable.author,
         EVTable.venuename, EVTable.city, EVTable.starttime
         FROM Issued, Ticket, (

@@ -1,8 +1,6 @@
 import './ShowCard.css'
 import Modal from "../Modal/Modal";
 import {useState} from "react";
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 
 function ShowCard({show}) {
 
