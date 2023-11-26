@@ -1,15 +1,15 @@
 import './MyTickets.css'
-import React, {useEffect, useState} from "react";
-import Modal from "../Modal/Modal";
-
+import React, {useEffect, useMemo, useState} from "react";
+import {Table, Modal, InputNumber} from "antd";
 
 function MyTickets() {
     const [tickets, setTickets] = useState([]);
     const [isLoading, setIsLoading] = useState(null);
     const [error, setError] = useState(null);
-
-    const [modal, setModal] = useState(false);
-    const toggleModal = () => setModal(!modal);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {setIsModalOpen(true)};
+    const handleOk = () => {setIsModalOpen(false)};
+    const handleCancel = () => {setIsModalOpen(false)};
 
     useEffect(() => {
         const fetchTickets = async () => {
@@ -32,6 +32,39 @@ function MyTickets() {
         fetchTickets();
     }, []);
 
+    const columns = [
+        {
+            title: 'TicketID',
+            dataIndex: 'ticketid',
+            key: 'ticketid',
+        },
+        {
+            title: 'Cost',
+            dataIndex: 'cost',
+            key: 'cost',
+        },
+        {
+            title: 'Event',
+            dataIndex: 'eventname',
+            key: 'eventname',
+        },
+        {
+            title: 'Seat#',
+            dataIndex: 'seatnumber',
+            key: 'seatnumber',
+        },
+        {
+            title: 'Row#',
+            dataIndex: 'rownumber',
+            key: 'rownumber',
+        },
+        {
+            title: 'Section#',
+            dataIndex: 'sectionnumber',
+            key: 'sectionnumber',
+        },
+    ];
+
     if (isLoading) {
         return <div className="maincontent">Loading...</div>;
     }
@@ -42,43 +75,23 @@ function MyTickets() {
 
     return (
     <div className="mytickets maincontent">
-        <table>
-            <thead>
-            <tr>
-                <th>Ticket#</th>
-                <th>Cost</th>
-                <th>EventID</th>
-                <th>Seat#</th>
-                <th>Row#</th>
-                <th>Section#</th>
-            </tr>
-            </thead>
-            <tbody>
-            {tickets.map((value, key) => {
-                return (
-                    <tr key={key}>
-                        <td>{value.ticketid}</td>
-                        <td>${value.cost}</td>
-                        <td>{value.eventid}</td>
-                        <td>{value.seatnumber}</td>
-                        <td>{value.rownumber}</td>
-                        <td>{value.sectionnumber}</td>
-                        <td><button onClick={toggleModal}>
-                            SELECT
-                            <Modal show={modal} onClose={toggleModal}>
-                                <>
-                                    <h1>Ticket # {value.ticketid}</h1>
-                                    <p>Cost: ${value.cost}</p>
-                                    <p>this only chooses the last row ??</p>
-                                </>
-                            </Modal>
-                        </button></td>
-                    </tr>
-                );
-            })}
-            </tbody>
-        </table>
-        {/*{tickets.map(ticket => (<TicketRow ticket={ticket}/>))}*/}
+        {/*To perform operations and clear selections after selecting some rows,
+        use rowSelection.selectedRowKeys to control selected rows.*/}
+        <Modal title={`Updating ticket`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <p>What seat number would you like?</p><InputNumber min={1} max={10} defaultValue={3} />
+            <p>What row number would you like?</p><InputNumber min={1} max={10} defaultValue={3} />
+            <p>What section number would you like?</p><InputNumber min={1} max={10} defaultValue={3} />
+        </Modal>
+        <Table className="table" dataSource={tickets} columns={columns}
+               rowSelection={{
+                   type: "radio",
+                   onChange: (selectedRowKeys, selectedRows) => {
+                       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                       console.log(tickets[0]);
+                   },
+               }}
+        />
+        <button onClick={showModal}>SELECT ROW</button>
     </div>
   );
 }
