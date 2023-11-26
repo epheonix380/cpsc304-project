@@ -132,9 +132,10 @@ async function initConcessions(db) {
 
     return db.run(`
         CREATE TABLE Concession 
-            (itemname VARCHAR(30) PRIMARY KEY,
+            (itemname VARCHAR(30),
             price DECIMAL(10, 2),
-            specifier CHAR(1)
+            specifier VARCHAR(1),
+            PRIMARY KEY (itemname, specifier)
             )
     `);
    
@@ -233,18 +234,6 @@ async function dropIssued(db) {
     return db.run(`DROP TABLE IF EXISTS Issued`)
 }
 
-async function initFoodDrink(db) {
-    return db.run(`
-        CREATE TABLE FoodDrink(
-            itemname VARCHAR(100) PRIMARY KEY,
-            price NUMBER(2,2),
-            specifier VARCHAR(1),
-            isfriesincluded NUMBER(1),
-            drinksize VARCHAR(1)
-            )
-    `)
-}
-
 async function dropFoodDrink(db) {
     return db.run(`DROP TABLE IF EXISTS FoodDrink`)
 }
@@ -333,17 +322,6 @@ async function initAll(db) {
             console.log(`Error from CustomerSession: ${err}`);
             reject(err);
         })
-        await initFoodDrink(db)
-        .catch((err)=>{
-            console.log(`Error from FoodDrink: ${err}`);
-            reject(err);
-        
-        })
-        await initHas(db)
-        .catch((err)=>{
-            console.log(`Error from Has: ${err}`);
-            reject(err);
-        })
         resolve(true);
         })
         
@@ -363,8 +341,6 @@ async function initAll(db) {
             initIssued(db),
             initCustomerSession(db),
             initHolds(db),
-            initFoodDrink(db),
-            initHas(db),
         ]
         return Promise.all(promises);
     }

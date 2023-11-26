@@ -1,5 +1,5 @@
-const db = require("./db.js");
-const initDB = require("./initDB.js");
+const db = require("../db/db.js");
+const initDB = require("../db/initDB.js");
 // ----------------------------------------------------------
 // Core functions for database operations
 // Modify these functions, especially the SQL queries, based on your project's requirements and design.

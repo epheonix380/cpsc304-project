@@ -131,3 +131,41 @@ Response:
         ]
     }
 ```
+
+## Concessions ##
+GET
+
+`url/concessions/:venueid`
+
+
+This API retrieves all food/drink available at a specific venue specified using venueid
+
+Responose:
+```
+{
+    "data":
+        [
+            {"itemname":"Water","price":10,"specifier":"L"},
+            {"itemname":"Water","price":7.5,"specifier":"M"},
+            {"itemname":"Water","price":5,"specifier":"S"}
+            ]
+    }
+```
+
+
+## Province ##
+
+`url/province/:city`
+
+
+This API gets a province when given a city name
+
+Response:
+```
+{
+    "data":
+        [
+            {"province":"British Columbia"}
+            ]
+    }
+```

@@ -1,7 +1,9 @@
 const express = require('express');
-const appService = require('./appService');
-const eventService = require('./eventService')
-const userService = require("./userService");
+const appService = require('./services/appService');
+const eventService = require('./services/eventService')
+const miscService = require('./services/miscService')
+const ticketService = require('./services/ticketService')
+const userService = require("./services/userService");
 const router = express.Router();
 
 // ----------------------------------------------------------
@@ -62,6 +64,26 @@ router.get("/users", async (req, res) => {
     
 }) 
 
+router.get("/concessions/:venueid", async (req, res) => {
+    const venueueid = req.params.venueid;
+    const data = await miscService.getConcessions(venueueid);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(400);
+    }
+})
+
+router.get("/province/:city", async (req, res) => {
+    const city = req.params.city;
+    const data = await miscService.getProvince(city);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(400);
+    }
+})
+
 function isIterable(obj) {
     // checks for null and undefined
     if (obj == null) {
@@ -75,7 +97,7 @@ router.post("/purchase", async (req, res) => {
     if (userid === null || userid === undefined || !isIterable(tickets)) {
         res.sendStatus(400);
     } else {
-        const data = await eventService.purchaseTicket(userid, tickets);
+        const data = await ticketService.purchaseTicket(userid, tickets);
         res.json({data})
     }
     
@@ -87,16 +109,16 @@ router.get("/sections", async (req, res) => {
     const amount = req.query.amount;
     let data;
     if ((eventid && venueid && amount)) {
-        data = await eventService.getSection(eventid, venueid,amount);
+        data = await ticketService.getSection(eventid, venueid,amount);
+        if (data) {
+            res.json({data});
+        } else {
+            res.sendStatus(500);
+        }
     } else {
         res.sendStatus(400)
     }
-    
-    if (data) {
-        res.json({data});
-    } else {
-        res.sendStatus(500);
-    }
+
     
 }) 
 

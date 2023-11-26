@@ -74,6 +74,22 @@ function insertIssued(ticketid, userid) {
     `)
 }
 
+function insertConcession(name, price, specifier) {
+    return db.run(`
+        INSERT INTO Concession
+            (itemname, price, specifier) values
+            ('${name}', ${price}, '${specifier}')
+    `)
+}
+
+function insertConcessionsVenue(name, venueid) {
+    return db.run(`
+        INSERT INTO ConcessionVenue
+            (itemname, venueid) values
+            ('${name}', ${venueid})
+    `)
+}
+
 async function insertData() {
     return await new Promise(async(resolve, reject)=>{
         let id = 1;
@@ -231,6 +247,84 @@ async function insertData() {
             const delta = Math.floor(Math.random()*5);
             await insertIssued(10*i+delta, (i%5)+1).catch((err)=>console.log(`Ticket: ${err}`));
         }
+
+        // INSERT Concession
+        await insertConcession("Coke", 5.00, "S")
+        await insertConcession("Coke", 7.50, "M")
+        await insertConcession("Coke", 10.00, "L")
+        await insertConcession("Fanta", 5.00, "S")
+        await insertConcession("Fanta", 7.50, "M")
+        await insertConcession("Fanta", 10.00, "L")
+        await insertConcession("Sprite", 5.00, "S")
+        await insertConcession("Sprite", 7.50, "M")
+        await insertConcession("Sprite", 10.00, "L")
+        await insertConcession("Water", 5.00, "S")
+        await insertConcession("Water", 7.50, "M")
+        await insertConcession("Water", 10.00, "L")
+        await insertConcession("Popcorn", 10.00, "N")
+        await insertConcession("Chips", 5.00, "N")
+        await insertConcession("Candy", 5.00, "N")
+        await insertConcession("Hotdog", 10.00, "N")
+        await insertConcession("Hotdog", 15.00, "Y")
+        await insertConcession("Hamburger", 10.00, "N")
+        await insertConcession("Hamburger", 15.00, "Y")
+
+        // INSERT ConcessionVenue
+
+        await insertConcessionsVenue("Coke", 1);
+        await insertConcessionsVenue("Fanta", 1);
+        await insertConcessionsVenue("Sprite", 1);
+        await insertConcessionsVenue("Water", 1);
+        await insertConcessionsVenue("Popcorn", 1);
+        await insertConcessionsVenue("Chips", 1);
+        await insertConcessionsVenue("Candy", 1);
+        await insertConcessionsVenue("Hotdog", 1);
+        await insertConcessionsVenue("Hamburger", 1);
+
+        await insertConcessionsVenue("Coke", 2);
+        await insertConcessionsVenue("Fanta", 2);
+        await insertConcessionsVenue("Sprite", 2);
+        await insertConcessionsVenue("Water", 2);
+        await insertConcessionsVenue("Popcorn", 2);
+        await insertConcessionsVenue("Chips", 2);
+        await insertConcessionsVenue("Candy", 2);
+        await insertConcessionsVenue("Hotdog", 2);
+        await insertConcessionsVenue("Hamburger", 2);
+
+        await insertConcessionsVenue("Coke", 3);
+        await insertConcessionsVenue("Sprite", 3);
+        await insertConcessionsVenue("Popcorn", 3);
+        await insertConcessionsVenue("Candy", 3);
+        await insertConcessionsVenue("Hamburger", 3);
+
+        await insertConcessionsVenue("Fanta", 4);
+        await insertConcessionsVenue("Water", 4);
+        await insertConcessionsVenue("Chips", 4);
+        await insertConcessionsVenue("Hotdog", 4);
+
+        await insertConcessionsVenue("Popcorn", 5);
+        await insertConcessionsVenue("Chips", 5);
+        await insertConcessionsVenue("Candy", 5);
+        await insertConcessionsVenue("Hotdog", 5);
+        await insertConcessionsVenue("Hamburger", 5);
+
+        await insertConcessionsVenue("Coke", 6);
+        await insertConcessionsVenue("Fanta", 6);
+        await insertConcessionsVenue("Sprite", 6);
+        await insertConcessionsVenue("Water", 6);
+
+        await insertConcessionsVenue("Coke", 7);
+        await insertConcessionsVenue("Fanta", 7);
+        await insertConcessionsVenue("Sprite", 7);
+        await insertConcessionsVenue("Water", 7);
+        await insertConcessionsVenue("Popcorn", 7);
+        await insertConcessionsVenue("Chips", 7);
+        await insertConcessionsVenue("Candy", 7);
+
+        await insertConcessionsVenue("Water", 8);
+
+        await insertConcessionsVenue("Water", 9);
+
         resolve(true);
 
     })
