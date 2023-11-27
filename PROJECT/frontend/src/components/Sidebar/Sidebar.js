@@ -8,6 +8,7 @@ function Sidebar({links, onLinkClick}) {
         {links.map((link) => {
           return <li key={link.id} onClick={(e) => onLinkClick(e, link.id)}>{link.title}</li>
         })}
+        <li><a href='/admin'>Admin</a></li>
       </ul>
     </div>
   );

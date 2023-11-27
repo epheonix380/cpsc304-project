@@ -27,6 +27,7 @@ async function withSQLiteDB(action) {
     const sqlite3 = require('sqlite3').verbose();
     try {
         connection = new sqlite3.Database('local.db', sqlite3.OPEN_READWRITE, (err) => {
+            
             if (err) {
                 console.log("Failed to find SQLite3 DB")
                 throw err;
