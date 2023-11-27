@@ -2,7 +2,7 @@ const db = require("../db/db");
 
 async function getEvents(orderBy="starttime") {
     const datetime = new Date(Date.now())
-    const datetimeString = `${datetime.getFullYear()}-${datetime.getMonth()}-${datetime.getDate()}`
+    const datetimeString = `${datetime.getFullYear()}-${datetime.getMonth()+1}-${datetime.getDate()}`
     let order;
     switch(orderBy) {
         case "type":

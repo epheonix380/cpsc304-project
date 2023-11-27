@@ -1,5 +1,6 @@
 const oracledb = require('oracledb');
 const loadEnvFile = require('../utils/envUtil');
+const fs = require('fs');
 const envVariables = loadEnvFile('.env');
 const dbConfig = {
     user: envVariables.ORACLE_USER,
@@ -7,6 +8,8 @@ const dbConfig = {
     connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`
 };
 let isOracle = true;
+let isWrite = false;
+const dbScripts = "dbScripts.sql";
 
 /*
     This exists because I could not get the oracleDB to work locally
@@ -19,6 +22,7 @@ let isOracle = true;
     This project will use oracleDB on department servers and sqlite3 db locally
 */
 let connection;
+
 async function withSQLiteDB(action) {
     const sqlite3 = require('sqlite3').verbose();
     try {
@@ -53,7 +57,12 @@ async function withOracleDB(action) {
         }
     }
 }
-
+const mode = process.argv[2];
+if (mode && mode === "write") {
+    console.log("Forced into mode write");
+    fs.writeFileSync(dbScripts,"");
+    isWrite = true;
+}
 withOracleDB(() => {
     isOracle = true;
     console.log("Using oracleDB")
@@ -67,8 +76,14 @@ withOracleDB(() => {
     })
 });
 
+
+
+
 async function getFromDB(sql) {
     return new Promise (async (resolve, reject) =>  {
+        if (isWrite) {
+            fs.appendFileSync(dbScripts, `${sql}\n`);
+        }
         if (isOracle) {
             return await withOracleDB(async (connection) => {
                 const result = await connection.execute(sql);
@@ -120,6 +135,9 @@ async function testConnection() {
 }
 
 async function run(sql, ...args) {
+    if (isWrite) {
+        fs.appendFileSync(dbScripts, `${sql}\n`);
+    }
     return new Promise(async(resolve, reject)=> {
         if(isOracle) {
             return await withOracleDB(async (connection) => {
