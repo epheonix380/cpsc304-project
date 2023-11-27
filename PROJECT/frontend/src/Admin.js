@@ -119,7 +119,9 @@ export default function Admin() {
     }
 
     const handleTableName = (event) => {
-        setTable(event.target.value)
+        setTable(event.target.value);
+        setAttributes([]);
+        setTableData([]);
     }
 
     const handleTableAttribute = (event) => {
@@ -129,6 +131,8 @@ export default function Admin() {
           setAttributes(
             value
           );
+          setTableData([]);
+        
     }
 
     const tableNameItems = [];
