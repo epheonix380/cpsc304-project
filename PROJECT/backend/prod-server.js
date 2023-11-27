@@ -29,9 +29,8 @@ try {
 
 
 // mount the router
-app.use('/admin', express.static("./public"));
-app.use('/', appController);
-
+app.use('/api', appController);
+app.use('*', express.static('../frontend/build'));
 
 // ----------------------------------------------------------
 // Starting the server
