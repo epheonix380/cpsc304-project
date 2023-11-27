@@ -79,14 +79,14 @@ withOracleDB(() => {
 
 
 
-async function getFromDB(sql) {
+async function getFromDB(sql, ...args) {
     return new Promise (async (resolve, reject) =>  {
         if (isWrite) {
             fs.appendFileSync(dbScripts, `${sql}\n`);
         }
         if (isOracle) {
             return await withOracleDB(async (connection) => {
-                const result = await connection.execute(sql);
+                const result = await connection.execute(sql, ...args);
                 const names = result.metaData;
                 const rows = result.rows;
                 const final = [];
@@ -103,7 +103,7 @@ async function getFromDB(sql) {
             });
         }
         return await withSQLiteDB(async (connection) => {
-            connection.all(sql, (err, rows) => {
+            connection.all(sql, ...args, (err, rows) => {
                 if (err) {
                     reject(err)
                 } else {

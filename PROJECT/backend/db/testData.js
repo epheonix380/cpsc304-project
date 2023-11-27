@@ -247,6 +247,19 @@ async function insertData() {
             const delta = Math.floor(Math.random()*5);
             await insertIssued(10*i+delta, (i%5)+1).catch((err)=>console.log(`Ticket: ${err}`));
         }
+        await insertIssued(101, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(102, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(103, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(104, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(105, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(110, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(111, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(112, 1).catch((err)=>console.log(`Ticket: ${err}`));
+
+
+
+
+
 
         // INSERT Concession
         await insertConcession("Coke", 5.00, "S")
