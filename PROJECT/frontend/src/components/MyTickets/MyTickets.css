@@ -1,11 +1,8 @@
-table, th, td {
-    align-self: flex-start;
-    border: 1px solid;
-    border-collapse: collapse;
-    margin-top: 40px;
+.mytickets {
+    justify-content: flex-start;
+    flex-direction: column;
 }
 
-
-.table {
-    align-self: flex-start;
+.filters {
+    margin-bottom: 50px;
 }

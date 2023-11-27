@@ -1,6 +1,7 @@
 import './MyTickets.css'
 import React, {useEffect, useMemo, useState} from "react";
-import {Table, Modal, InputNumber} from "antd";
+import {Table, Modal, InputNumber, Checkbox} from "antd";
+import Dropdown from "react-dropdown";
 
 function MyTickets() {
     const [tickets, setTickets] = useState([]);
@@ -32,6 +33,7 @@ function MyTickets() {
         fetchTickets();
     }, []);
 
+    const plainColumns = ['Cost', 'Event', 'Seat#', 'Row#', 'Section#'];
     const columns = [
         {
             title: 'TicketID',
@@ -73,15 +75,56 @@ function MyTickets() {
         return <div className="maincontent">Error: {error}</div>;
     }
 
+    const onChange = (checkedValues) => {
+        console.log('checked = ', checkedValues);
+    };
+
+    const items = [
+        {
+            label: '1st menu item',
+            key: '0',
+        },
+        {
+            label: '2nd menu  item',
+            key: '1',
+        },
+        {
+            label: '3rd menu item',
+            key: '2',
+        },
+    ];
+
     return (
     <div className="mytickets maincontent">
+        <div className="filters">
+            <h1>Filter Settings</h1>
+            <p>What columns would you like to show?</p>
+            <Checkbox.Group options={plainColumns} onChange={onChange} />
+            <p>What filters would you like to add?</p>
+            <Dropdown
+                options={plainColumns}
+                value={plainColumns[0]}
+                className={""}
+            /> IS EQUAL TO
+            <Dropdown
+            options={plainColumns}
+            value={plainColumns[0]}
+            className={""}
+            />
+            {/*<Dropdown*/}
+            {/*    menu={{*/}
+            {/*        items,*/}
+            {/*    }}*/}
+            {/*    trigger={['click']}*/}
+            {/*    onOpenChange={() => console.log('CHANGED')}*/}
+            {/*>*/}
+            {/*    <a onClick={(e) => e.preventDefault()}>*/}
+            {/*        Click me*/}
+            {/*    </a>*/}
+            {/*</Dropdown>*/}
+        </div>
         {/*To perform operations and clear selections after selecting some rows,
         use rowSelection.selectedRowKeys to control selected rows.*/}
-        <Modal title={`Updating ticket`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <p>What seat number would you like?</p><InputNumber min={1} max={10} defaultValue={3} />
-            <p>What row number would you like?</p><InputNumber min={1} max={10} defaultValue={3} />
-            <p>What section number would you like?</p><InputNumber min={1} max={10} defaultValue={3} />
-        </Modal>
         <Table className="table" dataSource={tickets} columns={columns}
                rowSelection={{
                    type: "radio",
@@ -91,6 +134,14 @@ function MyTickets() {
                    },
                }}
         />
+        <Modal title={`Updating ticket`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <p>What seat number would you like?</p>
+            <InputNumber min={1} max={10} defaultValue={3} onChange={onChange}/>
+            <p>What row number would you like?</p>
+            <InputNumber min={1} max={10} defaultValue={3} onChange={onChange}/>
+            <p>What section number would you like?</p>
+            <InputNumber min={1} max={10} defaultValue={3} onChange={onChange}/>
+        </Modal>
         <button onClick={showModal}>SELECT ROW</button>
     </div>
   );

@@ -17,13 +17,16 @@ function ShowCard({show}) {
     const showModal = () => {setIsModalOpen(true)};
     const handleOk = () => {setIsModalOpen(false)}; // should move to next page of modal
     const handleCancel = () => {setIsModalOpen(false)};
+    const onChange = (value) => {
+        console.log('changed', value);
+    };
 
   return (
       <>
-          <Modal title={name} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+          <Modal title={name} open={isModalOpen} onOk={handleOk} okText="Next" onCancel={handleCancel}>
               <p>{author} @ {venue}</p>
               <p>How many tickets would you like to buy?</p>
-              <InputNumber min={1} max={10} defaultValue={1} />
+              <InputNumber min={1} max={10} defaultValue={1} onChange={onChange}/>
           </Modal>
           <div className="showcard" onClick={showModal}>
               <h3>{name}</h3>
