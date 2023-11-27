@@ -27,6 +27,7 @@ async function getEvents(orderBy="starttime") {
             order = "Holds.starttime"
             break;
     }
+    // Here sanitization is not necessary as the inputs are guaranteed to be safe
     return await db.getFromDB(`
         SELECT Event.eventid, Event.type, Event.eventname, 
         Event.author, Event.description, Holds.starttime, 

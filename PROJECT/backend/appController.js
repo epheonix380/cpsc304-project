@@ -23,6 +23,18 @@ router.get('/tables', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/columns/:table', async (req, res) => {
+    const table = req.params.table;
+    const tableContent = await appService.getAttributesOfTable(table);
+    res.json({data: tableContent});
+});
+
+router.post('/flex-table', async (req, res) => {
+    const {tablename, attributes} = req.body;
+    const tableContent = await appService.fetchDynamicAttributeTable(tablename, attributes);
+    res.json({data: tableContent});
+});
+
 router.post("/initiate-tables", async (req, res) => {
     const initiateResult = await appService.initTables();
     if (initiateResult) {

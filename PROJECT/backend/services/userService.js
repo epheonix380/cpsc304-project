@@ -1,6 +1,7 @@
 const db = require("../db/db");
 
 async function getAllUsers() {
+    // Does not need sanitization
     return await db.getFromDB(`
         SELECT * FROM Customer
     `).then((res)=>res).catch((err)=>{
@@ -11,6 +12,12 @@ async function getAllUsers() {
 }
 
 async function getUserTickets(userid) {
+    let sanUserID;
+    try {
+        sanUserID = parseInt(userid);
+    } catch {
+        return false;
+    }
     return await db.getFromDB(`
         SELECT Ticket.ticketid, Ticket.rownumber, Ticket.seatnumber, 
         Ticket.sectionnumber, Ticket.eventid, EVTable.eventname, EVTable.author,
@@ -24,11 +31,11 @@ async function getUserTickets(userid) {
                 Holds.venueid = Venue.venueid
         ) EVTable
         WHERE
-            Issued.userid = ${parseInt(userid)} AND
+            Issued.userid = \:userid AND
             Issued.ticketid = Ticket.ticketid AND
             Ticket.eventid = EVTable.eventid AND
             Ticket.venueid = EVTable.venueid
-    `).then((res)=>res).catch((err)=>{
+    `, [sanUserID]).then((res)=>res).catch((err)=>{
         console.log(err);
         return false;
     })
