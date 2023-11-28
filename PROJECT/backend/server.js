@@ -29,7 +29,7 @@ try {
 
 
 // mount the router
-app.use('/', appController);
+app.use('/api/', appController);
 
 
 // ----------------------------------------------------------

@@ -1,46 +1,22 @@
-DROP TABLE IF EXISTS DEMOTABLE
-DROP TABLE IF EXISTS Section
-DROP TABLE IF EXISTS Venue
-DROP TABLE IF EXISTS CityProvinceMap
-DROP TABLE IF EXISTS Concession
-DROP TABLE IF EXISTS ConcessionVenue
-DROP TABLE IF EXISTS Customer
-DROP TABLE IF EXISTS Event
-DROP TABLE IF EXISTS Seat
-DROP TABLE IF EXISTS Vendor
-DROP TABLE IF EXISTS Ticket
-DROP TABLE IF EXISTS CustomerSession
-DROP TABLE IF EXISTS Issued
-DROP TABLE IF EXISTS Holds
-DROP TABLE IF EXISTS FoodDrink
-DROP TABLE IF EXISTS Has
+DROP TABLE DEMOTABLE CASCADE CONSTRAINTS
+DROP TABLE Section CASCADE CONSTRAINTS
+DROP TABLE Venue CASCADE CONSTRAINTS
+DROP TABLE CityProvinceMap CASCADE CONSTRAINTS
+DROP TABLE Concession CASCADE CONSTRAINTS
+DROP TABLE ConcessionVenue CASCADE CONSTRAINTS
+DROP TABLE Customer CASCADE CONSTRAINTS
+DROP TABLE Event CASCADE CONSTRAINTS
+DROP TABLE Vendor CASCADE CONSTRAINTS
+DROP TABLE Ticket CASCADE CONSTRAINTS
+DROP TABLE CustomerSession CASCADE CONSTRAINTS
+DROP TABLE Issued CASCADE CONSTRAINTS
+DROP TABLE Holds CASCADE CONSTRAINTS
 
     CREATE TABLE DEMOTABLE (
         id NUMBER PRIMARY KEY,
         name VARCHAR2(20)
     )
 
-
-            CREATE TABLE Section
-                (sectionNumber INTEGER,
-                eventid INTEGER,
-                venueid INTEGER,
-                numberofseats INTEGER,
-                type CHAR(5),
-                PRIMARY KEY (sectionnumber, eventid, venueid),
-                FOREIGN KEY (eventid, venueid) REFERENCES Holds(eventid, venueid)
-                )
-        
-
-            CREATE TABLE Venue
-                (venueid INTEGER PRIMARY KEY,
-                vendorid INTEGER,
-                venuename VARCHAR(30),
-                city VARCHAR(30),
-                FOREIGN KEY (city) REFERENCES CityProvinceMap(city),
-                FOREIGN KEY (vendorid) REFERENCES Vendor(vendorid)
-                )
-        
 
             CREATE TABLE CityProvinceMap
                 (city VARCHAR(30) PRIMARY KEY,
@@ -54,6 +30,35 @@ DROP TABLE IF EXISTS Has
                 )
         
 
+            CREATE TABLE Venue
+                (venueid INTEGER PRIMARY KEY,
+                vendorid INTEGER,
+                venuename VARCHAR(30),
+                city VARCHAR(30),
+                FOREIGN KEY (city) REFERENCES CityProvinceMap(city),
+                FOREIGN KEY (vendorid) REFERENCES Vendor(vendorid)
+                )
+        
+
+        CREATE TABLE Event
+            (eventid INTEGER PRIMARY KEY,
+            type VARCHAR(30),
+            eventname VARCHAR(30),
+            author VARCHAR(32),
+            description VARCHAR(2048)
+            )
+    
+
+        CREATE TABLE Holds
+            (eventid INTEGER,
+            venueid INTEGER,
+            starttime TIMESTAMP,
+            PRIMARY KEY (eventid, venueid),
+            FOREIGN KEY (eventid) REFERENCES Event(eventid),
+            FOREIGN KEY (venueid) REFERENCES Venue(venueid)
+            )
+    
+
         CREATE TABLE Concession 
             (itemname VARCHAR(30),
             price DECIMAL(10, 2),
@@ -65,8 +70,9 @@ DROP TABLE IF EXISTS Has
         CREATE TABLE ConcessionVenue
             (itemname VARCHAR(30),
             venueid INTEGER,
-            PRIMARY KEY (itemname, venueid),
-            FOREIGN KEY (itemname) REFERENCES Concession(itemname),
+            specifier VARCHAR(1),
+            PRIMARY KEY (itemname, specifier, venueid),
+            FOREIGN KEY (itemname, specifier) REFERENCES Concession(itemname, specifier),
             FOREIGN KEY (venueid) REFERENCES Venue(venueid)
             )
     
@@ -80,14 +86,16 @@ DROP TABLE IF EXISTS Has
                 )
         
 
-        CREATE TABLE Event
-            (eventid INTEGER PRIMARY KEY,
-            type VARCHAR(30),
-            eventname VARCHAR(30),
-            author VARCHAR(32),
-            description VARCHAR(2048)
-            )
-    
+            CREATE TABLE Section
+                (sectionNumber INTEGER,
+                eventid INTEGER,
+                venueid INTEGER,
+                numberofseats INTEGER,
+                type CHAR(5),
+                PRIMARY KEY (sectionnumber, eventid, venueid),
+                FOREIGN KEY (eventid, venueid) REFERENCES Holds(eventid, venueid)
+                )
+        
 
         CREATE TABLE Ticket
             (ticketid INTEGER PRIMARY KEY,
@@ -119,16 +127,6 @@ DROP TABLE IF EXISTS Has
                 FOREIGN KEY (userid) REFERENCES Customer(userid)
                 )
         
-
-        CREATE TABLE Holds
-            (eventid INTEGER,
-            venueid INTEGER,
-            starttime TIMESTAMP,
-            PRIMARY KEY (eventid, venueid),
-            FOREIGN KEY (eventid) REFERENCES Event(eventid),
-            FOREIGN KEY (venueid) REFERENCES Venue(venueid)
-            )
-    
 
         INSERT INTO CityProvinceMap (city, province) values ('Vancouver', 'British Columbia')
     
@@ -282,77 +280,77 @@ DROP TABLE IF EXISTS Has
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 1,  '2023-11-04')
+            (1, 1, date '2023-11-04')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 3,  '2024-01-04')
+            (1, 3, date '2024-01-04')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 5,  '2024-02-04')
+            (1, 5, date '2024-02-04')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 7,  '2024-03-04')
+            (1, 7, date '2024-03-04')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 9,  '2024-04-04')
+            (1, 9, date '2024-04-04')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 2,  '2023-11-06')
+            (2, 2, date '2023-11-06')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 4,  '2024-01-06')
+            (2, 4, date '2024-01-06')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 6,  '2024-02-06')
+            (2, 6, date '2024-02-06')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 8,  '2024-03-06')
+            (2, 8, date '2024-03-06')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 10,  '2024-04-06')
+            (2, 10, date '2024-04-06')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (5, 1,  '2023-11-10')
+            (5, 1, date '2023-11-10')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (6, 3,  '2024-01-10')
+            (6, 3, date '2024-01-10')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (7, 5,  '2024-02-10')
+            (7, 5, date '2024-02-10')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (3, 7,  '2024-03-10')
+            (3, 7, date '2024-03-10')
     
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (4, 9,  '2024-04-10')
+            (4, 9, date '2024-04-10')
     
 
         INSERT INTO Section 
@@ -1182,22 +1180,22 @@ DROP TABLE IF EXISTS Has
 
         INSERT INTO Issued
             (ticketid, userid) values
-            (1, 1)
+            (2, 1)
     
 
         INSERT INTO Issued
             (ticketid, userid) values
-            (12, 2)
+            (14, 2)
     
 
         INSERT INTO Issued
             (ticketid, userid) values
-            (21, 3)
+            (23, 3)
     
 
         INSERT INTO Issued
             (ticketid, userid) values
-            (32, 4)
+            (31, 4)
     
 
         INSERT INTO Issued
@@ -1217,17 +1215,57 @@ DROP TABLE IF EXISTS Has
 
         INSERT INTO Issued
             (ticketid, userid) values
-            (71, 3)
+            (72, 3)
     
 
         INSERT INTO Issued
             (ticketid, userid) values
-            (81, 4)
+            (83, 4)
     
 
         INSERT INTO Issued
             (ticketid, userid) values
-            (91, 5)
+            (92, 5)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (101, 1)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (102, 1)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (103, 1)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (104, 1)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (105, 1)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (110, 1)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (111, 1)
+    
+
+        INSERT INTO Issued
+            (ticketid, userid) values
+            (112, 1)
     
 
         INSERT INTO Concession
@@ -1326,235 +1364,406 @@ DROP TABLE IF EXISTS Has
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Coke', 1)
+            (itemname, venueid, specifier) values
+            ('Coke', 1, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Fanta', 1)
+            (itemname, venueid, specifier) values
+            ('Coke', 1, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Sprite', 1)
+            (itemname, venueid, specifier) values
+            ('Coke', 1, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Water', 1)
+            (itemname, venueid, specifier) values
+            ('Fanta', 1, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Popcorn', 1)
+            (itemname, venueid, specifier) values
+            ('Fanta', 1, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Chips', 1)
+            (itemname, venueid, specifier) values
+            ('Fanta', 1, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Candy', 1)
+            (itemname, venueid, specifier) values
+            ('Sprite', 1, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hotdog', 1)
+            (itemname, venueid, specifier) values
+            ('Sprite', 1, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hamburger', 1)
+            (itemname, venueid, specifier) values
+            ('Sprite', 1, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Coke', 2)
+            (itemname, venueid, specifier) values
+            ('Water', 1, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Fanta', 2)
+            (itemname, venueid, specifier) values
+            ('Water', 1, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Sprite', 2)
+            (itemname, venueid, specifier) values
+            ('Water', 1, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Water', 2)
+            (itemname, venueid, specifier) values
+            ('Popcorn', 1, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Popcorn', 2)
+            (itemname, venueid, specifier) values
+            ('Chips', 1, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Chips', 2)
+            (itemname, venueid, specifier) values
+            ('Candy', 1, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Candy', 2)
+            (itemname, venueid, specifier) values
+            ('Hotdog', 1, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hotdog', 2)
+            (itemname, venueid, specifier) values
+            ('Hotdog', 1, 'Y')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hamburger', 2)
+            (itemname, venueid, specifier) values
+            ('Hamburger', 1, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Coke', 3)
+            (itemname, venueid, specifier) values
+            ('Hamburger', 1, 'Y')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Sprite', 3)
+            (itemname, venueid, specifier) values
+            ('Coke', 2, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Popcorn', 3)
+            (itemname, venueid, specifier) values
+            ('Coke', 2, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Candy', 3)
+            (itemname, venueid, specifier) values
+            ('Coke', 2, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hamburger', 3)
+            (itemname, venueid, specifier) values
+            ('Fanta', 2, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Fanta', 4)
+            (itemname, venueid, specifier) values
+            ('Fanta', 2, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Water', 4)
+            (itemname, venueid, specifier) values
+            ('Fanta', 2, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Chips', 4)
+            (itemname, venueid, specifier) values
+            ('Sprite', 2, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hotdog', 4)
+            (itemname, venueid, specifier) values
+            ('Sprite', 2, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Popcorn', 5)
+            (itemname, venueid, specifier) values
+            ('Sprite', 2, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Chips', 5)
+            (itemname, venueid, specifier) values
+            ('Water', 2, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Candy', 5)
+            (itemname, venueid, specifier) values
+            ('Popcorn', 2, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hotdog', 5)
+            (itemname, venueid, specifier) values
+            ('Chips', 2, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Hamburger', 5)
+            (itemname, venueid, specifier) values
+            ('Candy', 2, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Coke', 6)
+            (itemname, venueid, specifier) values
+            ('Hotdog', 2, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Fanta', 6)
+            (itemname, venueid, specifier) values
+            ('Hamburger', 2, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Sprite', 6)
+            (itemname, venueid, specifier) values
+            ('Coke', 3, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Water', 6)
+            (itemname, venueid, specifier) values
+            ('Coke', 3, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Coke', 7)
+            (itemname, venueid, specifier) values
+            ('Coke', 3, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Fanta', 7)
+            (itemname, venueid, specifier) values
+            ('Sprite', 3, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Sprite', 7)
+            (itemname, venueid, specifier) values
+            ('Sprite', 3, 'M')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Water', 7)
+            (itemname, venueid, specifier) values
+            ('Sprite', 3, 'L')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Popcorn', 7)
+            (itemname, venueid, specifier) values
+            ('Popcorn', 3, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Chips', 7)
+            (itemname, venueid, specifier) values
+            ('Candy', 3, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Candy', 7)
+            (itemname, venueid, specifier) values
+            ('Hamburger', 3, 'N')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Water', 8)
+            (itemname, venueid, specifier) values
+            ('Fanta', 4, 'S')
     
 
         INSERT INTO ConcessionVenue
-            (itemname, venueid) values
-            ('Water', 9)
+            (itemname, venueid, specifier) values
+            ('Fanta', 4, 'M')
     
 
-            SELECT 
-                name
-            FROM 
-                sqlite_schema
-            WHERE 
-                type ='table' AND 
-                name NOT LIKE 'sqlite_%'
-        
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Fanta', 4, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Water', 4, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Chips', 4, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Hotdog', 4, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Popcorn', 5, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Chips', 5, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Candy', 5, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Hotdog', 5, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Hamburger', 5, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Coke', 6, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Coke', 6, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Coke', 6, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Fanta', 6, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Fanta', 6, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Fanta', 6, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Sprite', 6, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Sprite', 6, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Sprite', 6, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Water', 6, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Coke', 7, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Coke', 7, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Coke', 7, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Fanta', 7, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Fanta', 7, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Fanta', 7, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Sprite', 7, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Sprite', 7, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Sprite', 7, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Water', 7, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Popcorn', 7, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Chips', 7, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Candy', 7, 'N')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Water', 8, 'S')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Water', 8, 'M')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Water', 8, 'L')
+    
+
+        INSERT INTO ConcessionVenue
+            (itemname, venueid, specifier) values
+            ('Water', 9, 'S')
+    
