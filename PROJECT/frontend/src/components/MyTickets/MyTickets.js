@@ -1,7 +1,6 @@
 import './MyTickets.css'
-import React, {useEffect, useMemo, useState} from "react";
-import {Table, Modal, InputNumber, Checkbox} from "antd";
-import Dropdown from "react-dropdown";
+import React, {useEffect, useState} from "react";
+import {Table, Modal, InputNumber, Checkbox, Select, Input} from "antd";
 
 function MyTickets() {
     const [tickets, setTickets] = useState([]);
@@ -11,6 +10,7 @@ function MyTickets() {
     const showModal = () => {setIsModalOpen(true)};
     const handleOk = () => {setIsModalOpen(false)};
     const handleCancel = () => {setIsModalOpen(false)};
+    const handleFilterClick = () => {setIsModalOpen(false)};
 
     useEffect(() => {
         const fetchTickets = async () => {
@@ -32,6 +32,7 @@ function MyTickets() {
         };
         fetchTickets();
     }, []);
+
 
     const plainColumns = ['Cost', 'Event', 'Seat#', 'Row#', 'Section#'];
     const columns = [
@@ -75,24 +76,35 @@ function MyTickets() {
         return <div className="maincontent">Error: {error}</div>;
     }
 
-    const onChange = (checkedValues) => {
-        console.log('checked = ', checkedValues);
+    const onChange = (value) => {
+        console.log('checked = ', value);
     };
 
-    const items = [
-        {
-            label: '1st menu item',
-            key: '0',
-        },
-        {
-            label: '2nd menu  item',
-            key: '1',
-        },
-        {
-            label: '3rd menu item',
-            key: '2',
-        },
+    const andOr = [
+        {value: 'and', label: 'and'},
+        {value: 'or', label: 'or'},
     ];
+
+    const FilterItem = () => {
+        const filterColumns = [
+            {value: 'ticketid', label: 'Ticket ID'},
+            {value: 'cost', label: 'Cost'},
+            {value: 'event', label: 'Event'},
+            {value: 'seatnumber', label: 'Seat#'},
+            {value: 'rownumber', label: 'Row#'},
+            {value: 'sectionnumber', label: 'Section#'}
+        ];
+
+        return (
+            <div>
+                <Select
+                    options={filterColumns}
+                    onChange={onChange}
+                    defaultValue="ticketid"
+                /> is equal to <Input placeholder="value" style={{ width: 300 }} />
+            </div>
+        )
+    }
 
     return (
     <div className="mytickets maincontent">
@@ -101,27 +113,15 @@ function MyTickets() {
             <p>What columns would you like to show?</p>
             <Checkbox.Group options={plainColumns} onChange={onChange} />
             <p>What filters would you like to add?</p>
-            <Dropdown
-                options={plainColumns}
-                value={plainColumns[0]}
-                className={""}
-            /> IS EQUAL TO
-            <Dropdown
-            options={plainColumns}
-            value={plainColumns[0]}
-            className={""}
+            <FilterItem/>
+            <Select
+                options={andOr}
+                onChange={onChange}
+                defaultValue="and"
+                bordered={false}
             />
-            {/*<Dropdown*/}
-            {/*    menu={{*/}
-            {/*        items,*/}
-            {/*    }}*/}
-            {/*    trigger={['click']}*/}
-            {/*    onOpenChange={() => console.log('CHANGED')}*/}
-            {/*>*/}
-            {/*    <a onClick={(e) => e.preventDefault()}>*/}
-            {/*        Click me*/}
-            {/*    </a>*/}
-            {/*</Dropdown>*/}
+            <FilterItem/>
+            <button onClick={handleFilterClick} className="apply">APPLY</button>
         </div>
         {/*To perform operations and clear selections after selecting some rows,
         use rowSelection.selectedRowKeys to control selected rows.*/}
@@ -142,7 +142,7 @@ function MyTickets() {
             <p>What section number would you like?</p>
             <InputNumber min={1} max={10} defaultValue={3} onChange={onChange}/>
         </Modal>
-        <button onClick={showModal}>SELECT ROW</button>
+        <button onClick={showModal}>SELECT TICKET</button>
     </div>
   );
 }
