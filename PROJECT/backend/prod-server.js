@@ -29,7 +29,7 @@ try {
 
 
 // mount the router
-app.use('/api', appController);
+app.use('/api/', appController);
 app.use('*', express.static('../frontend/build'));
 
 // ----------------------------------------------------------
