@@ -10,7 +10,6 @@ const app = express();
 const PORT = envVariables.PORT || 65534;  // Adjust the PORT if needed (e.g., if you encounter a "port already occupied" error)
 
 // Middleware setup
-app.use(express.static('../frontend/build')); // Use when testing REACT on department servers
 // app.use(express.static('./public')); // Use for debugging
 app.use(express.json());             // Parse incoming JSON payloads
 try {
@@ -23,14 +22,15 @@ try {
 // If you prefer some other file as default page other than 'index.html',
 //      you can adjust and use the bellow line of code to
 //      route to send 'DEFAULT_FILE_NAME.html' as default for root URL
-// app.get('/', (req, res) => {
-//     res.sendFile(__dirname + '/public/DEFAULT_FILE_NAME.html');
-// });
-
 
 // mount the router
+app.use(express.static('../frontend/build'));
+
+
 app.use('/api/', appController);
-app.use('*', express.static('../frontend/build'));
+app.use("/*",express.static('../frontend/build'));
+
+
 
 // ----------------------------------------------------------
 // Starting the server

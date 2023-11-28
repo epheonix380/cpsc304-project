@@ -44,8 +44,8 @@ for PORT in $(seq $START $END); do
         sed -i "/^PORT=/c\PORT=$PORT" $ENV_SERVER_PATH
         sed -i "/^PORT=/c\PORT=$PORT" $FE_ENV_SERVER_PATH
         sed -i "/^HTTPS_PROXY=/c\HTTPS_PROXY=https://localhost:$PORT" $FE_ENV_SERVER_PATH
-        sed -i "/^HTTP_PROXY=/c\HTTP_PROXY=https://localhost:$PORT" $FE_ENV_SERVER_PATH
-        sed -i "/^REACT_APP_URL=/c\REACT_APP_URL=https://localhost:$PORT/api" $FE_ENV_SERVER_PATH
+        sed -i "/^HTTP_PROXY=/c\HTTP_PROXY=http://localhost:$PORT" $FE_ENV_SERVER_PATH
+        sed -i "/^REACT_APP_URL=/c\REACT_APP_URL=http://localhost:$PORT/api" $FE_ENV_SERVER_PATH
         echo "Updated $ENV_SERVER_PATH with PORT=$PORT."
 
         # Kill the temporary process
