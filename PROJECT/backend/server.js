@@ -10,7 +10,7 @@ const app = express();
 const PORT = envVariables.PORT || 65534;  // Adjust the PORT if needed (e.g., if you encounter a "port already occupied" error)
 
 // Middleware setup
-//  app.use(express.static('../frontend/build')); // Use when testing REACT on department servers
+//app.use(express.static('../frontend/build')); // Use when testing REACT on department servers
 app.use(express.static('./public')); // Use for debugging
 app.use(express.json());             // Parse incoming JSON payloads
 try {
@@ -30,7 +30,7 @@ try {
 
 // mount the router
 app.use('/api/', appController);
-
+app.use('*', express.static('./public'));
 
 // ----------------------------------------------------------
 // Starting the server
