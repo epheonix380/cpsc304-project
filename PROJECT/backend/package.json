@@ -12,7 +12,6 @@
     "write": "node server.js write",
     "sqlite3": "node server.js sqlite3",
     "oracledb": "node server.js oracledb"
-
   },
   "license": "ISC",
   "dependencies": {

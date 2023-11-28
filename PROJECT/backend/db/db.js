@@ -68,24 +68,28 @@ if (mode && mode === "write") {
     isWrite = true;
 }
 
-    const promise = new Promise(async(resolve, reject)=>{
+const promise = new Promise(async(resolve, reject)=>{
+    try {
         pool = await oracledb.createPool(dbConfig);
-        resolve(true);
+    } catch {
+        reject(false);
+    }
+    resolve(true);
 
-    })
-    promise.then(()=>{
-        pool = oracledb.getPool();
-        isOracle = true;
-        console.log("Using oracleDB")
-    }).catch((err) => {
-    console.log(err)
-    isOracle = false;
-    withSQLiteDB(()=>{
-        console.log("Using SQLite");
-    }).catch(()=>{
-        console.log("Unable to connect to either database!\nExiting application...");
-        process.exit();
-    })
+})
+promise.then(()=>{
+    pool = oracledb.getPool();
+    isOracle = true;
+    console.log("Using oracleDB")
+}).catch((err) => {
+console.log(err)
+isOracle = false;
+withSQLiteDB(()=>{
+    console.log("Using SQLite");
+}).catch(()=>{
+    console.log("Unable to connect to either database!\nExiting application...");
+    process.exit();
+})
 })
 
 
