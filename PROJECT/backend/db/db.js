@@ -5,14 +5,11 @@ const envVariables = loadEnvFile('.env');
 const dbConfig = {
     user: envVariables.ORACLE_USER,
     password: envVariables.ORACLE_PASS,
-    connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`,
-    poolMax: 1,
+    connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`
 };
 let isOracle = true;
 let isWrite = false;
 const dbScripts = "dbScripts.sql";
-let poolMade = false;
-let pool;
 
 /*
     This exists because I could not get the oracleDB to work locally
@@ -46,7 +43,7 @@ async function withSQLiteDB(action) {
 async function withOracleDB(action) {
     let connection;
     try {
-        connection = await pool.getConnection(dbConfig);
+        connection = await oracledb.getConnection(dbConfig);
         return await action(connection);
     } catch (err) {
         console.log("Failed to find oracleDB")
@@ -67,30 +64,18 @@ if (mode && mode === "write") {
     fs.writeFileSync(dbScripts,"");
     isWrite = true;
 }
-
-const promise = new Promise(async(resolve, reject)=>{
-    try {
-        pool = await oracledb.createPool(dbConfig);
-    } catch {
-        reject(false);
-    }
-    resolve(true);
-
-})
-promise.then(()=>{
-    pool = oracledb.getPool();
+withOracleDB(() => {
     isOracle = true;
     console.log("Using oracleDB")
-}).catch((err) => {
-console.log(err)
-isOracle = false;
-withSQLiteDB(()=>{
-    console.log("Using SQLite");
-}).catch(()=>{
-    console.log("Unable to connect to either database!\nExiting application...");
-    process.exit();
-})
-})
+}).catch(() => {
+    isOracle = false;
+    withSQLiteDB(()=>{
+        console.log("Using SQLite");
+    }).catch(()=>{
+        console.log("Unable to connect to either database!\nExiting application...");
+        process.exit();
+    })
+});
 
 
 
@@ -98,7 +83,7 @@ withSQLiteDB(()=>{
 async function getFromDB(sql, ...args) {
     return new Promise (async (resolve, reject) =>  {
         if (isWrite) {
-            fs.appendFileSync(dbScripts, `${sql};\n`);
+            fs.appendFileSync(dbScripts, `${sql}\n`);
         }
         if (isOracle) {
             return await withOracleDB(async (connection) => {
@@ -156,7 +141,7 @@ async function testConnection() {
 
 async function run(sql, ...args) {
     if (isWrite) {
-        fs.appendFileSync(dbScripts, `${sql};\n`);
+        fs.appendFileSync(dbScripts, `${sql}\n`);
     }
     return new Promise(async(resolve, reject)=> {
         if(isOracle) {
