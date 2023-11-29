@@ -56,14 +56,15 @@ router.get("/events", async (req, res) => {
 
 router.get("/tickets/:userID", async (req, res) => {
     const userID = req.params.userID;
-    const data = await userService.getUserTickets(userID);
+    const filter = req.body.filter;
+    const data = await userService.getUserTickets(userID, filter);
     if (data) {
         res.json({data});
     } else {
         res.sendStatus(500);
     }
     
-}) 
+})
 
 router.get("/users", async (req, res) => {
     const userID = req.params.userID;

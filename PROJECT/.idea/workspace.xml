@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81425bb8-97a7-47d5-b5b3-d1c261032117" name="Changes" comment="" />
+    <list default="true" id="81425bb8-97a7-47d5-b5b3-d1c261032117" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/appController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/appController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/services/userService.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/services/userService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/MyTickets/MyTickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MyTickets/MyTickets.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,11 +19,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <servers />
   </component>

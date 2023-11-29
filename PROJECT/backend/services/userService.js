@@ -11,14 +11,15 @@ async function getAllUsers() {
 
 }
 
-async function getUserTickets(userid) {
+async function getUserTickets(userid, filter) {
     let sanUserID;
     try {
         sanUserID = parseInt(userid);
     } catch {
         return false;
     }
-    return await db.getFromDB(`
+
+    let query = `
         SELECT Ticket.ticketid, Ticket.cost, Ticket.rownumber, Ticket.seatnumber, 
         Ticket.sectionnumber, Ticket.eventid, EVTable.eventname, EVTable.author,
         EVTable.venuename, EVTable.city, EVTable.starttime
@@ -31,14 +32,24 @@ async function getUserTickets(userid) {
                 Holds.venueid = Venue.venueid
         ) EVTable
         WHERE
-            Issued.userid = \:userid AND
+            Issued.userid = :userid AND
             Issued.ticketid = Ticket.ticketid AND
             Ticket.eventid = EVTable.eventid AND
-            Ticket.venueid = EVTable.venueid
-    `, [sanUserID]).then((res)=>res).catch((err)=>{
+            Ticket.venueid = EVTable.venueid`;
+
+    if (filter) {
+        // if (filter && typeof filter === 'object') {
+        // Iterate through the keys of the filter object and add conditions to the query
+        // Object.keys(filter).forEach((key) => {
+        //     query += ` AND ${key} = :${key}`;
+        // });
+        query += ` AND ${filter}`;
+    }
+
+    return await db.getFromDB(query, [sanUserID]).then((res) => res).catch((err) => {
         console.log(err);
         return false;
-    })
+    });
 }
 
 module.exports = {

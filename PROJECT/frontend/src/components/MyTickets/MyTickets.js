@@ -3,36 +3,100 @@ import React, {useEffect, useState} from "react";
 import {Table, Modal, InputNumber, Checkbox, Select, Input} from "antd";
 
 function MyTickets() {
-    const [tickets, setTickets] = useState([]);
     const [isLoading, setIsLoading] = useState(null);
     const [isError, setIsError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [tickets, setTickets] = useState([]);
+    const [filters, setFilters] = useState([])
+    let andOrOperator = 'and', filterColumn = 'ticketid', filterValue;
+
     const showModal = () => {setIsModalOpen(true)};
     const handleOk = () => {setIsModalOpen(false)};
     const handleCancel = () => {setIsModalOpen(false)};
-    const handleFilterClick = () => {setIsModalOpen(false)};
+
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_URL}/tickets/1`).then(
+    //         (response) => {
+    //             response.json().then(
+    //                 (jsonResponse) => {
+    //                     const data = jsonResponse.data;
+    //                     console.log(data); // remnove this
+    //                     setTickets(data);
+    //                     setIsLoading(false);
+    //                 }
+    //             ).catch(
+    //                 (err)=>{
+    //                     setIsError(true)
+    //                 }
+    //             )
+    //
+    //         }
+    //     ).catch(
+    //         (err)=>{
+    //             console.log(err);
+    //             setIsError(true)
+    //         }
+    //     )
+    // }, []);
+
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_URL}/tickets/1`).then(
+    //         (response) => {
+    //             response.json().then(
+    //                 (jsonResponse) => {
+    //                     const data = jsonResponse.data;
+    //                     console.log(data); // remnove this
+    //                     setTickets(data);
+    //                     setIsLoading(false);
+    //                 }
+    //             ).catch(
+    //                 (err)=>{
+    //                     setIsError(true)
+    //                 }
+    //             )
+    //
+    //         }
+    //     ).catch(
+    //         (err)=>{
+    //             console.log(err);
+    //             setIsError(true)
+    //         }
+    //     )
+    // }, []);
 
     useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const response = await fetch('http://127.0.0.1:3001/tickets/1');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                console.log(response);
-                const jsonResponse = await response.json();
-                const data = jsonResponse.data
-                console.log(data);
-                setTickets(data);
-            } catch(error){
-                setIsError(error.message);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchTickets();
-    }, []);
+        fetch(`${process.env.REACT_APP_URL}/tickets/1`, {
+            method: "POST", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"filter": "Ticket.seatnumber = 1"}),
+        }).then(
+        //     fetch(`${process.env.REACT_APP_URL}/tickets/1`).then(
+                (response) => {
+                    console.log(response)
+                    response.json().then(
+                        (jsonResponse) => {
+                            const data = jsonResponse.data;
+                            setTickets(data);
+                            setIsLoading(false);
+                        }
+                    ).catch(
+                        (err)=>{
+                            console.log(err);
+                            setIsError(true)
+                        }
+                    )
 
+                }
+            ).catch(
+                (err)=>{
+                    console.log(err);
+                    setIsError(true)
+                }
+            )
+
+    }, [filters])
 
     const plainColumns = ['Cost', 'Event', 'Seat#', 'Row#', 'Section#'];
     const columns = [
@@ -99,11 +163,23 @@ function MyTickets() {
             <div>
                 <Select
                     options={filterColumns}
-                    onChange={onChange}
-                    defaultValue="ticketid"
-                /> is equal to <Input placeholder="value" style={{ width: 300 }} />
+                    onChange={(value) => filterColumn = value}
+                    defaultValue={filterColumn}
+                /> is equal to <Input
+                placeholder="value"
+                style={{ width: 300 }}
+                onChange={(value) => filterValue = value} />
             </div>
         )
+    }
+
+    const handleApply = () => {
+        if (filterValue !== undefined) {
+            setFilters(`${filterColumn} = ${filterValue.target.value}`);
+            console.log(andOrOperator, filterColumn, filterValue.target.value);
+        } else {
+            alert("You have not filled out a filter value!")
+        }
     }
 
     return (
@@ -116,11 +192,12 @@ function MyTickets() {
             <FilterItem/>
             <Select
                 options={andOr}
-                onChange={onChange}
-                defaultValue="and"
+                onChange={(value) => andOrOperator = value}
+                defaultValue={andOrOperator}
                 bordered={false}
             />
-            <FilterItem/>
+            {/*<FilterItem/>*/}
+            <button onClick={handleApply}>APPLY</button>
         </div>
         {/*To perform operations and clear selections after selecting some rows,
         use rowSelection.selectedRowKeys to control selected rows.*/}
