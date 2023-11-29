@@ -1,11 +1,13 @@
 import './MyTickets.css'
 import React, {useEffect, useState} from "react";
+import Filters from '../Filters/Filters.js'
 import {Table, Modal, InputNumber, Checkbox, Select, Input} from "antd";
 
 function MyTickets() {
     const [isLoading, setIsLoading] = useState(null);
     const [isError, setIsError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [addedFilter, setAddedFilter] = useState(false);
     const [tickets, setTickets] = useState([]);
     const [filters, setFilters] = useState('')
     let andOrOperator = 'and', filterColumn = 'Ticket.ticketid', filterValue;
@@ -94,44 +96,6 @@ function MyTickets() {
         console.log('checked = ', value);
     };
 
-    const andOr = [
-        {value: 'and', label: 'and'},
-        {value: 'or', label: 'or'},
-    ];
-
-    const FilterItem = () => {
-        const filterColumns = [
-            {value: 'Ticket.ticketid', label: 'Ticket ID'},
-            {value: 'cost', label: 'Cost'},
-            {value: 'event', label: 'Event'},
-            {value: 'seatnumber', label: 'Seat#'},
-            {value: 'rownumber', label: 'Row#'},
-            {value: 'sectionnumber', label: 'Section#'}
-        ];
-
-        return (
-            <div>
-                <Select
-                    options={filterColumns}
-                    onChange={(value) => filterColumn = value}
-                    defaultValue={filterColumn}
-                /> is equal to <Input
-                placeholder="value"
-                style={{ width: 300 }}
-                onChange={(value) => filterValue = value} />
-            </div>
-        )
-    }
-
-    const handleApply = () => {
-        if (filterValue !== undefined) {
-            setFilters(`${filterColumn} = ${filterValue.target.value}`);
-            console.log(andOrOperator, filterColumn, filterValue.target.value);
-        } else {
-            alert("You have not filled out a filter value!")
-        }
-    }
-
     return (
     <div className="mytickets maincontent">
         <div className="filters">
@@ -139,15 +103,7 @@ function MyTickets() {
             <p>What columns would you like to show?</p>
             <Checkbox.Group options={plainColumns} onChange={onChange} />
             <p>What filters would you like to add?</p>
-            <FilterItem/>
-            <Select
-                options={andOr}
-                onChange={(value) => andOrOperator = value}
-                defaultValue={andOrOperator}
-                bordered={false}
-            />
-            {/*<FilterItem/>*/}
-            <button onClick={handleApply}>APPLY</button>
+            <Filters filters={filters} setFilters={setFilters}/>
         </div>
         {/*To perform operations and clear selections after selecting some rows,
         use rowSelection.selectedRowKeys to control selected rows.*/}
