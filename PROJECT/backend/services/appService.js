@@ -41,10 +41,13 @@ async function getAttributesOfTable(tableName) {
     if (sanTableName[0]) {
         if (db.getIsOracle()) { 
             return await db.getFromDB(`
-                SELECT column_name
+                SELECT column_name as name
                 FROM USER_TAB_COLUMNS
                 WHERE table_name = \:tablename
-                `, sanTableName[0]);
+                `, [sanTableName[0].toUpperCase()]).catch((err)=>{
+                    console.log(err)
+                    return [];
+                });
         } else {
             // This is cursed
             const sqlite = sanTableName[0].slice(0,1).toUpperCase() + sanTableName[0].slice(1);

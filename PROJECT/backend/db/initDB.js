@@ -151,8 +151,9 @@ async function initConcessionsVenue(db) {
         CREATE TABLE ConcessionVenue
             (itemname VARCHAR(30),
             venueid INTEGER,
-            PRIMARY KEY (itemname, venueid),
-            FOREIGN KEY (itemname) REFERENCES Concession(itemname),
+            specifier VARCHAR(1),
+            PRIMARY KEY (itemname, specifier, venueid),
+            FOREIGN KEY (itemname, specifier) REFERENCES Concession(itemname, specifier),
             FOREIGN KEY (venueid) REFERENCES Venue(venueid)
             )
     `);

@@ -8,11 +8,11 @@
     "name": "Zoe Yuan"
   },
   "scripts": {
+    "prod":"node prod-server.js",
     "server": "node server.js",
     "write": "node server.js write",
     "sqlite3": "node server.js sqlite3",
     "oracledb": "node server.js oracledb"
-
   },
   "license": "ISC",
   "dependencies": {

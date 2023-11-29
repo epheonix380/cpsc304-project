@@ -100,6 +100,8 @@ async function getFromDB(sql, ...args) {
                 }
                 resolve(final);
             }).catch((err) => {
+                console.log(err);
+
                 reject(err);
             });
         }
@@ -112,6 +114,8 @@ async function getFromDB(sql, ...args) {
                 }
             })
         }).catch((err) => {
+            console.log(err);
+
             reject(err)
         });
     })
@@ -150,6 +154,7 @@ async function run(sql, ...args) {
                     reject(err)
                 }
             }).catch((err) => {
+                console.log(err);
                 reject(err)
             });
         } else {
@@ -165,6 +170,8 @@ async function run(sql, ...args) {
                     reject(err)
                 }
             }).catch((err) => {
+                console.log(err);
+
                 reject(err)
             });
         }

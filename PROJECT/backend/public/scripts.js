@@ -18,7 +18,7 @@ async function checkDbConnection() {
     const statusElem = document.getElementById('dbStatus');
     const loadingGifElem = document.getElementById('loadingGif');
 
-    const response = await fetch('/check-db-connection', {
+    const response = await fetch('/api/check-db-connection', {
         method: "GET"
     });
 
@@ -41,7 +41,7 @@ async function fetchAndDisplayUsers() {
     const tableElement = document.getElementById('demotable');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/tables', {
+    const response = await fetch('/api/tables', {
         method: 'GET'
     });
 
@@ -69,7 +69,7 @@ async function fetchAndDisplayUsers() {
 
 // This function resets or initializes the demotable.
 async function resetDemotable() {
-    const response = await fetch("/initiate-tables", {
+    const response = await fetch("/api/initiate-tables", {
         method: 'POST'
     });
     const responseData = await response.json();
