@@ -1,9 +1,10 @@
 import './Filters.css'
-import React, {useEffect, useState} from "react";
-import {InputNumber, Select, Input} from "antd";
+import React, {useState} from "react";
+import {InputNumber, Select} from "antd";
 
 function Filters({filters, setFilters}) {
     let defaultAndOrOperator = 'and', defaultFilterColumn = 'Ticket.ticketid';
+    const [filtersArray, setFiltersArray] = useState([{ andOr: '', col: defaultFilterColumn, val: '0' }]);
 
     const filterColumns = [
         {value: 'Ticket.ticketid', label: 'Ticket ID'},
@@ -17,11 +18,6 @@ function Filters({filters, setFilters}) {
         {value: 'and', label: 'and'},
         {value: 'or', label: 'or'},
     ];
-
-    const [filtersArray, setFiltersArray] = useState([{ andOr: '', col: defaultFilterColumn, val: '0' }]);
-    const [tickets, setTickets] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
 
     const handleInputChange = (index, andOr, col, val) => {
         const newFiltersArray = [...filtersArray];
@@ -52,8 +48,8 @@ function Filters({filters, setFilters}) {
     return (
         <div>
             {filtersArray.map((filter, index) => (
-                <div key={index}>
-                    {index == 0 ? <></> : (
+                <div key={index} className="filter">
+                    {index === 0 ? <></> : (
                         <Select
                         options={andOr}
                         onChange={(e) => handleInputChange(index, e, filter.col, filter.val)}
@@ -67,7 +63,7 @@ function Filters({filters, setFilters}) {
                     /> is equal to <InputNumber
                     defaultValue={0}
                     onChange={(e) => handleInputChange(index, filter.andOr, filter.col, e)}/>
-                    <button type="button" onClick={() => removeFilter(index)} className="filter">
+                    <button type="button" onClick={() => removeFilter(index)} className="remove">
                         Remove Filter
                     </button>
                 </div>
