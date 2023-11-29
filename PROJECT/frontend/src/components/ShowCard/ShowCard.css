@@ -4,6 +4,7 @@
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 	border-radius: 0.5rem;
 	padding: 1rem;
+	cursor: pointer;
 }
 
 .showcard .location {
@@ -14,4 +15,25 @@
 .showcard .location svg {
 	width: 16px;
 	fill: var(--main-color);
+}
+
+.popup-content {
+	margin: auto;
+	background: rgb(255, 255, 255);
+	width: 50%;
+	padding: 5px;
+}
+.popup-arrow {
+	color: rgb(255, 255, 255);
+}
+[role='tooltip'].popup-content {
+	width: 200px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+	background: rgba(0, 0, 0, 0.5);
+}
+[data-popup='tooltip'].popup-overlay {
+	background: transparent;
 }

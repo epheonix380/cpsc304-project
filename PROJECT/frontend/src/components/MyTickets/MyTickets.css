@@ -1,0 +1,12 @@
+.mytickets {
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.filters {
+    margin-bottom: 50px;
+}
+
+.apply {
+    margin-top: 10px;
+}
