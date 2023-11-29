@@ -7,74 +7,24 @@ function MyTickets() {
     const [isError, setIsError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tickets, setTickets] = useState([]);
-    const [filters, setFilters] = useState([])
-    let andOrOperator = 'and', filterColumn = 'ticketid', filterValue;
+    const [filters, setFilters] = useState('')
+    let andOrOperator = 'and', filterColumn = 'Ticket.ticketid', filterValue;
 
     const showModal = () => {setIsModalOpen(true)};
     const handleOk = () => {setIsModalOpen(false)};
     const handleCancel = () => {setIsModalOpen(false)};
 
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_URL}/tickets/1`).then(
-    //         (response) => {
-    //             response.json().then(
-    //                 (jsonResponse) => {
-    //                     const data = jsonResponse.data;
-    //                     console.log(data); // remnove this
-    //                     setTickets(data);
-    //                     setIsLoading(false);
-    //                 }
-    //             ).catch(
-    //                 (err)=>{
-    //                     setIsError(true)
-    //                 }
-    //             )
-    //
-    //         }
-    //     ).catch(
-    //         (err)=>{
-    //             console.log(err);
-    //             setIsError(true)
-    //         }
-    //     )
-    // }, []);
-
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_URL}/tickets/1`).then(
-    //         (response) => {
-    //             response.json().then(
-    //                 (jsonResponse) => {
-    //                     const data = jsonResponse.data;
-    //                     console.log(data); // remnove this
-    //                     setTickets(data);
-    //                     setIsLoading(false);
-    //                 }
-    //             ).catch(
-    //                 (err)=>{
-    //                     setIsError(true)
-    //                 }
-    //             )
-    //
-    //         }
-    //     ).catch(
-    //         (err)=>{
-    //             console.log(err);
-    //             setIsError(true)
-    //         }
-    //     )
-    // }, []);
-
     useEffect(() => {
+        const filterObj = filters ? { "filter": filters } : {}
+
         fetch(`${process.env.REACT_APP_URL}/tickets/1`, {
             method: "POST", // or 'PUT'
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({"filter": "Ticket.seatnumber = 1"}),
+            body: JSON.stringify(filterObj),
         }).then(
-        //     fetch(`${process.env.REACT_APP_URL}/tickets/1`).then(
                 (response) => {
-                    console.log(response)
                     response.json().then(
                         (jsonResponse) => {
                             const data = jsonResponse.data;
@@ -151,7 +101,7 @@ function MyTickets() {
 
     const FilterItem = () => {
         const filterColumns = [
-            {value: 'ticketid', label: 'Ticket ID'},
+            {value: 'Ticket.ticketid', label: 'Ticket ID'},
             {value: 'cost', label: 'Cost'},
             {value: 'event', label: 'Event'},
             {value: 'seatnumber', label: 'Seat#'},
