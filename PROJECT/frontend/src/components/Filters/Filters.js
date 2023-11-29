@@ -3,27 +3,8 @@ import React, {useEffect, useState} from "react";
 import {InputNumber, Select, Input} from "antd";
 
 function Filters({filters, setFilters}) {
-    // const [filtersArray, setFiltersArray] = useState([{ filterColumn: '', filterValue: ''}]);
-    // let filtersArray = [{ filterColumn: '', filterValue: ''}];
-    // const [addedFilter, setAddedFilter] = useState(false);
-    let defaultAndOrOperator = 'and', defaultFilterColumn = 'Ticket.ticketid', filterValue;
-    //
-    // const handleApply = () => {
-    // //     if (filterValue !== undefined && filterValue >= 0) {
-    // //         setFilters(`${filterColumn} = ${filterValue}`);
-    // //     } else {
-    // //         alert("No negative values allowed! Please input a value.");
-    // //     }
-    // };
-    //
-    // const handleInputChange = (index, filterColumn, filterValue) => {
-    //     // console.log(index);
-    //     const newFilters = [...filtersArray];
-    //     newFilters[0] = { filterColumn, filterValue };
-    //     // setFiltersArray(newFilters);
-    //     console.log(newFilters[0]);
-    // };
-    //
+    let defaultAndOrOperator = 'and', defaultFilterColumn = 'Ticket.ticketid';
+
     const filterColumns = [
         {value: 'Ticket.ticketid', label: 'Ticket ID'},
         {value: 'cost', label: 'Cost'},
@@ -37,34 +18,19 @@ function Filters({filters, setFilters}) {
         {value: 'or', label: 'or'},
     ];
 
-    //
-    //     return (
-    //         <div>
-    //             <Select
-    //                 options={andOr}
-    //                 // onChange={(value) => andOrOperator = value}
-    //                 defaultValue={defaultAndOrOperator}
-    //                 bordered={false}
-    //             />
-    //             <FilterItem/>
-    //         </div>
-    //     )
-    // }
-
-    const [filtersArray, setFiltersArray] = useState([{ andOr: '', col: '', val: '' }]);
+    const [filtersArray, setFiltersArray] = useState([{ andOr: '', col: defaultFilterColumn, val: '0' }]);
     const [tickets, setTickets] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
 
     const handleInputChange = (index, andOr, col, val) => {
         const newFiltersArray = [...filtersArray];
-        newFiltersArray[index] = { andOr, col, val };
+        newFiltersArray[index] = {andOr, col, val };
         setFiltersArray(newFiltersArray);
-        console.log(newFiltersArray);
     };
 
     const addFilter = () => {
-        setFiltersArray([...filtersArray, { andOr: 'and', col: 'Ticket.ticketID', val: '' }]);
+        setFiltersArray([...filtersArray, { andOr: defaultAndOrOperator, col: defaultFilterColumn, val: '0' }]);
     };
 
     const removeFilter = (index) => {
@@ -80,18 +46,20 @@ function Filters({filters, setFilters}) {
         });
         filtersString += ')';
         setFilters(filtersString);
+        console.log(filtersString);
     };
 
     return (
         <div>
             {filtersArray.map((filter, index) => (
                 <div key={index}>
-                    <Select
+                    {index == 0 ? <></> : (
+                        <Select
                         options={andOr}
                         onChange={(e) => handleInputChange(index, e, filter.col, filter.val)}
                         defaultValue={defaultAndOrOperator}
-                        bordered={false}
-                    />
+                        bordered={false}/>)
+                    }
                     <Select
                         options={filterColumns}
                         defaultValue={defaultFilterColumn}
@@ -99,7 +67,7 @@ function Filters({filters, setFilters}) {
                     /> is equal to <InputNumber
                     defaultValue={0}
                     onChange={(e) => handleInputChange(index, filter.andOr, filter.col, e)}/>
-                    <button type="button" onClick={() => removeFilter(index)}>
+                    <button type="button" onClick={() => removeFilter(index)} className="filter">
                         Remove Filter
                     </button>
                 </div>
@@ -107,13 +75,6 @@ function Filters({filters, setFilters}) {
             <button type="button" onClick={addFilter}> Add Filter </button>
             <button onClick={handleApply} className="apply">APPLY</button>
         </div>
-        // <div
-        //     {filtersArray.map((filter, index) => (
-        //         <FilterItem index={index} filterColumn={filter.filterColumn} filterColumn={filter.filterValue}/>
-        //     ))}
-        //     {/*<FilterItem/>*/}
-        //     {addedFilter ? <AddFilterItem/> : <button onClick={handleAddFilter}>ADD A FILTER</button>}
-        // </div>
     );
 }
 
