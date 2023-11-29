@@ -5,7 +5,7 @@ import {Table, Modal, InputNumber, Checkbox, Select, Input} from "antd";
 function MyTickets() {
     const [tickets, setTickets] = useState([]);
     const [isLoading, setIsLoading] = useState(null);
-    const [error, setError] = useState(null);
+    const [isError, setIsError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {setIsModalOpen(true)};
     const handleOk = () => {setIsModalOpen(false)};
@@ -25,7 +25,7 @@ function MyTickets() {
                 console.log(data);
                 setTickets(data);
             } catch(error){
-                setError(error.message);
+                setIsError(error.message);
             } finally {
                 setIsLoading(false);
             }
@@ -72,8 +72,8 @@ function MyTickets() {
         return <div className="maincontent">Loading...</div>;
     }
 
-    if (error) {
-        return <div className="maincontent">Error: {error}</div>;
+    if (isError) {
+        return <div className="maincontent">Error: {isError}</div>;
     }
 
     const onChange = (value) => {
@@ -121,7 +121,6 @@ function MyTickets() {
                 bordered={false}
             />
             <FilterItem/>
-            <button onClick={handleFilterClick} className="apply">APPLY</button>
         </div>
         {/*To perform operations and clear selections after selecting some rows,
         use rowSelection.selectedRowKeys to control selected rows.*/}
