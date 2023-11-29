@@ -30,7 +30,11 @@ function MyTickets() {
                     response.json().then(
                         (jsonResponse) => {
                             const data = jsonResponse.data;
-                            setTickets(data);
+                            const newData = data.map((res, index)=>{
+                                res.key = index;
+                                return res;
+                            })
+                            setTickets(newData);
                             setIsLoading(false);
                         }
                     ).catch(
@@ -95,7 +99,7 @@ function MyTickets() {
     const onChange = (value) => {
         console.log('checked = ', value);
     };
-
+    console.log(tickets)
     return (
     <div className="mytickets maincontent">
         <div className="filters">
@@ -107,7 +111,7 @@ function MyTickets() {
         </div>
         {/*To perform operations and clear selections after selecting some rows,
         use rowSelection.selectedRowKeys to control selected rows.*/}
-        <Table className="table" dataSource={tickets} columns={columns}
+        <Table className="table"  dataSource={tickets} columns={columns}
                rowSelection={{
                    type: "radio",
                    onChange: (selectedRowKeys, selectedRows) => {
