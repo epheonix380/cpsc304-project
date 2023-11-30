@@ -97,6 +97,10 @@ function SwitchUser({user, setUser}) {
         return <div className="maincontent">Error: {isError}</div>;
     }
 
+    const onClick = () => {
+        // do something
+    }
+
     console.log(users);
 
     return (
@@ -117,7 +121,7 @@ function SwitchUser({user, setUser}) {
             {/*</Modal>*/}
             {/*<div>*/}
             {/*    <button onClick={() => showModal('select')} id="select">SELECT TICKET</button>*/}
-            {/*    <button onClick={() => showModal('delete')} id="delete">DELETE</button>*/}
+                <button onClick={onClick}>SWITCH USER</button>
             {/*</div>*/}
         </div>
     );

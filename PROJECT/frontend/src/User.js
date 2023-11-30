@@ -103,6 +103,7 @@ export default function User() {
 
     return (
         <div className="container">
+            <a href="/" className="home">HOME</a>
             <h1> Welcome, {name}! Your userid is {userid}.</h1>
 
             <h3> Contact details: </h3>

@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81425bb8-97a7-47d5-b5b3-d1c261032117" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/SwitchUser/SwitchUser.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/SwitchUser/SwitchUser.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/User.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/User.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/User.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SwitchUser/SwitchUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SwitchUser/SwitchUser.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
