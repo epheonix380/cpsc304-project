@@ -11,6 +11,26 @@ async function getAllUsers() {
 
 }
 
+async function getUser(userid) {
+    let sanUserID;
+    try {
+        sanUserID = parseInt(userid);
+    } catch {
+        return false;
+    }
+
+    let query = `
+        SELECT * FROM Customer
+        WHERE userid = :userid`;
+
+    return await db.getFromDB(query, [sanUserID])
+        .then((res) => res)
+        .catch((err) => {
+            console.log(err);
+            return false;
+        });
+}
+
 async function getUserTickets(userid, filter) {
     let sanUserID;
     try {
@@ -41,13 +61,16 @@ async function getUserTickets(userid, filter) {
         query += ` AND ${filter}`;
     }
 
-    return await db.getFromDB(query, [sanUserID]).then((res) => res).catch((err) => {
-        console.log(err);
-        return false;
-    });
+    return await db.getFromDB(query, [sanUserID])
+        .then((res) => res)
+        .catch((err) => {
+            console.log(err);
+            return false;
+        });
 }
 
 module.exports = {
     getUserTickets,
+    getUser,
     getAllUsers
 }

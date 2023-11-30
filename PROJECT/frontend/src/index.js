@@ -8,12 +8,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Admin from './Admin';
+import User from './User';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
   {
     path:"admin",
     element: <Admin/>, 
+  },
+  {
+    path:"user",
+    element: <User/>,
   },
   {
     path:"/",

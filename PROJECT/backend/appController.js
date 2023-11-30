@@ -75,7 +75,18 @@ router.get("/users", async (req, res) => {
         res.sendStatus(500);
     }
     
-}) 
+})
+
+router.get("/user/:userID", async (req, res) => {
+    const userID = req.params.userID;
+    const data = await userService.getUser(userID);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+
+})
 
 router.get("/concessions/:venueid", async (req, res) => {
     const venueueid = req.params.venueid;
