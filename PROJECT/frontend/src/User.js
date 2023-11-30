@@ -74,7 +74,12 @@ export default function User() {
             (response) => {
                 response.json().then(
                     (jsonResponse) => {
-                        // const data = jsonResponse.data;
+                        console.log(jsonResponse);
+                        if (jsonResponse.data.error &&
+                            jsonResponse.data.error ===
+                            "SQLITE_CONSTRAINT: UNIQUE constraint failed: Customer.username") {
+                            alert("You have entered a username that already exists! Please try again.")
+                        }
                         setIsLoading(false);
                     }
                 ).catch(
@@ -91,10 +96,9 @@ export default function User() {
                 setIsError(true)
             }
         )
-
+        setTimeout(10000);
         window.location.reload();
     }
-    // TODO: handle for if username already exists in DB
 
     return (
         <div className="container">

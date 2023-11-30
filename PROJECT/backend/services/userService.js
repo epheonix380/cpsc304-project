@@ -52,8 +52,8 @@ async function updateUser(userid, name, city, username, password) {
             throw new Error('Invalid password');
         }
         sanPassword = password;
-    } catch {
-        return { success: false, message: 'Input validation failed', error: error.message };
+    } catch(err) {
+        return { success: false, message: 'Input validation failed', error: err.message };
     }
 
     let query = `
@@ -66,8 +66,7 @@ async function updateUser(userid, name, city, username, password) {
             return {success: true, message: 'Update successful'};
         })
         .catch((err) => {
-            console.log(err);
-            return { success: false, message: 'Update failed', error: err.message };
+            return {success: false, message: 'Update failed', error: err.message};
         });
 }
 
