@@ -45,6 +45,17 @@ async function getSection(eventid, venueid, amount) {
     `, [sanEventID, sanVenueID, sanAmount])
 }
 
+async function getUnsoldTickets() {
+    return await db.getFromDB(`
+        SELECT Ticket.*
+        FROM Ticket
+        EXCEPT
+        SELECT Ticket.*
+        FROM Ticket, Issued
+        WHERE Ticket.ticketid = Issued.ticketid
+    `)
+}
+
 async function purchaseTicket(userid, list) {
     const successList = [];
     let sanUserID;
@@ -89,5 +100,6 @@ async function deleteTicket(ticketid) {
 module.exports = {
     getSection,
     purchaseTicket,
-    deleteTicket
+    deleteTicket,
+    getUnsoldTickets
 }

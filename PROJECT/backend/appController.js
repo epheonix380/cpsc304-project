@@ -54,6 +54,24 @@ router.get("/events", async (req, res) => {
     }
 })
 
+router.get("/tickets/unsold", async (req, res) => {
+    const data = await ticketService.getUnsoldTickets();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
+router.get("/tour", async (req, res) => {
+    const data = await eventService.canadianTour();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
 router.delete("/tickets/:ticketid", async (req, res) => {
     const ticketid = req.params.ticketid;
     const data = await ticketService.deleteTicket(ticketid);
