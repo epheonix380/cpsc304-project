@@ -10,11 +10,11 @@ function insertCityProvinceMap(city, province) {
     `)
 }
 
-function insertCustomer(userid, name, city, password) {
+function insertCustomer(userid, name, city, username, password) {
     return db.run(`
         INSERT INTO Customer 
-            (userid, customername, city, password) values
-            (${userid}, '${name}', '${city}', '${password}')
+            (userid, customername, city, username, password) values
+            (${userid}, '${name}', '${city}', '${username}', '${password}')
     `)
 }
 
@@ -104,11 +104,11 @@ async function insertData() {
         
         
         // Insert Customer
-        await insertCustomer(1, "John", "Vancouver", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(2, "Sarah", "Calgary", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(3, "Peter", "Toronto", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(4, "Bella", "Montreal", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(5, "Bob", "Victoria", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(1, "John", "Vancouver", "john%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(2, "Sarah", "Calgary", "sarah%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(3, "Peter", "Toronto", "peter%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(4, "Bella", "Montreal", "bella%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(5, "Bob", "Victoria", "bob%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
 
 
         // Insert Vendor

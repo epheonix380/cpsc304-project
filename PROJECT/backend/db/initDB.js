@@ -79,10 +79,11 @@ async function initCustomer(db) {
             CREATE TABLE Customer
                 (userid INTEGER PRIMARY KEY,
                 customername VARCHAR(30),
-                username VARCHAR(16) UNIQUE,
                 city VARCHAR(30),
+                username VARCHAR(16),
                 password VARCHAR(64),
-                FOREIGN KEY (city) REFERENCES CityProvinceMap(city)
+                FOREIGN KEY (city) REFERENCES CityProvinceMap(city),
+                UNIQUE (username)
                 )
         `);
 

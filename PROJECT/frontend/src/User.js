@@ -3,14 +3,10 @@ import React, { useEffect, useState } from "react";
 import {Input, Space} from "antd";
 
 export default function User() {
-    const [user, setUser] = useState([{userid: 0, customername: '', city: '', password: ''}]);
-    // refactor to add username
+    const [user, setUser] = useState([{userid: 1, customername: '', city: '', username: '', password: ''}]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
-    let name = "*John", city, username, password, userid;
-    let newName, newCity, newUsername, newPassword;
-    const [newUser, setNewUser] = useState([{userid: 0, customername: '', city: '', password: ''}]);
-    // refactor to add username
+    let name, city, username, password, userid;
 
     useEffect(()=>{
             fetch(`${process.env.REACT_APP_URL}/user/1`).then(
@@ -36,12 +32,15 @@ export default function User() {
             )
     }, [])
 
-
     name = user[0].customername;
     city = user[0].city;
-    username = 'username here';
+    username = user[0].username;
     password = user[0].password;
     userid = user[0].userid;
+
+    let newName = name, newCity = city, newUsername = username, newPassword = password;
+    const [newUser, setNewUser] =
+        useState([{userid: 1, customername: name, city: city, username: username, password: password}]);
 
     if (isLoading) {
         return <div className="maincontent">Loading...</div>;
@@ -65,7 +64,10 @@ export default function User() {
     }
 
     const onClick = (e) => {
-        setNewUser({userid: userid, customername: newName, city: newCity, password: newPassword})
+        console.log({
+            userid: userid, customername: newName, city: newCity, username: newUsername, password: newPassword
+        });
+        setNewUser({userid: userid, customername: newName, city: newCity, username: newUsername, password: newPassword})
         // window.location.reload();
     }
     // TODO: handle for if username already exists in DB
