@@ -1,12 +1,12 @@
 import './SwitchUser.css'
 import React, {useEffect, useState} from "react";
-import {Modal, Select} from "antd";
+import {Select} from "antd";
 
-function SwitchUser({user, setUser}) {
+function SwitchUser({userID, setUserID}) {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
-    let chosenUser = user;
+    let chosenUserID = userID;
 
     useEffect(()=>{
         fetch(`${process.env.REACT_APP_URL}/users`).then(
@@ -41,7 +41,7 @@ function SwitchUser({user, setUser}) {
     }
 
     const handleUserUpdate = (userid) => {
-        chosenUser = users.find((u) => u.userid === userid);
+        chosenUserID = userid;
     }
 
     return (
@@ -54,7 +54,9 @@ function SwitchUser({user, setUser}) {
                     placeholder={"Choose an option"}
                     onChange={handleUserUpdate}
                 />
-                <button onClick={(e) => console.log(chosenUser)} id="switch-user">SWITCH USER</button>
+                <button onClick={(e) => {
+                    setUserID(chosenUserID);
+                }} id="switch-user">SWITCH USER</button>
         </div>
     );
 }

@@ -5,6 +5,7 @@ import SwitchUser from './components/SwitchUser/SwitchUser';
 
 export default function User() {
     const [user, setUser] = useState([{userid: 1, customername: '', city: '', username: '', password: ''}]);
+    const [userID, setUserID] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     let name, city, username, password, userid;
@@ -16,7 +17,7 @@ export default function User() {
     userid = user[0].userid;
 
     useEffect(()=>{
-            fetch(`${process.env.REACT_APP_URL}/user/${userid}`).then(
+            fetch(`${process.env.REACT_APP_URL}/user/${userID}`).then(
                 (response) => {
                     response.json().then(
                         (jsonResponse) => {
@@ -37,7 +38,7 @@ export default function User() {
                     setIsError(true)
                 }
             )
-    }, [])
+    }, [userID])
 
 
     let newName = name, newCity = city, newUsername = username, newPassword = password;
@@ -63,10 +64,12 @@ export default function User() {
         }
     }
 
-    const onClick = (e) => {
+    const handleUpdateUser = (e) => {
         const newUser = {customername: newName, city: newCity, username: newUsername, password: newPassword};
+        console.log(userID);
+        console.log(newUser);
 
-        fetch(`${process.env.REACT_APP_URL}/update/1`, {
+        fetch(`${process.env.REACT_APP_URL}/update/${userID}`, {
             method: "POST", // or 'PUT'
             headers: {
                 "Content-Type": "application/json",
@@ -77,10 +80,19 @@ export default function User() {
                 response.json().then(
                     (jsonResponse) => {
                         console.log(jsonResponse);
-                        if (jsonResponse.data.error &&
-                            jsonResponse.data.error ===
-                            "SQLITE_CONSTRAINT: UNIQUE constraint failed: Customer.username") {
-                            alert("You have entered a username that already exists! Please try again.")
+                        if (jsonResponse.data.error) {
+                            if (jsonResponse.data.error ===
+                                "SQLITE_CONSTRAINT: UNIQUE constraint failed: Customer.username") {
+                                alert("You have entered a username that already exists! Please try again.")
+                            } else if (jsonResponse.data.error === "Invalid name") {
+                                alert("You have entered an invalid name! Please try again.")
+                            } else if (jsonResponse.data.error === "Invalid city") {
+                                alert("You have entered an invalid city! Please try again.")
+                            } else if (jsonResponse.data.error === "Invalid username") {
+                                alert("You have entered an invalid username! Please try again.")
+                            } else if (jsonResponse.data.error === "Invalid password") {
+                                alert("You have entered an invalid password! Please try again.")
+                            } // lol pls refactor
                         }
                         setIsLoading(false);
                     }
@@ -98,14 +110,16 @@ export default function User() {
                 setIsError(true)
             }
         )
-        setTimeout(10000);
+    }
+
+    const handleRefreshUser = () => {
         window.location.reload();
     }
 
     return (
         <div className="container">
             <a href="/" className="home">HOME</a>
-            <h1> Welcome, {name}! Your userid is {userid}.</h1>
+            <h1> Welcome, {name}! Your userID is {userid}.</h1>
 
             <h3> Contact details: </h3>
             <p> City: {city} </p>
@@ -122,8 +136,9 @@ export default function User() {
             <p> New Password: </p> <Space.Compact><Input showCount maxLength={64}
                                                          onChange={(e) => onChange(e, "password")} /></Space.Compact>
             <p/>
-            <button onClick={onClick}>UPDATE USER</button>
-            <SwitchUser user={user} setUser={setUser} />
+            <button onClick={handleUpdateUser}>UPDATE USER</button>
+            <button onClick={handleRefreshUser}>REFRESH USER</button>
+            <SwitchUser userID={userID} setUserID={setUserID} />
         </div>
     )
 }

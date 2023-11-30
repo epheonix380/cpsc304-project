@@ -32,7 +32,7 @@ async function getUser(userid) {
 }
 
 async function updateUser(userid, name, city, username, password) {
-    const re = /[a-zA-Z][a-zA-Z1-9]*/;
+    const re = /^[a-zA-Z][a-zA-Z0-9 ]*$|^[0-9]+$/;
     let sanUserID, sanName, sanCity, sanUsername, sanPassword;
     try {
         sanUserID = parseInt(userid);
