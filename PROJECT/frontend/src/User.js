@@ -52,22 +52,21 @@ export default function User() {
     }
 
     const onChange = (e, type) => {
+        const value = e.target.value;
         if (type === "name") {
-            newName = e;
+            newName = value;
         } else if (type === "city") {
-            newCity = e;
+            newCity = value;
         } else if (type === "username") {
-            newUsername = e;
+            newUsername = value;
         } else if (type === "password") {
-            newPassword = e;
+            newPassword = value;
         }
     }
 
     const onClick = (e) => {
         setNewUser({userid: userid, customername: newName, city: newCity, password: newPassword})
-        // refactor to add username
-        window.location.reload();
-        console.log(e);
+        // window.location.reload();
     }
     // TODO: handle for if username already exists in DB
 
