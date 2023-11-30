@@ -1,9 +1,16 @@
+import './User.css';
 import React, { useEffect, useState } from "react";
+import {Input, Space} from "antd";
 
 export default function User() {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState([{userid: 0, customername: '', city: '', password: ''}]);
+    // refactor to add username
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+    let name = "*John", city, username, password, userid;
+    let newName, newCity, newUsername, newPassword;
+    const [newUser, setNewUser] = useState([{userid: 0, customername: '', city: '', password: ''}]);
+    // refactor to add username
 
     useEffect(()=>{
             fetch(`${process.env.REACT_APP_URL}/user/1`).then(
@@ -29,10 +36,12 @@ export default function User() {
             )
     }, [])
 
-    const name = user[0].customername;
-    const city = user[0].city;
-    const password = user[0].password;
-    const userid = user[0].userid;
+
+    name = user[0].customername;
+    city = user[0].city;
+    username = 'username here';
+    password = user[0].password;
+    userid = user[0].userid;
 
     if (isLoading) {
         return <div className="maincontent">Loading...</div>;
@@ -42,59 +51,46 @@ export default function User() {
         return <div className="maincontent">Error: {isError}</div>;
     }
 
+    const onChange = (e, type) => {
+        if (type === "name") {
+            newName = e;
+        } else if (type === "city") {
+            newCity = e;
+        } else if (type === "username") {
+            newUsername = e;
+        } else if (type === "password") {
+            newPassword = e;
+        }
+    }
+
+    const onClick = (e) => {
+        setNewUser({userid: userid, customername: newName, city: newCity, password: newPassword})
+        // refactor to add username
+        window.location.reload();
+        console.log(e);
+    }
+    // TODO: handle for if username already exists in DB
+
     return (
-        <div>
-            <h1>
-                Welcome, {name}!
-            </h1>
+        <div className="container">
+            <h1> Welcome, {name}! Your userid is {userid}.</h1>
+
+            <h3> Contact details: </h3>
+            <p> City: {city} </p>
+            <p> Username: {username} </p>
+            <p> Password: {password} </p>
+
+            <h3> Update contact details: </h3>
+            <p> New Name: </p> <Space.Compact><Input showCount maxLength={30}
+                                                     onChange={(e) => onChange(e, "name")} /></Space.Compact>
+            <p> New City: </p> <Space.Compact><Input showCount maxLength={30}
+                                                     onChange={(e) => onChange(e, "city")} /></Space.Compact>
+            <p> New Username: </p> <Space.Compact><Input showCount maxLength={16}
+                                                         onChange={(e) => onChange(e, "username")} /></Space.Compact>
+            <p> New Password: </p> <Space.Compact><Input showCount maxLength={64}
+                                                         onChange={(e) => onChange(e, "password")} /></Space.Compact>
+            <p/>
+            <button onClick={onClick}>UPDATE USER</button>
         </div>
-        // <div>
-        //     <a href="/">Home</a>
-        //     <div>
-        //         <InputLabel id="table-names">Table Name</InputLabel>
-        //         <Select
-        //         labelId="table-names"
-        //         id="table-names"
-        //         value={table}
-        //         onChange={handleTableName}
-        //         >
-        //             {tableNameItems}
-        //         </Select>
-        //         <Select
-        //         labelId="table-attributes"
-        //         id="table-attributes"
-        //         value={attributes}
-        //         multiple
-        //         renderValue={(selected) => selected.join(', ')}
-        //         onChange={handleTableAttribute}
-        //         >
-        //             {tableAttributeItems}
-        //         </Select>
-        //     </div>
-        //     <div>
-        //         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        //             <TableHead>
-        //             <TableRow>
-        //                 {attributes.map((value)=>{
-        //                     return <TableCell>{value}</TableCell>
-        //                 })}
-        //             </TableRow>
-        //             </TableHead>
-        //             <TableBody>
-        //                 {tableData.map((row)=>{
-        //                     return (
-        //                         <TableRow>
-        //                             {Object.values(row).map((cell)=>{
-        //                                 return (
-        //                                     <TableCell>{cell}</TableCell>
-        //                                 )
-        //                             })}
-        //                         </TableRow>
-        //                     )
-        //                 })}
-        //             </TableBody>
-        //         </Table>
-        //     </div>
-        // </div>
     )
 }
