@@ -104,11 +104,11 @@ async function insertData() {
         
         
         // Insert Customer
-        await insertCustomer(1, "John", "Vancouver", "john%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(2, "Sarah", "Calgary", "sarah%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(3, "Peter", "Toronto", "peter%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(4, "Bella", "Montreal", "bella%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
-        await insertCustomer(5, "Bob", "Victoria", "bob%user", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(1, "John", "Vancouver", "johnuser", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(2, "Sarah", "Calgary", "sarahuser", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(3, "Peter", "Toronto", "peteruser", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(4, "Bella", "Montreal", "bellauser", "12345").catch((err)=>console.log(`Customer: ${err}`));
+        await insertCustomer(5, "Bob", "Victoria", "bobuser", "12345").catch((err)=>console.log(`Customer: ${err}`));
 
 
         // Insert Vendor

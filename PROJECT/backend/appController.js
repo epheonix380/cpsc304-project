@@ -88,6 +88,18 @@ router.get("/user/:userID", async (req, res) => {
 
 })
 
+router.post("/update/:userID", async (req, res) => {
+    const userID = req.params.userID;
+    const { customername, city, username, password } = req.body;
+    const data = await userService.updateUser(userID, customername, city, username, password);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+
+})
+
 router.get("/concessions/:venueid", async (req, res) => {
     const venueueid = req.params.venueid;
     const data = await miscService.getConcessions(venueueid);

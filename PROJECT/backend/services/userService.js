@@ -31,6 +31,46 @@ async function getUser(userid) {
         });
 }
 
+async function updateUser(userid, name, city, username, password) {
+    const re = /[a-zA-Z][a-zA-Z1-9]*/;
+    let sanUserID, sanName, sanCity, sanUsername, sanPassword;
+    try {
+        sanUserID = parseInt(userid);
+        if (!re.test(name)) {
+            throw new Error('Invalid name');
+        }
+        sanName = name;
+        if (!re.test(city)) {
+            throw new Error('Invalid city');
+        }
+        sanCity = city;
+        if (!re.test(username)) {
+            throw new Error('Invalid username');
+        }
+        sanUsername = username;
+        if (!re.test(password)) {
+            throw new Error('Invalid password');
+        }
+        sanPassword = password;
+    } catch {
+        return { success: false, message: 'Input validation failed', error: error.message };
+    }
+
+    let query = `
+        UPDATE Customer
+        SET customername = :name, city = :city, username = :username, password = :password
+        WHERE userid = :userid`;
+
+    return await db.run(query, [sanName, sanCity, sanUsername, sanPassword, sanUserID])
+        .then((res) => {
+            return {success: true, message: 'Update successful'};
+        })
+        .catch((err) => {
+            console.log(err);
+            return { success: false, message: 'Update failed', error: err.message };
+        });
+}
+
 async function getUserTickets(userid, filter) {
     let sanUserID;
     try {
@@ -72,5 +112,6 @@ async function getUserTickets(userid, filter) {
 module.exports = {
     getUserTickets,
     getUser,
+    updateUser,
     getAllUsers
 }

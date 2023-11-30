@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import {Input, Space} from "antd";
 
 export default function User() {
-    const [user, setUser] = useState([{userid: 1, customername: '', city: '', username: '', password: ''}]);
+    const [user, setUser] = useState([{customername: '', city: '', username: '', password: ''}]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     let name, city, username, password, userid;
@@ -39,8 +39,6 @@ export default function User() {
     userid = user[0].userid;
 
     let newName = name, newCity = city, newUsername = username, newPassword = password;
-    const [newUser, setNewUser] =
-        useState([{userid: 1, customername: name, city: city, username: username, password: password}]);
 
     if (isLoading) {
         return <div className="maincontent">Loading...</div>;
@@ -64,11 +62,37 @@ export default function User() {
     }
 
     const onClick = (e) => {
-        console.log({
-            userid: userid, customername: newName, city: newCity, username: newUsername, password: newPassword
-        });
-        setNewUser({userid: userid, customername: newName, city: newCity, username: newUsername, password: newPassword})
-        // window.location.reload();
+        const newUser = {customername: newName, city: newCity, username: newUsername, password: newPassword};
+
+        fetch(`${process.env.REACT_APP_URL}/update/1`, {
+            method: "POST", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        }).then(
+            (response) => {
+                response.json().then(
+                    (jsonResponse) => {
+                        // const data = jsonResponse.data;
+                        setIsLoading(false);
+                    }
+                ).catch(
+                    (err)=>{
+                        console.log(err);
+                        setIsError(true)
+                    }
+                )
+
+            }
+        ).catch(
+            (err)=>{
+                console.log(err);
+                setIsError(true)
+            }
+        )
+
+        window.location.reload();
     }
     // TODO: handle for if username already exists in DB
 
