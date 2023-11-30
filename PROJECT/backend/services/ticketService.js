@@ -73,7 +73,21 @@ async function purchaseTicket(userid, list) {
 
 }
 
+async function deleteTicket(ticketid) {
+    let sanTicketID;
+    try {
+        sanTicketID = parseInt(ticketid);
+    } catch {
+        return false;
+    }
+    return await db.run(`
+            DELETE FROM Issued WHERE ticketid = \:ticketid
+        `,[sanTicketID]).then(()=>true).catch(()=>false)
+
+}
+
 module.exports = {
     getSection,
     purchaseTicket,
+    deleteTicket
 }

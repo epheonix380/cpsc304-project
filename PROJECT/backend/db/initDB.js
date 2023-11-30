@@ -225,6 +225,7 @@ async function initIssued(db) {
             (ticketid INTEGER,
             userid INTEGER,
             PRIMARY KEY (ticketid, userid),
+            UNIQUE (ticketid),
             FOREIGN KEY (ticketid) REFERENCES Ticket(ticketid),
             FOREIGN KEY (userid) REFERENCES Customer(userid)
             )

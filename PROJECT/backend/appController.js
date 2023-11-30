@@ -54,6 +54,17 @@ router.get("/events", async (req, res) => {
     }
 })
 
+router.delete("/tickets/:ticketid", async (req, res) => {
+    const ticketid = req.params.ticketid;
+    const data = await ticketService.deleteTicket(ticketid);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
+})
+
 router.post("/tickets/:userID", async (req, res) => {
     const userID = req.params.userID;
     const filter = req.body.filter;
