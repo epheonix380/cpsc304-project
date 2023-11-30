@@ -4,13 +4,19 @@ import {Input, Space} from "antd";
 import SwitchUser from './components/SwitchUser/SwitchUser';
 
 export default function User() {
-    const [user, setUser] = useState([{customername: '', city: '', username: '', password: ''}]);
+    const [user, setUser] = useState([{userid: 1, customername: '', city: '', username: '', password: ''}]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     let name, city, username, password, userid;
 
+    name = user[0].customername;
+    city = user[0].city;
+    username = user[0].username;
+    password = user[0].password;
+    userid = user[0].userid;
+
     useEffect(()=>{
-            fetch(`${process.env.REACT_APP_URL}/user/1`).then(
+            fetch(`${process.env.REACT_APP_URL}/user/${userid}`).then(
                 (response) => {
                     response.json().then(
                         (jsonResponse) => {
@@ -33,11 +39,6 @@ export default function User() {
             )
     }, [])
 
-    name = user[0].customername;
-    city = user[0].city;
-    username = user[0].username;
-    password = user[0].password;
-    userid = user[0].userid;
 
     let newName = name, newCity = city, newUsername = username, newPassword = password;
 
