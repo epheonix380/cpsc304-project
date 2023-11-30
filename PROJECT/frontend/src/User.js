@@ -1,6 +1,7 @@
 import './User.css';
 import React, { useEffect, useState } from "react";
 import {Input, Space} from "antd";
+import SwitchUser from './components/SwitchUser/SwitchUser';
 
 export default function User() {
     const [user, setUser] = useState([{customername: '', city: '', username: '', password: ''}]);
@@ -120,6 +121,7 @@ export default function User() {
                                                          onChange={(e) => onChange(e, "password")} /></Space.Compact>
             <p/>
             <button onClick={onClick}>UPDATE USER</button>
+            <SwitchUser user={user} setUser={setUser} />
         </div>
     )
 }
