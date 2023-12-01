@@ -60,11 +60,20 @@ function Shows() {
   if (error) {
     return <div className="maincontent">Error: {error}</div>;
   }
-  
+  // <ShowCard show={show} />
 
   return (
     <div className="shows maincontent">
-      {shows.map(show => (<ShowCard show={show} />))}
+      {shows.map((show) => {
+        let thisMinCost = -1;
+        const filtered = minCosts.filter((costObj) => (costObj.venueid === show.venueid) && (costObj.eventid === show.eventid));
+        // console.log(`filtered: ${JSON.stringify(filtered)}`)
+        if (filtered.length >= 1){
+          thisMinCost = filtered[0].minCost;
+        }
+        return <ShowCard show={show} minCost={thisMinCost} />
+        })
+      }
     </div>
   );
 }
