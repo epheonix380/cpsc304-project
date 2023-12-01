@@ -3,7 +3,7 @@ import './ShowCard.css'
 import React, {useState} from "react";
 import {InputNumber, Modal} from "antd";
 
-function ShowCard({show}) {
+function ShowCard({show, minCost}) {
 
   // {"eventid":1,"type":"CNCRT","eventname":"Eras Tour","author":"Taylor Swift","description":"I heard its good","starttime":"2023-11-04","venueid":1,"venuename":"Rogers Arena","city":"Vancouver"}
   const id = show.eventid;
@@ -27,6 +27,7 @@ function ShowCard({show}) {
     };
 
 
+    // console.log(`minCost:${minCost}`);
 
     const handleOk = () => {
       console.log(inputValue);

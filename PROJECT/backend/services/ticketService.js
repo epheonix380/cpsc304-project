@@ -97,9 +97,18 @@ async function deleteTicket(ticketid) {
 
 }
 
+async function getTicketLowestCostPerShow() {
+    return await db.getFromDB(`
+        SELECT Ticket.eventid, Ticket.venueid, MIN(Ticket.cost) as minCost
+                FROM Ticket
+                GROUP BY Ticket.eventid, Ticket.venueid`
+        )
+}
+
 module.exports = {
     getSection,
     purchaseTicket,
     deleteTicket,
-    getUnsoldTickets
+    getUnsoldTickets,
+    getTicketLowestCostPerShow
 }

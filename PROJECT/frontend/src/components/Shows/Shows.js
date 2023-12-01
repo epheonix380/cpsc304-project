@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 function Shows() {
   const [shows, setShows] = useState([]);
+  const [minCosts, setMinCosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,7 +15,7 @@ function Shows() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        console.log(response);
+        // console.log(response);
         const jsonResponse = await response.json();
         const data = jsonResponse.data
         console.log(data);
@@ -25,7 +26,31 @@ function Shows() {
         setIsLoading(false);
       }
     };
-    fetchShows();
+
+    const fetchLowestCosts = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_URL}//tickets/low`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        // console.log(response);
+        const jsonResponse = await response.json();
+        const data = jsonResponse.data
+        console.log(data);
+        setMinCosts(data);
+      } catch(error){
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const fetchShowsAndCosts = async () => {
+      await fetchShows();
+      await fetchLowestCosts();
+    }
+    fetchShowsAndCosts();
+    
   }, []);
 
   if (isLoading) {
@@ -35,13 +60,21 @@ function Shows() {
   if (error) {
     return <div className="maincontent">Error: {error}</div>;
   }
-
+  
 
   return (
     <div className="shows maincontent">
-      {shows.map(show => (<ShowCard show={show}/>))}
+      {shows.map(show => (<ShowCard show={show} />))}
     </div>
   );
 }
 
+
+
 export default Shows;
+
+
+
+
+
+
