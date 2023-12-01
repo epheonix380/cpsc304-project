@@ -80,7 +80,7 @@ function ShowCard({show}) {
         const jsonResponse = await response.json();
         const data = jsonResponse.data
         console.log(`successful tickets: ${data}`);
-        
+        alert("Ticket purchase was successful!")
       } catch(error){
         setError(error.message);
       } finally {
