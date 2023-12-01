@@ -105,6 +105,7 @@ export default function User() {
                 console.log(data);
             alert("User delete successful!")
           } catch(error){
+            alert("User delete failed! Please try again.")
             console.log(error);
           }
         };
