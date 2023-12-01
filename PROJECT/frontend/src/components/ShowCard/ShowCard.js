@@ -3,7 +3,7 @@ import './ShowCard.css'
 import React, {useState} from "react";
 import {InputNumber, Modal} from "antd";
 
-function ShowCard({show}) {
+function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
 
   // {"eventid":1,"type":"CNCRT","eventname":"Eras Tour","author":"Taylor Swift","description":"I heard its good","starttime":"2023-11-04","venueid":1,"venuename":"Rogers Arena","city":"Vancouver"}
   const id = show.eventid;
@@ -13,7 +13,7 @@ function ShowCard({show}) {
   const description = show.description;
   const venue = `${show.venuename}, ${show.city}`;
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(modalOpen);
     const [inputValue, setInputValue] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -80,6 +80,7 @@ function ShowCard({show}) {
         const jsonResponse = await response.json();
         const data = jsonResponse.data
         console.log(`successful tickets: ${data}`);
+        onPurchase();
         
       } catch(error){
         setError(error.message);

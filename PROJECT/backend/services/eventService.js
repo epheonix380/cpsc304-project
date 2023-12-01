@@ -88,7 +88,7 @@ async function canadianTour() {
 
 async function getVenuesFromEventID(eventid) {
     const datetime = new Date(Date.now())
-    const datetimeString = `${datetime.getFullYear()}-${datetime.getMonth()+1}-${datetime.getDate()}`
+    const datetimeString = `${datetime.getFullYear()}-${datetime.getMonth()}-${datetime.getDate()}`
     let sanEventID;
     try {
         sanEventID = parseInt(eventid);

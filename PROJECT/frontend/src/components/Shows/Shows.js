@@ -39,12 +39,6 @@ function Shows() {
 
   return (
     <div className="shows maincontent">
-      <div className='canadianTour maincontent'>
-
-      </div>
-      <div className='multicityTour maincontent'>
-        
-      </div>
       {shows.map(show => (<ShowCard show={show}/>))}
     </div>
   );
