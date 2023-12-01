@@ -5,7 +5,7 @@ import SwitchUser from './components/SwitchUser/SwitchUser';
 
 export default function User() {
     const [user, setUser] = useState([{userid: 1, customername: '', city: '', username: '', password: ''}]);
-    const [userID, setUserID] = useState(3);
+    const [userID, setUserID] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     let name, city, username, password, userid;
@@ -64,8 +64,34 @@ export default function User() {
         }
     }
 
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_URL}/users`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log(response);
+        const jsonResponse = await response.json();
+        const data = jsonResponse.data
+        console.log(data);
+        return data;
+      } catch(error){
+            console.log(error);
+      }    
+  };
+
+
+  const changeUser = async() => {
+            const remainingUsers = await fetchUsers();
+            const nextUser = remainingUsers[0];
+            setUserID(nextUser.userid);
+        };
+
     const handleDeleteUser = (e) => {
-        const DeleteUser = async () => {
+        if (userID == 1) {
+            return;
+        }
+        const deleteUser = async () => {
           try {
             const response = await fetch(`${process.env.REACT_APP_URL}/delete/${userID}`, {
                 method: "DELETE"
@@ -81,8 +107,14 @@ export default function User() {
             console.log(error);
           }
         };
-        DeleteUser();
-        setUserID(prevID => prevID + 1);
+        
+
+        const deleteAndChangeUser = async() => {
+            await deleteUser();
+            await changeUser();
+        }
+        deleteAndChangeUser();
+        
     }
 
     const handleUpdateUser = (e) => {
