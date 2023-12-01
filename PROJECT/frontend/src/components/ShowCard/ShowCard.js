@@ -10,7 +10,7 @@ function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
   const time = new Date(show.starttime);
   const name = show.eventname;
   const author = show.author;
-  const description = show.description;
+  // const description = show.description;
   const venue = `${show.venuename}, ${show.city}`;
 
     const [isModalOpen, setIsModalOpen] = useState(modalOpen);
@@ -83,7 +83,7 @@ function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
         const data = jsonResponse.data
         console.log(`successful tickets: ${data}`);
         onPurchase();
-        
+        alert("Ticket purchase was successful!")
       } catch(error){
         setError(error.message);
       } finally {
@@ -91,9 +91,9 @@ function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
       }
     };
 
-
-    
-
+  if (error) {
+    return <div className="maincontent">Error: {error}</div>;
+  }
 
   return (
       <>
