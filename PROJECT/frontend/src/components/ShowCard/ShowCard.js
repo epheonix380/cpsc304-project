@@ -14,16 +14,87 @@ function ShowCard({show}) {
   const venue = `${show.venuename}, ${show.city}`;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [inputValue, setInputValue] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+
     const showModal = () => {setIsModalOpen(true)};
-    const handleOk = () => {setIsModalOpen(false)}; // should move to next page of modal
     const handleCancel = () => {setIsModalOpen(false)};
     const onChange = (value) => {
-        console.log('changed', value);
+        // console.log(value)
+        setInputValue(value);
     };
+
+
+
+    const handleOk = () => {
+      console.log(inputValue);
+      getAndPurchaseTickets();
+      setIsModalOpen(false);
+    };
+
+    const getAndPurchaseTickets = async () => {
+      const ticketIdsToPurchase = await getUnsoldTickets();
+      console.log(ticketIdsToPurchase);
+      purchaseTickets(ticketIdsToPurchase);
+    }
+
+    const getUnsoldTickets = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_URL}/tickets/unsold`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        // console.log(response);
+        const jsonResponse = await response.json();
+        const data = jsonResponse.data
+        const thisEventTickets = data.filter((ticket) => ticket.eventid === id);
+        const firstInputValueTickets = thisEventTickets.slice(0, inputValue);
+        const firstInputValueTicketIds = firstInputValueTickets.map((ticket) => ticket.ticketid);
+        // console.log(firstInputValueTicketIds);
+        return firstInputValueTicketIds;    
+      } catch(error){
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const purchaseTickets = async (listTicketIds) => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_URL}/purchase`, {
+          method: 'POST',
+          headers: {
+                "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            "userid": 1,
+            "tickets": listTicketIds,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log(response);
+        const jsonResponse = await response.json();
+        const data = jsonResponse.data
+        console.log(`successful tickets: ${data}`);
+        
+      } catch(error){
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+
+    
+
 
   return (
       <>
-          <Modal title={name} open={isModalOpen} onOk={handleOk} okText="Next" onCancel={handleCancel}>
+          <Modal title={name} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
               <p>{author} @ {venue}</p>
               <p>How many tickets would you like to buy?</p>
               <InputNumber min={1} max={10} defaultValue={1} onChange={onChange}/>

@@ -43,6 +43,25 @@ async function getEvents(orderBy="starttime") {
     })
 }
 
+async function canadianTour() {
+    return await db.getFromDB(`
+    SELECT Event.*
+    FROM Event, (
+        SELECT EP.eventid, COUNT(province) as count
+        FROM (
+            SELECT eventid, province
+            FROM Holds, Venue, CityProvinceMap
+            WHERE Holds.venueid = Venue.venueid AND
+                Venue.city = CityProvinceMap.city) EP
+        GROUP BY EP.eventid
+        HAVING COUNT(province) >= (
+            SELECT COUNT(*)
+            FROM (SELECT DISTINCT province FROM CityProvinceMap))) as EC
+    WHERE Event.eventid = EC.eventid
+    `)
+}
+
 module.exports = {
-    getEvents
+    getEvents,
+    canadianTour
 }

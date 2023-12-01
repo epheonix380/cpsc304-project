@@ -66,11 +66,11 @@ function insertTicket( eventid, venueid, sectionnumber, cost, rownumber, seatnum
     `)
 }
 
-function insertIssued(ticketid, userid) {
+function insertIssued(ticketid, userid, attended=0) {
     return db.run(`
         INSERT INTO Issued
-            (ticketid, userid) values
-            (${ticketid}, ${userid})
+            (ticketid, userid, attended) values
+            (${ticketid}, ${userid}, ${attended})
     `)
 }
 
@@ -152,7 +152,7 @@ async function insertData() {
         await insertHolds(2, 4, "2024-01-06").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(2, 6, "2024-02-06").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(2, 8, "2024-03-06").catch((err)=>console.log(`Holds: ${err}`));
-        await insertHolds(2, 10, "2024-04-06").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(2, 10, "2023-04-06").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(5, 1, "2023-11-10").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(6, 3, "2024-01-10").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(7, 5, "2024-02-10").catch((err)=>console.log(`Holds: ${err}`));
@@ -247,11 +247,15 @@ async function insertData() {
             const delta = Math.floor(Math.random()*5);
             await insertIssued(10*i+delta, (i%5)+1).catch((err)=>console.log(`Ticket: ${err}`));
         }
-        await insertIssued(101, 1).catch((err)=>console.log(`Ticket: ${err}`));
-        await insertIssued(102, 1).catch((err)=>console.log(`Ticket: ${err}`));
-        await insertIssued(103, 1).catch((err)=>console.log(`Ticket: ${err}`));
-        await insertIssued(104, 1).catch((err)=>console.log(`Ticket: ${err}`));
-        await insertIssued(105, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(101, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(102, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(103, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(104, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(105, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(106, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(107, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(108, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
+        await insertIssued(109, 1, 1).catch((err)=>console.log(`Ticket: ${err}`));
         await insertIssued(110, 1).catch((err)=>console.log(`Ticket: ${err}`));
         await insertIssued(111, 1).catch((err)=>console.log(`Ticket: ${err}`));
         await insertIssued(112, 1).catch((err)=>console.log(`Ticket: ${err}`));
