@@ -94,7 +94,7 @@ function ShowCard({show}) {
 
   return (
       <>
-          <Modal title={name} open={isModalOpen} onOk={handleOk} okText="Next" onCancel={handleCancel}>
+          <Modal title={name} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
               <p>{author} @ {venue}</p>
               <p>How many tickets would you like to buy?</p>
               <InputNumber min={1} max={10} defaultValue={1} onChange={onChange}/>
