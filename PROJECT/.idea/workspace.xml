@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/backend/local.db" beforeDir="false" afterPath="$PROJECT_DIR$/backend/local.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/services/userService.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/services/userService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/User.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/MyTickets/MyTickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MyTickets/MyTickets.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/SwitchUser/SwitchUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SwitchUser/SwitchUser.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
