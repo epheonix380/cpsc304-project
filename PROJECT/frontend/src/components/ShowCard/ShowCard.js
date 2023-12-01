@@ -88,17 +88,9 @@ function ShowCard({show}) {
       }
     };
 
-  if (isLoading) {
-    return <div className="maincontent">Loading...</div>;
-  }
-
   if (error) {
     return <div className="maincontent">Error: {error}</div>;
   }
-
-
-    
-
 
   return (
       <>
