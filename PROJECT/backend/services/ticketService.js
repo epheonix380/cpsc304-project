@@ -10,6 +10,9 @@ async function getSection(eventid, venueid, amount) {
     } catch {
         return false;
     }
+
+    // TODO: Nested Aggregation with GROUP BY
+
     return await db.getFromDB(`
         SELECT Ticket.* 
         FROM Ticket, (
@@ -46,6 +49,9 @@ async function getSection(eventid, venueid, amount) {
 }
 
 async function getUnsoldTickets() {
+
+    // TODO: Division
+
     return await db.getFromDB(`
         SELECT Ticket.*
         FROM Ticket
@@ -71,6 +77,9 @@ async function purchaseTicket(userid, list) {
         } catch {
             return successList
         }
+
+        // TODO: Insert
+
         await db.run(`
             INSERT INTO Issued 
                 (ticketid, userid) values
@@ -91,6 +100,9 @@ async function deleteTicket(ticketid) {
     } catch {
         return false;
     }
+
+    // TODO: Delete
+
     return await db.run(`
             DELETE FROM Issued WHERE ticketid = \:ticketid
         `,[sanTicketID]).then(()=>true).catch(()=>false)

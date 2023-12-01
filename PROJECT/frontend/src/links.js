@@ -8,7 +8,7 @@ const sidebarLinks = [
      id: 1
     },
     {
-     title: "SUMMARY",
+     title: "FEATURED",
      id: 2
     }
   ];

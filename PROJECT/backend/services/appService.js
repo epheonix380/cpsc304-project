@@ -5,6 +5,9 @@ const initDB = require("../db/initDB.js");
 // Modify these functions, especially the SQL queries, based on your project's requirements and design.
 
 async function fetchTablesFromDB() {
+
+    // TODO: Projection
+
     if (db.getIsOracle()) {
         return await db.getFromDB(`
             SELECT table_name as name
@@ -36,6 +39,9 @@ async function fetchTablesFromDB() {
 }
 
 async function getAttributesOfTable(tableName) {
+
+    // TODO: Projection
+
     const re = /[a-zA-Z][a-zA-Z1-9]*/;
     const sanTableName = tableName.match(re);
     if (sanTableName[0]) {
@@ -62,6 +68,9 @@ async function getAttributesOfTable(tableName) {
 }
 
 async function fetchDynamicAttributeTable(tableName, attributes) {
+
+    // TODO: Projection
+
     const re = /[a-zA-Z][a-zA-Z1-9]*/;
     const sanTableName = tableName.match(re)[0];
     let sanAttributes = "";

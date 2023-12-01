@@ -44,6 +44,16 @@ router.post("/initiate-tables", async (req, res) => {
     }
 });
 
+router.get("/event/:eventid", async (req, res) => {
+    const eventid = req.params.eventid;
+    const data = await eventService.getVenuesFromEventID(eventid);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
 router.get("/events", async (req, res) => {
     const orderBy = req.query.orderBy;
     const data = await eventService.getEvents(orderBy);
@@ -56,6 +66,15 @@ router.get("/events", async (req, res) => {
 
 router.get("/tickets/unsold", async (req, res) => {
     const data = await ticketService.getUnsoldTickets();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
+router.get("/multi-city", async (req, res) => {
+    const data = await eventService.multiCityTour();
     if (data) {
         res.json({data});
     } else {

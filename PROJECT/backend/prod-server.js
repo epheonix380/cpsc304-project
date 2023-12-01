@@ -25,9 +25,10 @@ try {
 
 // mount the router
 app.use(express.static('../frontend/build'));
-
+app.use(express.static('./public'));
 
 app.use('/api/', appController);
+app.use('/setting',express.static('./public'))
 app.use("/*",express.static('../frontend/build'));
 
 
