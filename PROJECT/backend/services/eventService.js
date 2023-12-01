@@ -72,7 +72,7 @@ async function canadianTour() {
     return await db.getFromDB(`
     SELECT Event.*
     FROM Event, (
-        SELECT EP.eventid, COUNT(province) as count
+        SELECT EP.eventid, COUNT(DISTINCT province) as count
         FROM (
             SELECT eventid, province
             FROM Holds, Venue, CityProvinceMap
