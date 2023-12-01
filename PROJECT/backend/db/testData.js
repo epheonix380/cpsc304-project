@@ -154,6 +154,7 @@ async function insertData() {
         await insertHolds(2, 8, "2024-03-06").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(2, 10, "2023-04-06").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(5, 1, "2023-11-10").catch((err)=>console.log(`Holds: ${err}`));
+        await insertHolds(5, 3, "2023-02-02").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(6, 3, "2024-01-10").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(7, 5, "2024-02-10").catch((err)=>console.log(`Holds: ${err}`));
         await insertHolds(3, 7, "2024-03-10").catch((err)=>console.log(`Holds: ${err}`));

@@ -42,7 +42,7 @@ function ShowCard({show}) {
 
     const getUnsoldTickets = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_URL}/tickets/unsold`);
+        const response = await fetch(`${process.env.REACT_APP_URL}/sections?eventid=${id}&venueid=${show.venueid}&amount=${inputValue}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

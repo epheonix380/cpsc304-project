@@ -39,6 +39,8 @@ async function getUserTickets(userid, filter) {
         return false;
     }
 
+    // TODO: Selection
+
     let query = `
         SELECT Ticket.ticketid, Ticket.cost, Ticket.rownumber, Ticket.seatnumber, 
         Ticket.sectionnumber, Ticket.eventid, EVTable.eventname, EVTable.author,
