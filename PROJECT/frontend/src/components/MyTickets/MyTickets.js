@@ -2,7 +2,7 @@ import './MyTickets.css'
 import React, {useEffect, useState} from "react";
 import Filters from '../Filters/Filters.js'
 import SelectTicket from '../SelectTicket/SelectTicket.js'
-import {Table, Modal, InputNumber, Checkbox} from "antd";
+import {Table} from "antd";
 
 function MyTickets() {
     const [isLoading, setIsLoading] = useState(null);
@@ -49,7 +49,7 @@ function MyTickets() {
 
     }, [filters])
 
-    const plainColumns = ['Cost', 'Event', 'Seat#', 'Row#', 'Section#'];
+    // const plainColumns = ['Cost', 'Event', 'Seat#', 'Row#', 'Section#'];
     const columns = [
         {
             title: 'TicketID',

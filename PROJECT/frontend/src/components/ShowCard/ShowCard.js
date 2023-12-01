@@ -7,10 +7,10 @@ function ShowCard({show}) {
 
   // {"eventid":1,"type":"CNCRT","eventname":"Eras Tour","author":"Taylor Swift","description":"I heard its good","starttime":"2023-11-04","venueid":1,"venuename":"Rogers Arena","city":"Vancouver"}
   const id = show.eventid;
-  const type = show.type;
+  // const type = show.type;
   const name = show.eventname;
   const author = show.author;
-  const description = show.description;
+  // const description = show.description;
   const venue = `${show.venuename}, ${show.city}`;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,6 +87,14 @@ function ShowCard({show}) {
         setIsLoading(false);
       }
     };
+
+  if (isLoading) {
+    return <div className="maincontent">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="maincontent">Error: {error}</div>;
+  }
 
 
     
