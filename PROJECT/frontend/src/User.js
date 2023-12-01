@@ -88,7 +88,7 @@ export default function User() {
         };
 
     const handleDeleteUser = (e) => {
-        if (userID == 1) {
+        if (userID === 1) {
             return;
         }
         const deleteUser = async () => {
@@ -103,6 +103,7 @@ export default function User() {
             const jsonResponse = await response.json();
             const data = jsonResponse.data
                 console.log(data);
+            alert("User delete successful!")
           } catch(error){
             console.log(error);
           }
@@ -132,7 +133,6 @@ export default function User() {
             (response) => {
                 response.json().then(
                     (jsonResponse) => {
-                        console.log(jsonResponse);
                         if (jsonResponse.data.error) {
                             if (jsonResponse.data.error ===
                                 "SQLITE_CONSTRAINT: UNIQUE constraint failed: Customer.username") {
@@ -147,6 +147,7 @@ export default function User() {
                                 alert("You have entered an invalid password! Please try again.")
                             } // lol pls refactor
                         }
+                        alert("User update successful!")
                         setIsLoading(false);
                     }
                 ).catch(
