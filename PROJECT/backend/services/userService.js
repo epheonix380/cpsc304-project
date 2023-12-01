@@ -31,6 +31,30 @@ async function getUser(userid) {
         });
 }
 
+async function deleteUser(userID) {
+    let sanUserID;
+    try {
+        sanUserID = parseInt(userID);
+    } catch {
+        return false;
+    }
+
+    let query = `
+        DELETE FROM Customer
+        WHERE userid = :userid`;
+
+    return await db.run(query, [sanUserID])
+        .then((res) => {
+            console.log("NO error in UserService");
+            return {success: true, message: 'Delete successful'};
+        })
+        .catch((err) => {
+            console.log("error in UserService");
+            return {success: false, message: 'Delete failed', error: err.message};
+        });
+}
+
+
 async function updateUser(userid, name, city, username, password) {
     const re = /^[a-zA-Z][a-zA-Z0-9 ]*$|^[0-9]+$/;
     let sanUserID, sanName, sanCity, sanUsername, sanPassword;
@@ -112,5 +136,6 @@ module.exports = {
     getUserTickets,
     getUser,
     updateUser,
-    getAllUsers
+    getAllUsers,
+    deleteUser
 }

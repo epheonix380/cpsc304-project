@@ -5,7 +5,7 @@ import SwitchUser from './components/SwitchUser/SwitchUser';
 
 export default function User() {
     const [user, setUser] = useState([{userid: 1, customername: '', city: '', username: '', password: ''}]);
-    const [userID, setUserID] = useState(1);
+    const [userID, setUserID] = useState(3);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     let name, city, username, password, userid;
@@ -62,6 +62,27 @@ export default function User() {
         } else if (type === "password") {
             newPassword = value;
         }
+    }
+
+    const handleDeleteUser = (e) => {
+        const DeleteUser = async () => {
+          try {
+            const response = await fetch(`${process.env.REACT_APP_URL}/delete/${userID}`, {
+                method: "DELETE"
+            });
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            console.log(response);
+            const jsonResponse = await response.json();
+            const data = jsonResponse.data
+                console.log(data);
+          } catch(error){
+            console.log(error);
+          }
+        };
+        DeleteUser();
+        setUserID(prevID => prevID + 1);
     }
 
     const handleUpdateUser = (e) => {
@@ -137,6 +158,7 @@ export default function User() {
                                                          onChange={(e) => onChange(e, "password")} /></Space.Compact>
             <p/>
             <button onClick={handleUpdateUser}>UPDATE USER</button>
+            <button onClick={handleDeleteUser}>DELETE USER</button>
             <button onClick={handleRefreshUser}>REFRESH USER</button>
             <SwitchUser userID={userID} setUserID={setUserID} />
         </div>
