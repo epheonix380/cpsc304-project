@@ -55,6 +55,20 @@ async function updateUserTicket(userid, username, name, city, password) {
     `, [sanUsername, sanName, sanCity, sanPassword, sanUserid])
 }
 
+async function deleteUser(userid) {
+    let sanUserID;
+    try {
+        sanUserID = parseInt(userid);
+    } catch {
+        return false;
+    }
+    return await db.run(`
+        DELETE FROM Customer
+        WHERE userid = \:userid
+    `, [sanUserID])
+
+}
+
 async function getUserTickets(userid, filter) {
     let sanUserID;
     try {

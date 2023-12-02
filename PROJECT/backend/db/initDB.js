@@ -100,7 +100,7 @@ async function initCustomerSession(db) {
                 sessiontoken VARCHAR(32) PRIMARY KEY,
                 singleuse NUMBER(1),
                 expire TIMESTAMP,
-                FOREIGN KEY (userid) REFERENCES Customer(userid)
+                FOREIGN KEY (userid) REFERENCES Customer(userid) ON DELETE CASCADE
                 )
         `);
 
@@ -229,7 +229,7 @@ async function initIssued(db) {
             PRIMARY KEY (ticketid, userid),
             UNIQUE (ticketid),
             FOREIGN KEY (ticketid) REFERENCES Ticket(ticketid),
-            FOREIGN KEY (userid) REFERENCES Customer(userid)
+            FOREIGN KEY (userid) REFERENCES Customer(userid) ON DELETE CASCADE
             )
     `)
 }
