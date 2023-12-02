@@ -80,6 +80,7 @@ DROP TABLE Holds CASCADE CONSTRAINTS;
             CREATE TABLE Customer
                 (userid INTEGER PRIMARY KEY,
                 customername VARCHAR(30),
+                username VARCHAR(16) UNIQUE,
                 city VARCHAR(30),
                 password VARCHAR(64),
                 FOREIGN KEY (city) REFERENCES CityProvinceMap(city)
@@ -113,7 +114,9 @@ DROP TABLE Holds CASCADE CONSTRAINTS;
         CREATE TABLE Issued
             (ticketid INTEGER,
             userid INTEGER,
+            attended NUMBER(1),
             PRIMARY KEY (ticketid, userid),
+            UNIQUE (ticketid),
             FOREIGN KEY (ticketid) REFERENCES Ticket(ticketid),
             FOREIGN KEY (userid) REFERENCES Customer(userid)
             )
@@ -144,28 +147,28 @@ DROP TABLE Holds CASCADE CONSTRAINTS;
     ;
 
         INSERT INTO Customer 
-            (userid, customername, city, password) values
-            (1, 'John', 'Vancouver', '12345')
+            (userid, username, customername, city, password) values
+            (1, 'John1', 'John', 'Vancouver', '12345')
     ;
 
         INSERT INTO Customer 
-            (userid, customername, city, password) values
-            (2, 'Sarah', 'Calgary', '12345')
+            (userid, username, customername, city, password) values
+            (2, 'Sarah2', 'Sarah', 'Calgary', '12345')
     ;
 
         INSERT INTO Customer 
-            (userid, customername, city, password) values
-            (3, 'Peter', 'Toronto', '12345')
+            (userid, username, customername, city, password) values
+            (3, 'Peter3', 'Peter', 'Toronto', '12345')
     ;
 
         INSERT INTO Customer 
-            (userid, customername, city, password) values
-            (4, 'Bella', 'Montreal', '12345')
+            (userid, username, customername, city, password) values
+            (4, 'Bella4', 'Bella', 'Montreal', '12345')
     ;
 
         INSERT INTO Customer 
-            (userid, customername, city, password) values
-            (5, 'Bob', 'Victoria', '12345')
+            (userid, username, customername, city, password) values
+            (5, 'Bob5', 'Bob', 'Victoria', '12345')
     ;
 
         INSERT INTO Vendor 
@@ -280,77 +283,82 @@ DROP TABLE Holds CASCADE CONSTRAINTS;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 1, date '2023-11-04')
+            (1, 1, date '2023-11-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 3, date '2024-01-04')
+            (1, 3, date '2024-01-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 5, date '2024-02-04')
+            (1, 5, date '2024-02-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 7, date '2024-03-04')
+            (1, 7, date '2024-03-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (1, 9, date '2024-04-04')
+            (1, 9, date '2024-04-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 2, date '2023-11-06')
+            (2, 2, date '2023-11-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 4, date '2024-01-06')
+            (2, 4, date '2024-01-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 6, date '2024-02-06')
+            (2, 6, date '2024-02-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 8, date '2024-03-06')
+            (2, 8, date '2024-03-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (2, 10, date '2024-04-06')
+            (2, 10, date '2023-04-11')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (5, 1, date '2023-11-10')
+            (5, 1, date '2024-11-12')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (6, 3, date '2024-01-10')
+            (5, 3, date '2024-12-12')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (7, 5, date '2024-02-10')
+            (6, 3, date '2024-01-12')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (3, 7, date '2024-03-10')
+            (7, 5, date '2024-02-12')
     ;
 
         INSERT INTO Holds 
             (eventid, venueid, starttime) values
-            (4, 9, date '2024-04-10')
+            (3, 7, date '2024-03-12')
+    ;
+
+        INSERT INTO Holds 
+            (eventid, venueid, starttime) values
+            (4, 9, date '2024-04-12')
     ;
 
         INSERT INTO Section 
@@ -1179,93 +1187,113 @@ DROP TABLE Holds CASCADE CONSTRAINTS;
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (4, 1)
+            (ticketid, userid, attended) values
+            (2, 1, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (13, 2)
+            (ticketid, userid, attended) values
+            (10, 2, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (22, 3)
+            (ticketid, userid, attended) values
+            (24, 3, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (32, 4)
+            (ticketid, userid, attended) values
+            (33, 4, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (42, 5)
+            (ticketid, userid, attended) values
+            (40, 5, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (50, 1)
+            (ticketid, userid, attended) values
+            (50, 1, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (63, 2)
+            (ticketid, userid, attended) values
+            (63, 2, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (74, 3)
+            (ticketid, userid, attended) values
+            (74, 3, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (83, 4)
+            (ticketid, userid, attended) values
+            (83, 4, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (91, 5)
+            (ticketid, userid, attended) values
+            (90, 5, 0)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (101, 1)
+            (ticketid, userid, attended) values
+            (101, 1, 1)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (102, 1)
+            (ticketid, userid, attended) values
+            (102, 1, 1)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (103, 1)
+            (ticketid, userid, attended) values
+            (103, 1, 1)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (104, 1)
+            (ticketid, userid, attended) values
+            (104, 1, 1)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (105, 1)
+            (ticketid, userid, attended) values
+            (105, 1, 1)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (110, 1)
+            (ticketid, userid, attended) values
+            (106, 1, 1)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (111, 1)
+            (ticketid, userid, attended) values
+            (107, 1, 1)
     ;
 
         INSERT INTO Issued
-            (ticketid, userid) values
-            (112, 1)
+            (ticketid, userid, attended) values
+            (108, 1, 1)
+    ;
+
+        INSERT INTO Issued
+            (ticketid, userid, attended) values
+            (109, 1, 1)
+    ;
+
+        INSERT INTO Issued
+            (ticketid, userid, attended) values
+            (110, 1, 0)
+    ;
+
+        INSERT INTO Issued
+            (ticketid, userid, attended) values
+            (111, 1, 0)
+    ;
+
+        INSERT INTO Issued
+            (ticketid, userid, attended) values
+            (112, 1, 0)
     ;
 
         INSERT INTO Concession
@@ -1767,3 +1795,7 @@ DROP TABLE Holds CASCADE CONSTRAINTS;
             (itemname, venueid, specifier) values
             ('Water', 9, 'S')
     ;
+
+            SELECT table_name as name
+            FROM user_tables
+            ;

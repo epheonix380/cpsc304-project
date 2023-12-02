@@ -83,7 +83,7 @@ withOracleDB(() => {
 async function getFromDB(sql, ...args) {
     return new Promise (async (resolve, reject) =>  {
         if (isWrite) {
-            fs.appendFileSync(dbScripts, `${sql}\n`);
+            fs.appendFileSync(dbScripts, `${sql};\n`);
         }
         if (isOracle) {
             return await withOracleDB(async (connection) => {
@@ -141,7 +141,7 @@ async function testConnection() {
 
 async function run(sql, ...args) {
     if (isWrite) {
-        fs.appendFileSync(dbScripts, `${sql}\n`);
+        fs.appendFileSync(dbScripts, `${sql};\n`);
     }
     return new Promise(async(resolve, reject)=> {
         if(isOracle) {

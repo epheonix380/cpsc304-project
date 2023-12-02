@@ -238,25 +238,7 @@ async function dropIssued(db) {
     return db.run(`DROP TABLE IF EXISTS Issued`)
 }
 
-async function dropFoodDrink(db) {
-    return db.run(`DROP TABLE IF EXISTS FoodDrink`)
-}
 
-async function initHas(db) {
-    return db.run(`
-        CREATE TABLE Has(
-            itemname VARCHAR(100),
-            venueid INTEGER,
-            PRIMARY KEY (itemname, venueid),
-            FOREIGN KEY (itemname) REFERENCES FoodDrink(itemname),
-            FOREIGN KEY (venueid) REFERENCES Venue(venueid)
-            )
-    `)
-}
-
-async function dropHas(db) {
-    return db.run(`DROP TABLE IF EXISTS Has`)
-}
 
 async function initAll(db) {
     if (db.getIsOracle()) {
@@ -379,11 +361,7 @@ async function dropAll(db) {
             await db.run(`DROP TABLE Issued CASCADE CONSTRAINTS`)
             .catch((err)=>{console.log(`Error at Issued: ${err}`)})
             await db.run(`DROP TABLE Holds CASCADE CONSTRAINTS`)
-            .catch((err)=>{console.log(`Error at Holds: ${err}`)})
-            await db.run(`DROP TABLE FoodDrink CASCADE CONSTRAINTS`)
-            .catch((err)=>{console.log(`Error at FoodDrink:${err}`)})
-            await db.run(`DROP TABLE Has CASCADE CONSTRAINTS`)
-            .catch((err)=>{console.log(`Error at Has: ${err}`)})
+            .catch((err)=>{console.log(`Error at Holds: ${err}`)});
             resolve(true);
         })
     } else {
@@ -403,8 +381,6 @@ async function dropAll(db) {
             dropCustomerSession(db),
             dropIssued(db),
             dropHolds(db),
-            dropFoodDrink(db),
-            dropHas(db),
         ]
         return Promise.all(promises);
     }
