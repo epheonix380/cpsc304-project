@@ -121,6 +121,17 @@ router.post("/update/ticket", async (req, res) => {
     
 })
 
+router.delete("/user/:userid", async (req, res) => {
+    const userid = req.params.userid;
+    const data = await userService.deleteUser(userid);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
+})
+
 router.delete("/tickets/:ticketid", async (req, res) => {
     const ticketid = req.params.ticketid;
     const data = await ticketService.deleteTicket(ticketid);

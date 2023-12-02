@@ -113,5 +113,6 @@ module.exports = {
     getUserTickets,
     getUser,
     getAllUsers,
-    updateUserTicket
+    updateUserTicket,
+    deleteUser
 }

@@ -118,7 +118,7 @@ DROP TABLE Holds CASCADE CONSTRAINTS;
             PRIMARY KEY (ticketid, userid),
             UNIQUE (ticketid),
             FOREIGN KEY (ticketid) REFERENCES Ticket(ticketid),
-            FOREIGN KEY (userid) REFERENCES Customer(userid)
+            FOREIGN KEY (userid) REFERENCES Customer(userid) ON DELETE CASCADE
             )
     ;
 
