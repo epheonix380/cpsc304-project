@@ -8,9 +8,7 @@ export default function User() {
     // refactor to add username
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
-    let name = "*John", city, username, password, userid;
-    let newName, newCity, newUsername, newPassword;
-    const [newUser, setNewUser] = useState([{userid: 0, customername: '', city: '', password: ''}]);
+
     // refactor to add username
 
     useEffect(()=>{
@@ -19,6 +17,7 @@ export default function User() {
                     response.json().then(
                         (jsonResponse) => {
                             const data = jsonResponse.data;
+                            console.log(data);
                             setUser(data[0]);
                             setInitUser(data[0]);
                             setIsLoading(false);
@@ -52,35 +51,44 @@ export default function User() {
     const onChange = (e, type) => {
         setUser({
             ...user,
-            [type]:e,
+            [type]:e.target.value,
         });
     }
 
-    const onClick = (e) => {
-        setNewUser({userid: userid, customername: newName, city: newCity, password: newPassword})
-        // refactor to add username
-        window.location.reload();
-        console.log(e);
+    const onClick = async (e) => {
+        await fetch(`${process.env.REACT_APP_URL}/update/user`,{
+            method: 'POST',
+            headers: {
+                  "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+        }).then(async (res)=>{
+            console.log(res);
+            const {success} = await res.json();
+            console.log(success);
+            if (success) {
+                setInitUser(user);
+                alert("Success!");
+            } else {
+                setUser(initUser);
+                alert("Failure!");
+            }
+        })
     }
     // TODO: handle for if username already exists in DB
 
-    name = user.name;
-    city = user.city;
-    username = user.username;
-    password = user.password;
-    userid = user.userid;
     return (
         <div className="container">
-            <h1> Welcome, {name}! Your userid is {userid}.</h1>
+            <h1> Welcome, {initUser.customername}! Your userid is {initUser.userid}.</h1>
 
             <h3> Contact details: </h3>
-            <p> City: {city} </p>
-            <p> Username: {username} </p>
-            <p> Password: {password} </p>
+            <p> City: {initUser.city} </p>
+            <p> Username: {initUser.username} </p>
+            <p> Password: {initUser.password} </p>
 
             <h3> Update contact details: </h3>
-            <p> New Name: </p> <Space.Compact><Input value={user.name} showCount maxLength={30}
-                                                     onChange={(e) => onChange(e, "name")} /></Space.Compact>
+            <p> New Name: </p> <Space.Compact><Input value={user.customername} showCount maxLength={30}
+                                                     onChange={(e) => onChange(e, "customername")} /></Space.Compact>
             <p> New City: </p> <Space.Compact><Input value={user.city} showCount maxLength={30}
                                                      onChange={(e) => onChange(e, "city")} /></Space.Compact>
             <p> New Username: </p> <Space.Compact><Input value={user.username} showCount maxLength={16}

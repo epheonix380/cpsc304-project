@@ -45,8 +45,8 @@ router.post("/initiate-tables", async (req, res) => {
 });
 
 router.post("/update/user", async (req, res) => {
-    const {userid, username, name, city, password} = req.body;
-    const result = await userService.updateUserTicket();
+    const {userid, username, customername:name, city, password} = req.body;
+    const result = await userService.updateUserTicket(userid, username, name, city, password);
     if (result) {
         res.json({ success: true });
     } else {

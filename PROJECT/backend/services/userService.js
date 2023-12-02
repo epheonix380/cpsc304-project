@@ -32,20 +32,25 @@ async function getUser(userid) {
 }
 
 async function updateUserTicket(userid, username, name, city, password) {
-    const re = /[a-zA-Z][a-zA-Z1-9]*/;
+    const re = /[a-zA-Z1-9]*/;
     let sanUsername, sanName, sanCity, sanPassword, sanUserid;
+    console.log({
+        userid, username, name, city, password
+    })
     try {
         sanUserid = parseInt(userid);
         sanUsername = username.match(re)[0];
         sanName = name.match(re)[0];
         sanCity = city.match(re)[0];
         sanPassword = password.match(re)[0];
-    } catch {
+    } catch (e) { 
+        console.log(e);
+        console.log("Failed to sanitize")
         return false;
     }
     return await db.run(`
         UPDATE Customer
-        SET username = \:username, name = \:name, city = \:city, password = \:password
+        SET username = \:username, customername = \:name, city = \:city, password = \:password
         WHERE userid = \:userid
     `, [sanUsername, sanName, sanCity, sanPassword, sanUserid])
 }
