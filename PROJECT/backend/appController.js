@@ -92,6 +92,15 @@ router.get("/multi-city", async (req, res) => {
     }
 })
 
+router.get("/popular", async (req, res) => {
+    const data = await eventService.popular();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
 router.get("/tour", async (req, res) => {
     const data = await eventService.canadianTour();
     if (data) {

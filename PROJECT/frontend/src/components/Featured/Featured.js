@@ -13,6 +13,10 @@ function Featured() {
         <h1>Multi City Tour</h1>
         <Expandable url={"multi-city"}/>
       </div>
+      <div className='popular maincontent'>
+        <h1>Multi City Tour</h1>
+        <Expandable url={"popular"}/>
+      </div>
     </div>
   );
 }

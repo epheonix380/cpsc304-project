@@ -81,8 +81,33 @@ async function canadianTour() {
         GROUP BY EP.eventid
         HAVING COUNT(province) >= (
             SELECT COUNT(*)
-            FROM (SELECT DISTINCT province FROM CityProvinceMap))) as EC
+            FROM (SELECT DISTINCT province FROM CityProvinceMap))) EC
     WHERE Event.eventid = EC.eventid
+    `)
+}
+
+async function popular() {
+
+    // TODO: Division
+
+    return await db.getFromDB(`
+    SELECT Event.*
+    FROM Event, (
+        SELECT Holds.eventid, COUNT(*) as count
+        FROM Holds, Issued, Ticket
+        WHERE Holds.venueid = Ticket.venueid AND
+            Ticket.eventid = Holds.eventid AND
+            Holds.starttime = Ticket.starttime AND
+            Ticket.ticketid = Issued.ticketid
+        GROUP BY Holds.eventid) EC
+    WHERE Event.eventid = EC.eventid AND
+        count > (
+            SELECT AVG(*)
+            FROM Issued, Ticket
+            WHERE Issued.ticketid = Ticket.ticketid
+            GROUP BY Ticket.eventid
+        )
+        
     `)
 }
 
@@ -111,5 +136,6 @@ module.exports = {
     getEvents,
     canadianTour,
     multiCityTour,
-    getVenuesFromEventID
+    getVenuesFromEventID,
+    popular
 }
