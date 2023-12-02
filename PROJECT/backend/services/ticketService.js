@@ -62,6 +62,28 @@ async function getUnsoldTickets() {
     `)
 }
 
+async function switchTicket(oldTicket, newTicket, userid) {
+    let sanNewTicketID, sanOldTicketID, sanUserID;
+    try {
+        sanNewTicketID = parseInt(newTicket);
+        sanOldTicketID = parseInt(oldTicket);
+        sanUserID = parseInt(userid);
+    } catch {
+        return false;
+    }
+    return await db.run(`
+            DELETE FROM Issued WHERE ticketid = \:ticketid
+        `,[sanOldTicketID]).catch(()=>false).then(async()=>{
+            return await db.run(`
+            INSERT INTO Issued 
+                (ticketid, userid) values
+                (\:ticketid, \:userid)
+        `,[sanNewTicketID, sanUserID]).then(()=>true).catch(()=>false)
+        })
+    
+    
+}
+
 async function purchaseTicket(userid, list) {
     const successList = [];
     let sanUserID;
@@ -113,5 +135,6 @@ module.exports = {
     getSection,
     purchaseTicket,
     deleteTicket,
-    getUnsoldTickets
+    getUnsoldTickets,
+    switchTicket
 }

@@ -44,15 +44,16 @@ function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
 
     const getUnsoldTickets = async () => {
       try {
+        console.log({show});
+        console.log(show.venueid)
         const response = await fetch(`${process.env.REACT_APP_URL}/sections?eventid=${id}&venueid=${show.venueid}&amount=${inputValue}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        // console.log(response);
+        console.log(response);
         const jsonResponse = await response.json();
         const data = jsonResponse.data
-        const thisEventTickets = data.filter((ticket) => ticket.eventid === id);
-        const firstInputValueTickets = thisEventTickets.slice(0, inputValue);
+        const firstInputValueTickets = data.slice(0, inputValue);
         const firstInputValueTicketIds = firstInputValueTickets.map((ticket) => ticket.ticketid);
         // console.log(firstInputValueTicketIds);
         return firstInputValueTicketIds;    
@@ -83,7 +84,7 @@ function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
         const data = jsonResponse.data
         console.log(`successful tickets: ${data}`);
         onPurchase();
-        alert("Ticket purchase was successful!")
+        alert(`Bought ${data.length} out of ${listTicketIds.length} tickets succesfully`)
       } catch(error){
         setError(error.message);
       } finally {

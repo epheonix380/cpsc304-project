@@ -110,6 +110,17 @@ router.get("/tour", async (req, res) => {
     }
 })
 
+router.post("/update/ticket", async (req, res) => {
+    const {oldTicketID, newTicketID, userID} = req.body;
+    const data = await ticketService.switchTicket(oldTicketID, newTicketID, userID);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
+})
+
 router.delete("/tickets/:ticketid", async (req, res) => {
     const ticketid = req.params.ticketid;
     const data = await ticketService.deleteTicket(ticketid);

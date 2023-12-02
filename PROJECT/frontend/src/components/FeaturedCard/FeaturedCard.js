@@ -42,7 +42,7 @@ function FeaturedCard({show}) {
         alert("Please select a show")
       } else {
         setContent(
-          <ShowCard show={show} modalOpen={true} onPurchase={()=>{
+          <ShowCard show={selected} modalOpen={true} onPurchase={()=>{
             setContent(<FeaturedCard show={show}/>)
           }}/>
         )

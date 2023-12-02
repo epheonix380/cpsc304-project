@@ -97,15 +97,17 @@ async function popular() {
         FROM Holds, Issued, Ticket
         WHERE Holds.venueid = Ticket.venueid AND
             Ticket.eventid = Holds.eventid AND
-            Holds.starttime = Ticket.starttime AND
             Ticket.ticketid = Issued.ticketid
         GROUP BY Holds.eventid) EC
     WHERE Event.eventid = EC.eventid AND
         count > (
-            SELECT AVG(*)
-            FROM Issued, Ticket
-            WHERE Issued.ticketid = Ticket.ticketid
-            GROUP BY Ticket.eventid
+            SELECT AVG(tickets)
+            FROM (
+                SELECT eventid, COUNT(*) as tickets
+                FROM Issued, Ticket
+                WHERE Issued.ticketid = Ticket.ticketid
+                GROUP BY Ticket.eventid
+            )
         )
         
     `)

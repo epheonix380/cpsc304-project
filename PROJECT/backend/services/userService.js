@@ -68,7 +68,7 @@ async function getUserTickets(userid, filter) {
     let query = `
         SELECT Ticket.ticketid, Ticket.cost, Ticket.rownumber, Ticket.seatnumber, 
         Ticket.sectionnumber, Ticket.eventid, EVTable.eventname, EVTable.author,
-        EVTable.venuename, EVTable.city, EVTable.starttime
+        EVTable.venuename, EVTable.venueid, EVTable.city, EVTable.starttime
         FROM Issued, Ticket, (
             SELECT Event.eventid, Holds.venueid, Event.eventname, Event.author, 
             Venue.venuename, Venue.city, Holds.starttime
