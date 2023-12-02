@@ -13,8 +13,8 @@ function insertCityProvinceMap(city, province) {
 function insertCustomer(userid, name, city, password) {
     return db.run(`
         INSERT INTO Customer 
-            (userid, customername, city, password) values
-            (${userid}, '${name}', '${city}', '${password}')
+            (userid, username, customername, city, password) values
+            (${userid}, '${name+userid}', '${name}', '${city}', '${password}')
     `)
 }
 

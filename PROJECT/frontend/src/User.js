@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import {Input, Space} from "antd";
 
 export default function User() {
-    const [user, setUser] = useState([{userid: 0, customername: '', city: '', password: ''}]);
+    const [initUser, setInitUser] = useState({userid: 0, customername: '', city: '', password: ''});
+    const [user, setUser] = useState({userid: 0, customername: '', city: '', password: ''});
     // refactor to add username
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -18,7 +19,8 @@ export default function User() {
                     response.json().then(
                         (jsonResponse) => {
                             const data = jsonResponse.data;
-                            setUser(data);
+                            setUser(data[0]);
+                            setInitUser(data[0]);
                             setIsLoading(false);
                         }
                     ).catch(
@@ -37,11 +39,7 @@ export default function User() {
     }, [])
 
 
-    name = user[0].customername;
-    city = user[0].city;
-    username = 'username here';
-    password = user[0].password;
-    userid = user[0].userid;
+
 
     if (isLoading) {
         return <div className="maincontent">Loading...</div>;
@@ -52,15 +50,10 @@ export default function User() {
     }
 
     const onChange = (e, type) => {
-        if (type === "name") {
-            newName = e;
-        } else if (type === "city") {
-            newCity = e;
-        } else if (type === "username") {
-            newUsername = e;
-        } else if (type === "password") {
-            newPassword = e;
-        }
+        setUser({
+            ...user,
+            [type]:e,
+        });
     }
 
     const onClick = (e) => {
@@ -71,6 +64,11 @@ export default function User() {
     }
     // TODO: handle for if username already exists in DB
 
+    name = user.name;
+    city = user.city;
+    username = user.username;
+    password = user.password;
+    userid = user.userid;
     return (
         <div className="container">
             <h1> Welcome, {name}! Your userid is {userid}.</h1>
@@ -81,13 +79,13 @@ export default function User() {
             <p> Password: {password} </p>
 
             <h3> Update contact details: </h3>
-            <p> New Name: </p> <Space.Compact><Input showCount maxLength={30}
+            <p> New Name: </p> <Space.Compact><Input value={user.name} showCount maxLength={30}
                                                      onChange={(e) => onChange(e, "name")} /></Space.Compact>
-            <p> New City: </p> <Space.Compact><Input showCount maxLength={30}
+            <p> New City: </p> <Space.Compact><Input value={user.city} showCount maxLength={30}
                                                      onChange={(e) => onChange(e, "city")} /></Space.Compact>
-            <p> New Username: </p> <Space.Compact><Input showCount maxLength={16}
+            <p> New Username: </p> <Space.Compact><Input value={user.username} showCount maxLength={16}
                                                          onChange={(e) => onChange(e, "username")} /></Space.Compact>
-            <p> New Password: </p> <Space.Compact><Input showCount maxLength={64}
+            <p> New Password: </p> <Space.Compact><Input value={user.password} showCount maxLength={64}
                                                          onChange={(e) => onChange(e, "password")} /></Space.Compact>
             <p/>
             <button onClick={onClick}>UPDATE USER</button>

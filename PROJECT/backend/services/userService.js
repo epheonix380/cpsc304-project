@@ -31,6 +31,25 @@ async function getUser(userid) {
         });
 }
 
+async function updateUserTicket(userid, username, name, city, password) {
+    const re = /[a-zA-Z][a-zA-Z1-9]*/;
+    let sanUsername, sanName, sanCity, sanPassword, sanUserid;
+    try {
+        sanUserid = parseInt(userid);
+        sanUsername = username.match(re)[0];
+        sanName = name.match(re)[0];
+        sanCity = city.match(re)[0];
+        sanPassword = password.match(re)[0];
+    } catch {
+        return false;
+    }
+    return await db.run(`
+        UPDATE Customer
+        SET username = \:username, name = \:name, city = \:city, password = \:password
+        WHERE userid = \:userid
+    `, [sanUsername, sanName, sanCity, sanPassword, sanUserid])
+}
+
 async function getUserTickets(userid, filter) {
     let sanUserID;
     try {
@@ -74,5 +93,6 @@ async function getUserTickets(userid, filter) {
 module.exports = {
     getUserTickets,
     getUser,
-    getAllUsers
+    getAllUsers,
+    updateUserTicket
 }

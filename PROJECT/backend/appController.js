@@ -44,6 +44,16 @@ router.post("/initiate-tables", async (req, res) => {
     }
 });
 
+router.post("/update/user", async (req, res) => {
+    const {userid, username, name, city, password} = req.body;
+    const result = await userService.updateUserTicket();
+    if (result) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.get("/event/:eventid", async (req, res) => {
     const eventid = req.params.eventid;
     const data = await eventService.getVenuesFromEventID(eventid);
