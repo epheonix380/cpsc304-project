@@ -10,6 +10,9 @@ async function getSection(eventid, venueid, amount) {
     } catch {
         return false;
     }
+
+    // TODO: Nested Aggregation with GROUP BY
+
     return await db.getFromDB(`
         SELECT Ticket.* 
         FROM Ticket, (
@@ -46,6 +49,9 @@ async function getSection(eventid, venueid, amount) {
 }
 
 async function getUnsoldTickets() {
+
+    // TODO: Division
+
     return await db.getFromDB(`
         SELECT Ticket.*
         FROM Ticket
@@ -54,6 +60,28 @@ async function getUnsoldTickets() {
         FROM Ticket, Issued
         WHERE Ticket.ticketid = Issued.ticketid
     `)
+}
+
+async function switchTicket(oldTicket, newTicket, userid) {
+    let sanNewTicketID, sanOldTicketID, sanUserID;
+    try {
+        sanNewTicketID = parseInt(newTicket);
+        sanOldTicketID = parseInt(oldTicket);
+        sanUserID = parseInt(userid);
+    } catch {
+        return false;
+    }
+    return await db.run(`
+            DELETE FROM Issued WHERE ticketid = \:ticketid
+        `,[sanOldTicketID]).catch(()=>false).then(async()=>{
+            return await db.run(`
+            INSERT INTO Issued 
+                (ticketid, userid) values
+                (\:ticketid, \:userid)
+        `,[sanNewTicketID, sanUserID]).then(()=>true).catch(()=>false)
+        })
+    
+    
 }
 
 async function purchaseTicket(userid, list) {
@@ -71,6 +99,9 @@ async function purchaseTicket(userid, list) {
         } catch {
             return successList
         }
+
+        // TODO: Insert
+
         await db.run(`
             INSERT INTO Issued 
                 (ticketid, userid) values
@@ -91,6 +122,9 @@ async function deleteTicket(ticketid) {
     } catch {
         return false;
     }
+
+    // TODO: Delete
+
     return await db.run(`
             DELETE FROM Issued WHERE ticketid = \:ticketid
         `,[sanTicketID]).then(()=>true).catch(()=>false)
@@ -110,5 +144,6 @@ module.exports = {
     purchaseTicket,
     deleteTicket,
     getUnsoldTickets,
-    getTicketLowestCostPerShow
+    getTicketLowestCostPerShow,
+    switchTicket
 }

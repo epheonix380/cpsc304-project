@@ -2,12 +2,10 @@ import './SelectTicket.css'
 import React, {useEffect, useState} from "react";
 import {Modal, Select} from "antd";
 
-function SelectTicket({selectedTicket}) {
+function SelectTicket({selectedTicket, amount=1}) {
     const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [oldTicket, setOldTicket] = useState({});
-    const [newTicket, setNewTicket] = useState({});
-    const [ticketToDelete, setTicketToDelete] = useState({});
+    const [availableTickets, setAvailableTickets] = useState([]);
     const ticketNumber = selectedTicket.length === 0 ? undefined : selectedTicket[0].ticketid;
     const eventname = selectedTicket.length === 0 ? '' : selectedTicket[0].eventname;
     let newTicketNumber = 0;
@@ -15,21 +13,24 @@ function SelectTicket({selectedTicket}) {
     // need a useEffect() to set availableTickets that will show in dropdown
     // pass in eventid & userid, make sure tickets are not yet Issued
 
-    useEffect(() => {
-        console.log(oldTicket);
-        console.log(newTicket);
-    }, [oldTicket, newTicket]) // when newTicket is updated, that means send update query
-
-    useEffect(() => {
-        console.log(ticketToDelete);
-    }, [ticketToDelete]) // when ticketToDelete is updated, that means send delete query
-
-    const availableTickets = [
-        { value: 0, label: 'seatnumber: 1, rownumber: 2, sectionnumber: 3' },
-        { value: 1, label: 'seatnumber: 4, rownumber: 5, sectionnumber: 6' },
-        { value: 2, label: 'seatnumber: 7, rownumber: 8, sectionnumber: 9' },
-        { value: 4, label: 'seatnumber: 10, rownumber: 20, sectionnumber: 30' },
-    ]
+    useEffect(()=>{
+        if (selectedTicket.length>0) {
+            const ticket = selectedTicket[0];
+            fetch(`${process.env.REACT_APP_URL}/sections?eventid=${ticket.eventid}&venueid=${ticket.venueid}&amount=${amount}`)
+            .then((response)=>{
+                response.json().then((jsonResponse)=>{
+                    const data = jsonResponse.data;
+                    const newData = data.map((res, index)=>{
+                        res.value = res.ticketid;
+                        res.label = `Seat No:${res.seatnumber} | Row No:${res.rownumber} | Section No:${res.sectionnumber}` ;
+                        return res;
+                    })
+                    setAvailableTickets(newData);
+                })
+                
+            })
+        }
+    },[amount, selectedTicket])
 
     const showModal = (type) => {
         if (ticketNumber === undefined) {
@@ -43,12 +44,25 @@ function SelectTicket({selectedTicket}) {
 
     const handleOk = (type) => {
         if (type === 'select') {
-            setOldTicket({ticketid: ticketNumber});
-            setNewTicket({ticketid: newTicketNumber});
-            setIsSelectModalOpen(false);
+            fetch(`${process.env.REACT_APP_URL}/update/ticket`, {
+                method: 'POST',
+                headers: {
+                      "Content-Type": "application/json",
+                },
+                body: JSON.stringify({oldTicketID:ticketNumber, newTicketID:newTicketNumber, userID:1}),
+              }).then(()=>{
+                window.location.reload();
+                setIsSelectModalOpen(false);
+              })
+            
         } else {
-            setTicketToDelete({ticketid: ticketNumber});
-            setIsDeleteModalOpen(false);
+            fetch(`${process.env.REACT_APP_URL}/tickets/${ticketNumber}`, {
+                method: 'DELETE',
+            }).then(()=>{
+                window.location.reload();
+                setIsDeleteModalOpen(false);
+            })
+            
         }
     };
 
@@ -67,7 +81,7 @@ function SelectTicket({selectedTicket}) {
                 <p>What seat would you like to change to?</p>
                 <Select
                     options={availableTickets}
-                    defaultValue={0}
+                    defaultValue={availableTickets[0]}
                     onChange={(e) => newTicketNumber = e}
                 />
             </Modal>

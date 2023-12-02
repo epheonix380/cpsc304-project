@@ -44,6 +44,26 @@ router.post("/initiate-tables", async (req, res) => {
     }
 });
 
+router.post("/update/user", async (req, res) => {
+    const {userid, username, customername:name, city, password} = req.body;
+    const result = await userService.updateUserTicket(userid, username, name, city, password);
+    if (result) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.get("/event/:eventid", async (req, res) => {
+    const eventid = req.params.eventid;
+    const data = await eventService.getVenuesFromEventID(eventid);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
 router.get("/events", async (req, res) => {
     const orderBy = req.query.orderBy;
     const data = await eventService.getEvents(orderBy);
@@ -63,6 +83,24 @@ router.get("/tickets/unsold", async (req, res) => {
     }
 })
 
+router.get("/multi-city", async (req, res) => {
+    const data = await eventService.multiCityTour();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
+router.get("/popular", async (req, res) => {
+    const data = await eventService.popular();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
 router.get("/tour", async (req, res) => {
     const data = await eventService.canadianTour();
     if (data) {
@@ -70,6 +108,28 @@ router.get("/tour", async (req, res) => {
     } else {
         res.sendStatus(500);
     }
+})
+
+router.post("/update/ticket", async (req, res) => {
+    const {oldTicketID, newTicketID, userID} = req.body;
+    const data = await ticketService.switchTicket(oldTicketID, newTicketID, userID);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
+})
+
+router.delete("/user/:userid", async (req, res) => {
+    const userid = req.params.userid;
+    const data = await userService.deleteUser(userid);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
 })
 
 router.delete("/tickets/:ticketid", async (req, res) => {

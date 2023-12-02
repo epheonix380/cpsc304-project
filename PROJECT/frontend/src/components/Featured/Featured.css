@@ -1,0 +1,21 @@
+
+.summary {
+    display: flex;
+    flex-direction: column;
+}
+.canadianTour {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.multicityTour {
+    display: flex;
+    flex-direction: column;
+}
+
+.carosel {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}
