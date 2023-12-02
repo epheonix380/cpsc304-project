@@ -9,13 +9,7 @@ export default function User() {
     const [userID, setUserID] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
-    let name, city, username, password, userid;
 
-    name = user[0].customername;
-    city = user[0].city;
-    username = user[0].username;
-    password = user[0].password;
-    userid = user[0].userid;
 
     useEffect(()=>{
             fetch(`${process.env.REACT_APP_URL}/user/${userID}`).then(
@@ -44,7 +38,6 @@ export default function User() {
     }, [userID])
 
 
-    let newName = name, newCity = city, newUsername = username, newPassword = password;
 
     if (isLoading) {
         return <div className="maincontent">Loading...</div>;
@@ -55,16 +48,10 @@ export default function User() {
     }
 
     const onChange = (e, type) => {
-        const value = e.target.value;
-        if (type === "name") {
-            newName = value;
-        } else if (type === "city") {
-            newCity = value;
-        } else if (type === "username") {
-            newUsername = value;
-        } else if (type === "password") {
-            newPassword = value;
-        }
+        setUser({
+            ...user,
+            [type]:e.target.value,
+        });
     }
 
     const fetchUsers = async () => {
@@ -91,9 +78,6 @@ export default function User() {
         };
 
     const handleDeleteUser = (e) => {
-        if (userID === 1) {
-            return;
-        }
         const deleteUser = async () => {
           try {
             const response = await fetch(`${process.env.REACT_APP_URL}/delete/${userID}`, {
@@ -123,16 +107,13 @@ export default function User() {
     }
 
     const handleUpdateUser = (e) => {
-        const newUser = {customername: newName, city: newCity, username: newUsername, password: newPassword};
-        console.log(userID);
-        console.log(newUser);
 
         fetch(`${process.env.REACT_APP_URL}/update/${userID}`, {
             method: "POST", // or 'PUT'
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(newUser),
+            body: JSON.stringify(user),
         }).then(
             (response) => {
                 response.json().then(
@@ -150,14 +131,19 @@ export default function User() {
                             } else if (jsonResponse.data.error === "Invalid password") {
                                 alert("You have entered an invalid password! Please try again.")
                             } // lol pls refactor
+                            setUser(initUser)
+                        } else {
+                            alert("User update successful!")
+                            setInitUser(user);
+                            setIsLoading(false);
                         }
-                        alert("User update successful!")
-                        setIsLoading(false);
+                        
                     }
                 ).catch(
                     (err)=>{
                         console.log(err);
-                        setIsError(true)
+                        alert("User update successful!")
+                        
                     }
                 )
 
@@ -172,10 +158,6 @@ export default function User() {
 
     const handleRefreshUser = () => {
         window.location.reload();
-        setUser({
-            ...user,
-            [type]:e.target.value,
-        });
     }
 
     const onClick = async (e) => {
@@ -202,7 +184,6 @@ export default function User() {
     return (
         <div className="container">
             <a href="/" className="home">HOME</a>
-            <h1> Welcome, {name}! Your userID is {userid}.</h1>
             <h1> Welcome, {initUser.customername}! Your userid is {initUser.userid}.</h1>
 
             <h3> Contact details: </h3>

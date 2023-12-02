@@ -110,7 +110,7 @@ function MyTickets() {
                    },
                }}
         />
-        {/*<SelectTicket selectedTicket={selectedTicket}/>*/}
+        <SelectTicket selectedTicket={selectedTicket}/>
     </div>
   );
 }
