@@ -31,42 +31,67 @@ async function getUser(userid) {
         });
 }
 
-async function updateUserTicket(userid, username, name, city, password) {
-    const re = /[a-zA-Z1-9]*/;
-    let sanUsername, sanName, sanCity, sanPassword, sanUserid;
-    console.log({
-        userid, username, name, city, password
-    })
-    try {
-        sanUserid = parseInt(userid);
-        sanUsername = username.match(re)[0];
-        sanName = name.match(re)[0];
-        sanCity = city.match(re)[0];
-        sanPassword = password.match(re)[0];
-    } catch (e) { 
-        console.log(e);
-        console.log("Failed to sanitize")
-        return false;
-    }
-    return await db.run(`
-        UPDATE Customer
-        SET username = \:username, customername = \:name, city = \:city, password = \:password
-        WHERE userid = \:userid
-    `, [sanUsername, sanName, sanCity, sanPassword, sanUserid])
-}
-
-async function deleteUser(userid) {
+async function deleteUser(userID) {
     let sanUserID;
     try {
-        sanUserID = parseInt(userid);
+        sanUserID = parseInt(userID);
     } catch {
         return false;
     }
-    return await db.run(`
-        DELETE FROM Customer
-        WHERE userid = \:userid
-    `, [sanUserID])
 
+    let query = `
+        DELETE FROM Customer
+        WHERE userid = :userid`;
+
+    return await db.run(query, [sanUserID])
+        .then((res) => {
+            console.log("NO error in UserService");
+            return {success: true, message: 'Delete successful'};
+        })
+        .catch((err) => {
+            console.log("error in UserService");
+            return {success: false, message: 'Delete failed', error: err.message};
+        });
+}
+
+
+async function updateUser(userid, name, city, username, password) {
+    const re = /^[a-zA-Z][a-zA-Z0-9 ]*$|^[0-9]+$/;
+    let sanUserID, sanName, sanCity, sanUsername, sanPassword;
+    try {
+        sanUserID = parseInt(userid);
+        if (!re.test(name)) {
+            throw new Error('Invalid name');
+        }
+        sanName = name;
+        if (!re.test(city)) {
+            throw new Error('Invalid city');
+        }
+        sanCity = city;
+        if (!re.test(username)) {
+            throw new Error('Invalid username');
+        }
+        sanUsername = username;
+        if (!re.test(password)) {
+            throw new Error('Invalid password');
+        }
+        sanPassword = password;
+    } catch(err) {
+        return { success: false, message: 'Input validation failed', error: err.message };
+    }
+
+    let query = `
+        UPDATE Customer
+        SET customername = :name, city = :city, username = :username, password = :password
+        WHERE userid = :userid`;
+
+    return await db.run(query, [sanName, sanCity, sanUsername, sanPassword, sanUserID])
+        .then((res) => {
+            return {success: true, message: 'Update successful'};
+        })
+        .catch((err) => {
+            return {success: false, message: 'Update failed', error: err.message};
+        });
 }
 
 async function getUserTickets(userid, filter) {
@@ -112,7 +137,7 @@ async function getUserTickets(userid, filter) {
 module.exports = {
     getUserTickets,
     getUser,
+    updateUser,
     getAllUsers,
-    updateUserTicket,
     deleteUser
 }

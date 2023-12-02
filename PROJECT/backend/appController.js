@@ -187,6 +187,30 @@ router.get("/user/:userID", async (req, res) => {
 
 })
 
+router.post("/update/:userID", async (req, res) => {
+    const userID = req.params.userID;
+    const { customername, city, username, password } = req.body;
+    const data = await userService.updateUser(userID, customername, city, username, password);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+
+})
+
+router.delete('/delete/:userID', async (req, res) => {
+    const userID = req.params.userID;
+    console.log(`Delete request for user ID: ${userID}`)
+    const data = await userService.deleteUser(userID);
+    console.log(`data:${data}`);
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+})
+
 router.get("/concessions/:venueid", async (req, res) => {
     const venueueid = req.params.venueid;
     const data = await miscService.getConcessions(venueueid);
