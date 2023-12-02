@@ -88,7 +88,7 @@ async function canadianTour() {
 
 async function popular() {
 
-    // TODO: Division
+    // TODO: Aggregation with group by
 
     return await db.getFromDB(`
     SELECT Event.*
