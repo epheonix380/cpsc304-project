@@ -155,6 +155,16 @@ router.post("/tickets/:userID", async (req, res) => {
     
 })
 
+router.get("/tickets/low", async (req, res) => {
+    const data = await ticketService.getTicketLowestCostPerShow();
+    if (data) {
+        res.json({data});
+    } else {
+        res.sendStatus(500);
+    }
+    
+})
+
 router.get("/users", async (req, res) => {
     const userID = req.params.userID;
     const data = await userService.getAllUsers();

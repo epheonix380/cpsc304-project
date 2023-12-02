@@ -3,7 +3,7 @@ import './ShowCard.css'
 import React, {useState} from "react";
 import {InputNumber, Modal} from "antd";
 
-function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
+function ShowCard({show, minCost, modalOpen = false, onPurchase=()=>{}}) {
 
   // {"eventid":1,"type":"CNCRT","eventname":"Eras Tour","author":"Taylor Swift","description":"I heard its good","starttime":"2023-11-04","venueid":1,"venuename":"Rogers Arena","city":"Vancouver"}
   const id = show.eventid;
@@ -29,6 +29,7 @@ function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
     };
 
 
+    // console.log(`minCost:${minCost}`);
 
     const handleOk = () => {
       console.log(inputValue);
@@ -111,6 +112,7 @@ function ShowCard({show, modalOpen = false, onPurchase=()=>{}}) {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>map-marker</title><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" /></svg>
                   {venue}
               </p>
+              <p> Prices starting at:{minCost}</p>
           </div>
       </>
 
