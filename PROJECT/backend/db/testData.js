@@ -181,63 +181,78 @@ async function insertData() {
 
         // INSERT TICKET
         for (let i = 0; i<10; i++) {
-            await insertTicket(1, 1, 1, 100, 1,i, id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(1, 1, 1, 100+delta, 1,i, id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(1, 3, 1, 100, 1,i, id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(1, 3, 1, 100+delta, 1,i, id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(1, 5, 1, 100, 1,i ,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(1, 5, 1, 100+delta, 1,i ,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(1, 7, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(1, 7, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(1, 9, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(1, 9, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(2, 2, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(2, 2, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(2, 4, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(2, 4, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(2, 6, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(2, 6, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(2, 8, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(2, 8, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(2, 10, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(2, 10, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(5, 1, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(5, 1, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(6, 3, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(6, 3, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(7, 5, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(7, 5, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(3, 7, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(3, 7, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
         for (let i = 0; i<10; i++) {
-            await insertTicket(4, 9, 1, 100, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
+            const delta = Math.floor(Math.random()*10)*10;
+            await insertTicket(4, 9, 1, 100+delta, 1,i,id).catch((err)=>console.log(`Ticket: ${err}`));
             id++
         }
 
