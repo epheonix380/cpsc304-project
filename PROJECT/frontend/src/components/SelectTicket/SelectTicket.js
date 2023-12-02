@@ -2,7 +2,7 @@ import './SelectTicket.css'
 import React, {useEffect, useState} from "react";
 import {Modal, Select} from "antd";
 
-function SelectTicket({selectedTicket}) {
+function SelectTicket({selectedTicket, amount=1}) {
     const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [availableTickets, setAvailableTickets] = useState([]);
@@ -16,7 +16,7 @@ function SelectTicket({selectedTicket}) {
     useEffect(()=>{
         if (selectedTicket.length>0) {
             const ticket = selectedTicket[0];
-            fetch(`${process.env.REACT_APP_URL}/sections?eventid=${ticket.eventid}&venueid=${ticket.venueid}&amount=1`)
+            fetch(`${process.env.REACT_APP_URL}/sections?eventid=${ticket.eventid}&venueid=${ticket.venueid}&amount=${amount}`)
             .then((response)=>{
                 response.json().then((jsonResponse)=>{
                     const data = jsonResponse.data;
@@ -30,7 +30,7 @@ function SelectTicket({selectedTicket}) {
                 
             })
         }
-    },[selectedTicket])
+    },[amount, selectedTicket])
 
     const showModal = (type) => {
         if (ticketNumber === undefined) {
